@@ -1,0 +1,69 @@
+﻿
+{
+    "name" : "export",
+    "items": [
+        {
+            "id": "bk101",
+            "title": "XML Developer's Guide",
+            "author": "Gambardella, Matthew",
+            "genre": "Computer",
+            "publish_date": "2000-10-01",
+            "price": "$44.95",
+            
+                    "name": "Ettiene",
+                    "surname": "Mare",
+                
+            "hash": "e0485374b597e58b162d2be353569901bba1bd6a3c8c1cf1ccdf3ff03ad5ebaa"
+        },
+        {
+            "id": "bk102",
+            "title": "Midnight Rain",
+            "author": "Ralls, Kim",
+            "genre": "Fantasy",
+            "publish_date": "2000-12-16",
+            "price": "$5.95",
+            
+                    "name": "Kate",
+                    "author2": "Ralls, Kim",
+                
+            "hash": "64fa3370b25100e5893cb92efc998c60c27ff2fbf6a2dea84374948da51677e9"
+        },
+        {
+            "id": "bk103",
+            "title": "Maeve Ascendant",
+            "author": "Corets, Eva",
+            "genre": "Fantasy",
+            "publish_date": "2000-11-17",
+            "price": "$5.95",
+            
+                    "name": "Kate",
+                    "author2": "Corets, Eva",
+                
+            "hash": "8646a784cf2a8f6c4aca79aba5689495395ea36135fcc5d2c932e4639545519b"
+        },
+        {
+            "id": "bk106",
+            "title": "Lover Birds",
+            "author": "Randall, Cynthia",
+            "genre": "Romance",
+            "publish_date": "2000-09-02",
+            "price": "$4.95",
+            
+                    "name": "Cecilia",
+                
+            "hash": "b45f44b67e569d5befdddc548b6a3cc5320a9c9b8e02f17fe2a3eb3639497bb9"
+        },
+        {
+            "id": "bk107",
+            "title": "Splish Splash",
+            "author": "Thurman, Paula",
+            "genre": "Romance",
+            "publish_date": "2000-11-02",
+            "price": "$4.95",
+            
+                    "name": "Cecilia",
+                
+            "hash": "1e1a5b358f4397ffffb6855eca6c687065db3dde17e8b2a95de07056bc89c6f6"
+        }
+    ]
+}

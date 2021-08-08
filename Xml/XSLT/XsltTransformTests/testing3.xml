@@ -1,0 +1,56 @@
+﻿<response>
+  <name>export</name>
+  <items>
+    <id>bk101</id>
+    <title>XML Developer's Guide</title>
+    <author>Gambardella, Matthew</author>
+    <genre>Computer</genre>
+    <publish_date>2000-10-01</publish_date>
+    <price>$44.95</price>
+    <name>Ettiene</name>
+    <surname>Mare</surname>
+    <hash>e0485374b597e58b162d2be353569901bba1bd6a3c8c1cf1ccdf3ff03ad5ebaa</hash>
+  </items>
+  <items>
+    <id>bk102</id>
+    <title>Midnight Rain</title>
+    <author>Ralls, Kim</author>
+    <genre>Fantasy</genre>
+    <publish_date>2000-12-16</publish_date>
+    <price>$5.95</price>
+    <name>Kate</name>
+    <author2>Ralls, Kim</author2>
+    <hash>64fa3370b25100e5893cb92efc998c60c27ff2fbf6a2dea84374948da51677e9</hash>
+  </items>
+  <items>
+    <id>bk103</id>
+    <title>Maeve Ascendant</title>
+    <author>Corets, Eva</author>
+    <genre>Fantasy</genre>
+    <publish_date>2000-11-17</publish_date>
+    <price>$5.95</price>
+    <name>Kate</name>
+    <author2>Corets, Eva</author2>
+    <hash>8646a784cf2a8f6c4aca79aba5689495395ea36135fcc5d2c932e4639545519b</hash>
+  </items>
+  <items>
+    <id>bk106</id>
+    <title>Lover Birds</title>
+    <author>Randall, Cynthia</author>
+    <genre>Romance</genre>
+    <publish_date>2000-09-02</publish_date>
+    <price>$4.95</price>
+    <name>Cecilia</name>
+    <hash>b45f44b67e569d5befdddc548b6a3cc5320a9c9b8e02f17fe2a3eb3639497bb9</hash>
+  </items>
+  <items>
+    <id>bk107</id>
+    <title>Splish Splash</title>
+    <author>Thurman, Paula</author>
+    <genre>Romance</genre>
+    <publish_date>2000-11-02</publish_date>
+    <price>$4.95</price>
+    <name>Cecilia</name>
+    <hash>1e1a5b358f4397ffffb6855eca6c687065db3dde17e8b2a95de07056bc89c6f6</hash>
+  </items>
+</response>
