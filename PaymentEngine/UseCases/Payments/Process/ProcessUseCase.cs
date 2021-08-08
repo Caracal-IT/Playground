@@ -2,11 +2,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using PaymentEngine.Helpers;
 using PaymentEngine.Model;
 using PaymentEngine.Stores;
 using Router;
-using Terminal = PaymentEngine.Model.Terminal;
+
+using static PaymentEngine.Helpers.Serializer;
 
 namespace PaymentEngine.UseCases.Payments.Process {
     public class ProcessUseCase {
@@ -45,16 +45,12 @@ namespace PaymentEngine.UseCases.Payments.Process {
             }
             
             async Task Export(ExportData data) {
-                var req = new Request {
-                    Data = Serializer.Serialize(data),
-                    Terminals = GetTerminals().ToDictionary(i => i.Name, i => i.RetryCount)
-                };
-
+                var req = new Request { Data = Serialize(data), Terminals = GetTerminals() };
                 var response = await _engine.ProcessAsync(req, cancellationToken);
-                var result = response.Select(Serializer.DeSerialize<ExportResponse>).ToList();
+                var result = response.Select(DeSerialize<ExportResponse>);
                 data.Response.AddRange(result);
                 
-                IEnumerable<Terminal> GetTerminals() =>
+                Dictionary<string, int> GetTerminals() =>
                     _store.TerminalMaps
                         .TerminalMapList
                         .Join(_store.Terminals.TerminalList,
@@ -64,7 +60,8 @@ namespace PaymentEngine.UseCases.Payments.Process {
                         )
                         .Where(t => t.Map.Enabled && t.Map.AccountTypeId == data.AccountTypeId)
                         .OrderBy(t => t.Map.Order)
-                        .Select(t => t.Terminal);
+                        .Select(t => t.Terminal)
+                        .ToDictionary(i => i.Name, i => i.RetryCount);
             }
             
             void UpdateStatuses() {
