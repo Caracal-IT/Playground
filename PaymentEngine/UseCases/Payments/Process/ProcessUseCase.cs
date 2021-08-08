@@ -86,7 +86,8 @@ namespace PaymentEngine.UseCases.Payments.Process {
             }
 
             IEnumerable<ExportData> GetConsolidated() =>
-                allocations.GroupBy(a => new { customerId = a.CustomerId, accountId = a.AccountId })
+                allocations
+                    .GroupBy(a => new { customerId = a.CustomerId, accountId = a.AccountId })
                     .Select(a => new ExportData {
                         Allocations = a.Select(i => i).ToList(),
                         Amount = a.Sum(i => i.Amount),
