@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +20,16 @@ namespace PaymentEngine.Controllers {
         
         [HttpGet("allocations")]
         public List<Allocation> GetAllocations() => _paymentStore.GetStore().Allocations.AllocationList;
+
+        [HttpPost("auto-allocate")]
+        public List<Allocation> AutoAllocate(ProcessRequest request) {
+            var store = _paymentStore.GetStore();
+            var allocations = store.Allocations.AllocationList.Where(a => request.Allocations.Contains(a.Id)).ToList();
+
+            allocations.ForEach(a => a.AllocationStatusId = 1);
+            
+            return allocations;
+        }
 
         [HttpPost("Process")]
         public async Task<ProcessResponse> ProcessAsync([FromServices] ProcessUseCase useCase, ProcessRequest request, CancellationToken token) => 
