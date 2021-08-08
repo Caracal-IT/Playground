@@ -33,7 +33,7 @@ namespace PaymentEngine.UseCases.Payments.Process {
                 foreach(var resp in response)
                 {
                     foreach (var exp in exported.Where(e => e.Reference == resp.Reference)) {
-                        var allocation = store.Allocations.AllocationList.FirstOrDefault(a => a.Id == exp.AllocationId);
+                        var allocation = store.Allocations.AllocationList.FirstOrDefault(a => exp.Allocations.Contains(a.Id));
 
                         if (allocation != null)
                             allocation.AllocationStatusId = 4;
@@ -63,7 +63,7 @@ namespace PaymentEngine.UseCases.Payments.Process {
                     var accountType = store.AccountTypes.AccountTypeList.First(a => a.Id == account.AccountTypeId);
 
                     var exportData = new ExportData {
-                        AllocationId = allocationId,
+                        Allocations = new List<long>{allocationId},
                         Method = accountType.Name,
                         AccountTypeId = accountType.Id,
                         Amount = allocation.Amount + allocation.Charge,
