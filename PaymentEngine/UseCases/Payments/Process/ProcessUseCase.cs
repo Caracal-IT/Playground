@@ -18,10 +18,28 @@ namespace PaymentEngine.UseCases.Payments.Process {
         }
 
         public async Task<ProcessResponse> ExecuteAsync(ProcessRequest request, CancellationToken cancellationToken) {
+            var exported = new List<ExportData>();
             var responses = await Task.WhenAll(request.Allocations.Select(Export));
+
             var response = new ProcessResponse();
             response.AddRange(responses.SelectMany(r => r).ToList());
+            UpdateStatusses();
+            
             return response;
+
+            void UpdateStatusses() {
+                var store = _paymentStore.GetStore();
+                
+                foreach(var resp in response)
+                {
+                    foreach (var exp in exported.Where(e => e.Reference == resp.Reference)) {
+                        var allocation = store.Allocations.AllocationList.FirstOrDefault(a => a.Id == exp.AllocationId);
+
+                        if (allocation != null)
+                            allocation.AllocationStatusId = 4;
+                    }
+                }
+            }
 
             async Task<List<ExportResponse>> Export(long allocationId) {
                 var store = _paymentStore.GetStore();
@@ -37,20 +55,25 @@ namespace PaymentEngine.UseCases.Payments.Process {
                     Terminals = GetTerminals().ToDictionary(i => i.Name, i => i.RetryCount)
                 };
 
-                var response = await _engine.ProcessAsync(req, cancellationToken);
-                return response.Select(Serializer.DeSerialize<ExportResponse>).ToList();
+                var resp = await _engine.ProcessAsync(req, cancellationToken);
+                return resp.Select(Serializer.DeSerialize<ExportResponse>).ToList();
                 
                 ExportData GetData() {
                     var account = store.Accounts.AccountList.First(a => a.Id == allocation.AccountId);
                     var accountType = store.AccountTypes.AccountTypeList.First(a => a.Id == account.AccountTypeId);
 
-                    return new ExportData {
+                    var exportData = new ExportData {
+                        AllocationId = allocationId,
                         Method = accountType.Name,
                         AccountTypeId = accountType.Id,
                         Amount = allocation.Amount + allocation.Charge,
                         MetaData = account.MetaData,
                         Reference = $"REF_{allocationId}_{account.Id}_{account.CustomerId}"
                     };
+                    
+                    exported.Add(exportData);
+
+                    return exportData;
                 }
 
                 IEnumerable<Terminal> GetTerminals() =>

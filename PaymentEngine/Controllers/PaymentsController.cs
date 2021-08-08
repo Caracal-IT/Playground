@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +16,9 @@ namespace PaymentEngine.Controllers {
         
         [HttpGet("store")]
         public Store GetStore() => _paymentStore.GetStore();
+        
+        [HttpGet("allocations")]
+        public List<Allocation> GetAllocations() => _paymentStore.GetStore().Allocations.AllocationList;
 
         [HttpPost("Process")]
         public async Task<ProcessResponse> ProcessAsync([FromServices] ProcessUseCase useCase, ProcessRequest request, CancellationToken token) => 

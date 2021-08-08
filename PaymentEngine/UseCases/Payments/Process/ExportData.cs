@@ -5,6 +5,9 @@ using PaymentEngine.Model;
 namespace PaymentEngine.UseCases.Payments.Process {
     [XmlRoot(ElementName="export-data")]
     public class ExportData {
+        [XmlIgnore]
+        public long AllocationId { get; set; }
+        
         [XmlAttribute(AttributeName="reference")]
         public string Reference { get; set; }
         
