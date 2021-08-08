@@ -10,14 +10,12 @@ using Terminal = PaymentEngine.Model.Terminal;
 
 namespace PaymentEngine.UseCases.Payments.Process {
     public class ProcessUseCase {
-        private readonly PaymentStore _paymentStore;
         private readonly RouterEngine _engine;
         private readonly Store _store;
         
         public ProcessUseCase(PaymentStore paymentStore, RouterEngine engine) {
-            _paymentStore = paymentStore;
             _engine = engine;
-            _store = _paymentStore.GetStore();
+            _store = paymentStore.GetStore();
         }
 
         public async Task<ProcessResponse> ExecuteAsync(ProcessRequest request, CancellationToken cancellationToken) {
