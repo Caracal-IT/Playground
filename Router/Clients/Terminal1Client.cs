@@ -10,7 +10,8 @@ namespace Router.Clients {
             var request = DeSerialize<Terminal1Request>(message);
             
             var response = new Terminal1Response {
-                TransactionRef = request!.TransactionRef
+                TransactionRef = request!.TransactionRef,
+                Amount = request.Amount
             };
             
             return Serialize(response);
@@ -21,6 +22,9 @@ namespace Router.Clients {
     public class Terminal1Request {
         [XmlElement("trans-ref")]
         public string? TransactionRef { get; set; }
+        
+        [XmlElement("amount")]
+        public decimal Amount { get; set; }
     }
 
     [XmlRoot("response")]
@@ -29,5 +33,8 @@ namespace Router.Clients {
         
         [XmlElement("trans-ref")]
         public string? TransactionRef { get; set; }
+        
+        [XmlElement("amount")]
+        public decimal Amount { get; set; }
     }
 }

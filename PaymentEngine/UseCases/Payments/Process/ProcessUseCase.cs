@@ -19,14 +19,16 @@ namespace PaymentEngine.UseCases.Payments.Process {
 
         public async Task<ProcessResponse> ExecuteAsync(ProcessRequest request, CancellationToken cancellationToken) {
             var responses = await Task.WhenAll(request.Allocations.Select(Export));
-            return new ProcessResponse { Message = string.Join("\n", responses) };
+            var response = new ProcessResponse();
+            response.AddRange(responses.SelectMany(r => r).ToList());
+            return response;
 
-            async Task<string> Export(long allocationId) {
+            async Task<List<ExportResponse>> Export(long allocationId) {
                 var store = _paymentStore.GetStore();
                 var allocation = store.Allocations.AllocationList.FirstOrDefault(a => a.Id == allocationId);
                 
                 if (allocation == null)
-                    return string.Empty;
+                    return new List<ExportResponse>();
                 
                 var data = GetData();
                 
@@ -35,8 +37,9 @@ namespace PaymentEngine.UseCases.Payments.Process {
                     Terminals = GetTerminals().ToDictionary(i => i.Name, i => i.RetryCount)
                 };
 
-                return await _engine.ProcessAsync(req, cancellationToken);
-
+                var response = await _engine.ProcessAsync(req, cancellationToken);
+                return response.Select(Serializer.DeSerialize<ExportResponse>).ToList();
+                
                 ExportData GetData() {
                     var account = store.Accounts.AccountList.First(a => a.Id == allocation.AccountId);
                     var accountType = store.AccountTypes.AccountTypeList.First(a => a.Id == account.AccountTypeId);

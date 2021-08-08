@@ -15,9 +15,9 @@ namespace Router {
             _factory = factory;
         }
         
-        public async Task<string> ProcessAsync(Request request, CancellationToken token) {
+        public async Task<List<string>> ProcessAsync(Request request, CancellationToken token) {
             var terminals = await Task.WhenAll(request.Terminals.Select(GetTerminal));
-            var response = string.Empty;
+            var response = new List<string>();
 
             foreach (var t in terminals)
                 if (await TryProcessAsync(t)) break;
@@ -45,7 +45,8 @@ namespace Router {
             async Task<bool> ProcessRequestAsync(Terminal terminal) {
                 var message = Transformer.Transform(request.Data, terminal.OutXslt!);
                 var client = _factory.Create(terminal.Name);
-                response = await client.SendAsync(message);
+                var resp = await client.SendAsync(message);
+                response.Add(Transformer.Transform(resp, terminal.InXslt!));
 
                 return true;
             }

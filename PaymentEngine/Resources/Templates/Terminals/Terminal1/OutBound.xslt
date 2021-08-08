@@ -3,6 +3,7 @@
     <xsl:template match="export-data">
         <request>
             <trans-ref><xsl:value-of select="@reference"/></trans-ref>
+            <amount><xsl:value-of select="@amount"/></amount>
         </request>
     </xsl:template>
 </xsl:stylesheet>

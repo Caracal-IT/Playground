@@ -1,5 +1,5 @@
+using System.Collections.Generic;
+
 namespace PaymentEngine.UseCases.Payments.Process {
-    public class ProcessResponse {
-        public string Message { get; set; }
-    }
+    public class ProcessResponse: List<ExportResponse> { }
 }
