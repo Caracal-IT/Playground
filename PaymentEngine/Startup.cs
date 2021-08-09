@@ -15,6 +15,7 @@ using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
 using PaymentEngine.Stores;
 using PaymentEngine.Terminals.Functions;
+using PaymentEngine.UseCases.Payments.Callback;
 using PaymentEngine.UseCases.Payments.ExportData;
 using PaymentEngine.UseCases.Payments.Process;
 using Router;
@@ -39,6 +40,7 @@ namespace PaymentEngine {
             
             services.AddSingleton<ProcessUseCase>();
             services.AddSingleton<ExportDataUseCase>();
+            services.AddSingleton<CallbackUseCase>();
             
             services.AddControllers();
            

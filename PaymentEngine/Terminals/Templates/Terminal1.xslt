@@ -25,4 +25,18 @@
             <message>From Terminal 1 Response ($ <xsl:value-of select="amount"/>)</message>
         </export-response>
     </xsl:template>
+    
+    <xsl:template match="callback-request/callback">
+        <callback-request>
+            <xsl:attribute name="reference"><xsl:value-of select="ref"/></xsl:attribute>
+            <xsl:attribute name="code"><xsl:value-of select="status"/></xsl:attribute>
+        </callback-request>
+    </xsl:template>
+    
+    <xsl:template match="callback-response/callback-request">
+        <callback-result code="08">
+            <xsl:attribute name="reference-number"><xsl:value-of select="@reference"/></xsl:attribute>
+            <xsl:attribute name="return-code"><xsl:value-of select="@code"/></xsl:attribute>
+        </callback-result>
+    </xsl:template>
 </xsl:stylesheet>

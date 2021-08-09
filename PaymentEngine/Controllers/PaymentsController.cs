@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using PaymentEngine.Helpers;
 using PaymentEngine.Model;
 using PaymentEngine.Stores;
+using PaymentEngine.UseCases.Payments.Callback;
 using PaymentEngine.UseCases.Payments.ExportData;
 using PaymentEngine.UseCases.Payments.Process;
 
@@ -47,12 +48,15 @@ namespace PaymentEngine.Controllers {
 
         [HttpPost("process/xml/callback")]
         [Produces("application/xml")]
-        public async Task<XmlDocument> ProcessXmlCallback(CancellationToken token) {
+        public async Task<XmlDocument> ProcessXmlCallback([FromServices] CallbackUseCase useCase, CancellationToken token) {
             using var reader = new StreamReader(Request.Body, Encoding.UTF8);
-            var textFromBody = await reader.ReadToEndAsync();
-
+            var body = await reader.ReadToEndAsync();
+            
+            var request = $"<callback-request>{body}</callback-request>";
+            var resp = await useCase.ExecuteAsync(request, token);
+            
             var result = new XmlDocument();
-            result.LoadXml("<xmlData name='Kate'></xmlData>");
+            result.LoadXml(resp);
             
             return result;
         }
