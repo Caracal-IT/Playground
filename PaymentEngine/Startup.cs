@@ -6,10 +6,12 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
 using PaymentEngine.Stores;
 using PaymentEngine.Terminals.Functions;
@@ -39,6 +41,11 @@ namespace PaymentEngine {
             services.AddSingleton<ExportDataUseCase>();
             
             services.AddControllers();
+           
+            services.AddMvc()
+                .AddXmlSerializerFormatters()
+                .AddXmlDataContractSerializerFormatters();
+
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "PaymentEngine", Version = "v1" }); });
         }
 
@@ -49,7 +56,7 @@ namespace PaymentEngine {
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PaymentEngine v1"));
             }
-
+            
             app.UseHttpsRedirection();
 
             app.UseRouting();

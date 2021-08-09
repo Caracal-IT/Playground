@@ -1,8 +1,17 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Dynamic;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Serialization;
 using Microsoft.AspNetCore.Mvc;
+using PaymentEngine.Helpers;
 using PaymentEngine.Model;
 using PaymentEngine.Stores;
 using PaymentEngine.UseCases.Payments.ExportData;
@@ -35,10 +44,38 @@ namespace PaymentEngine.Controllers {
         [HttpPost("process")]
         public async Task<ProcessResponse> ProcessAsync([FromServices] ProcessUseCase useCase, ProcessRequest request, CancellationToken token) => 
             await useCase.ExecuteAsync(request, token);
+
+        [HttpPost("process/xml/callback")]
+        [Produces("application/xml")]
+        public async Task<XmlDocument> ProcessXmlCallback(CancellationToken token) {
+            using var reader = new StreamReader(Request.Body, Encoding.UTF8);
+            var textFromBody = await reader.ReadToEndAsync();
+
+            var result = new XmlDocument();
+            result.LoadXml("<xmlData name='Kate'></xmlData>");
+            
+            return result;
+        }
+        
+        [HttpPost("process/callback")]
+        public async Task<Callback> ProcessCallback(CancellationToken token) {
+            using var reader = new StreamReader(Request.Body, Encoding.UTF8);
+            var textFromBody = await reader.ReadToEndAsync();
+
+            return new Callback { Reference = "123456"};
+        }
         
         [HttpPost("export-data")]
         public async Task<ExportDataResponse> ExportDataAsync([FromServices] ExportDataUseCase useCase, ExportDataRequest request, CancellationToken token) => 
             await useCase.ExecuteAsync(request, token);
         
+    }
+
+    [XmlRoot("callback")]
+    public class Callback {
+        [XmlElement("ref")]
+        public string Reference { get; set; }
+        [XmlElement("status")]
+        public string Status { get; set; }
     }
 }
