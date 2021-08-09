@@ -10,6 +10,7 @@ namespace Router.Clients {
             var request = DeSerialize<Terminal1Request>(message);
             
             var response = new Terminal1Response {
+                Name = $"Terminal 1 - {request!.CardHolder}",
                 TransactionRef = request!.TransactionRef,
                 Amount = request.Amount
             };
@@ -25,6 +26,9 @@ namespace Router.Clients {
         
         [XmlElement("amount")]
         public decimal Amount { get; set; }
+        
+        [XmlElement("card-holder")]
+        public string? CardHolder { get; set; }
     }
 
     [XmlRoot("response")]

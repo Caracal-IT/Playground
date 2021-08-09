@@ -4,79 +4,52 @@ using System.Threading;
 using System.Threading.Tasks;
 using PaymentEngine.Model;
 using PaymentEngine.Stores;
+using PaymentEngine.Helpers;
 using Router;
 
 using static PaymentEngine.Helpers.Serializer;
 
 namespace PaymentEngine.UseCases.Payments.Process {
     public class ProcessUseCase {
+        private readonly PaymentStore _paymentStore;
         private readonly RouterEngine _engine;
-        private readonly Store _store;
         
         public ProcessUseCase(PaymentStore paymentStore, RouterEngine engine) {
+            _paymentStore = paymentStore;
             _engine = engine;
-            _store = paymentStore.GetStore();
         }
 
         public async Task<ProcessResponse> ExecuteAsync(ProcessRequest request, CancellationToken cancellationToken) {
-            var allocations = request.Allocations
-                                     .Select(GetAllocationData)
-                                     .Where(a => a.AccountId > 0)
-                                     .ToList();
-
+            var allocations = _paymentStore.GetExportAllocations(request.Allocations).ToList();
             var items = (request.Consolidate ? GetConsolidated() : GetExportData()).ToList();
-
-            await Task.WhenAll(items.Select(Export));
+            
+            await items.Select(Export).WhenAll(maxConcurrentRequests: 50);
+            
             UpdateStatuses();
             
             return new ProcessResponse(items.SelectMany(i => i.Response));
-            
-            ExportAllocation GetAllocationData(long allocationId) {
-                var allocation = _store.Allocations.AllocationList.FirstOrDefault(a => a.Id == allocationId)??new Allocation();
-                var account = _store.Accounts.AccountList.FirstOrDefault(a => a.Id == allocation.AccountId)??new Account();
-             
-                return new ExportAllocation {
-                    AllocationId = allocation.Id,
-                    Amount = allocation.Amount + allocation.Charge,
-                    AccountId = account.Id,
-                    AccountTypeId = account.AccountTypeId,
-                    CustomerId = account.CustomerId
-                };
-            }
-            
+
             async Task Export(ExportData data) {
-                var req = new Request { Data = Serialize(data), Terminals = GetTerminals() };
+                var req = new Request {
+                    Data = Serialize(data), 
+                    Terminals = _paymentStore.GetActiveAccountTypeTerminals(data.AccountTypeId)
+                                             .ToDictionary(i => i.Name, i => i.RetryCount)
+                };
+                
                 var response = await _engine.ProcessAsync(req, cancellationToken);
                 var result = response.Select(DeSerialize<ExportResponse>);
                 data.Response.AddRange(result);
-                
-                Dictionary<string, int> GetTerminals() =>
-                    _store.TerminalMaps
-                        .TerminalMapList
-                        .Join(_store.Terminals.TerminalList,
-                            tm => tm.TerminalId,
-                            t => t.Id,
-                            (tm, t) => new { Map = tm, Terminal = t }
-                        )
-                        .Where(t => t.Map.Enabled && t.Map.AccountTypeId == data.AccountTypeId)
-                        .OrderBy(t => t.Map.Order)
-                        .Select(t => t.Terminal)
-                        .ToDictionary(i => i.Name, i => i.RetryCount);
             }
             
             void UpdateStatuses() {
                 items.ForEach(SetStatus);
                 
-                void SetStatus(ExportData item) {
-                    item.Allocations.ForEach(SetAllocationStatus);
-                    
-                    void SetAllocationStatus(ExportAllocation exportItem) {
-                        var allocation = _store.Allocations
-                                               .AllocationList
-                                               .FirstOrDefault(a => a.Id == exportItem.AllocationId);
-                        
-                        if (allocation != null) allocation.AllocationStatusId = item.Response.Any(i => i.Code == "00") ? 4 : 5;
-                    }
+                void SetStatus(ExportData data) {
+                    var statusId = data.Response.Any(i => i.Code == "00") ? 4 : 5;
+                    data.Allocations.ForEach(SetAllocationStatus);
+
+                    void SetAllocationStatus(ExportAllocation ea) => 
+                        _paymentStore.SetAllocationStatus(ea.AllocationId, statusId);
                 }
             }
 
@@ -87,7 +60,8 @@ namespace PaymentEngine.UseCases.Payments.Process {
                         Allocations = a.Select(i => i).ToList(),
                         Amount = a.Sum(i => i.Amount),
                         AccountTypeId = a.First().AccountTypeId,
-                        Reference = $"CREF_{a.Key.accountId}_{a.Key.customerId}"
+                        Reference = $"CREF_{a.Key.accountId}_{a.Key.customerId}",
+                        MetaData = a.First().MetaData
                     });
 
             IEnumerable<ExportData> GetExportData() =>
@@ -95,7 +69,8 @@ namespace PaymentEngine.UseCases.Payments.Process {
                     Allocations = new List<ExportAllocation> { a },
                     Amount = a.Amount,
                     AccountTypeId = a.AccountTypeId,
-                    Reference = $"REF_{a.AllocationId}_{a.AccountId}_{a.CustomerId}"
+                    Reference = $"REF_{a.AllocationId}_{a.AccountId}_{a.CustomerId}",
+                    MetaData = a.MetaData
                 });
         }
     }

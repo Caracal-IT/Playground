@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using PaymentEngine.Model;
 
 namespace PaymentEngine.UseCases.Payments.Process {
     [XmlRoot(ElementName = "export-data")]
@@ -15,5 +16,8 @@ namespace PaymentEngine.UseCases.Payments.Process {
         
         [XmlAttribute(AttributeName="account-type-id")]
         public long AccountTypeId { get; set; }
+
+        [XmlElement(ElementName="meta-data")]
+        public List<MetaData> MetaData { get; set; } = new();
     }
 }
