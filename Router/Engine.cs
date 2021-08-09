@@ -9,10 +9,12 @@ namespace Router {
     public class Engine: RouterEngine {
         private readonly TerminalStore _store;
         private readonly ClientFactory _factory;
+        private readonly Dictionary<string, object> _extensions;
 
-        public Engine(TerminalStore store, ClientFactory factory) {
+        public Engine(TerminalStore store, TerminalExtensions extensions, ClientFactory factory) {
             _store = store;
             _factory = factory;
+            _extensions = extensions.GetExtensions();
         }
         
         public async Task<List<string>> ProcessAsync(Request request, CancellationToken token) {
@@ -43,10 +45,10 @@ namespace Router {
             }
             
             async Task<bool> ProcessRequestAsync(Terminal terminal) {
-                var message = Transformer.Transform(request.Data, terminal.Xslt!);
+                var message = Transformer.Transform(request.Data, terminal.Xslt!, _extensions);
                 var client = _factory.Create(terminal.Name);
                 var resp = await client.SendAsync(message);
-                response.Add(Transformer.Transform(resp, terminal.Xslt!));
+                response.Add(Transformer.Transform(resp, terminal.Xslt!, _extensions));
 
                 return true;
             }

@@ -14,10 +14,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="Resources\Templates\Terminals\Terminal2.xslt">
+      <Content Include="Terminals\Templates\Terminal1.xslt">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
-      <Content Include="Resources\Templates\Terminals\Terminal3.xslt">
+      <Content Include="Terminals\Templates\Terminal2.xslt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Terminals\Templates\Terminal3.xslt">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
       <None Remove="Resources\Templates\Terminals\Terminal1\InBound.xslt" />
@@ -27,9 +30,6 @@
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
       <None Remove="Resources\Templates\Terminals\Terminal1.xslt" />
-      <Content Include="Resources\Templates\Terminals\Terminal1.xslt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
     </ItemGroup>
 
 </Project>

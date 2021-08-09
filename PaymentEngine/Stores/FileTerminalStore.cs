@@ -8,7 +8,7 @@ using PaymentEngine.Extensions;
 namespace PaymentEngine.Stores {
     public class FileTerminalStore: TerminalStore {
         public async Task<Terminal> GetTerminalAsync(string name, CancellationToken token) {
-            var path = Path.Join("Resources", "Templates", "Terminals", $"{name}.xslt");
+            var path = Path.Join("Terminals", "Templates", $"{name}.xslt");
             
             if(!File.Exists(path))
                 return new Terminal{ Name = name, Xslt = string.Empty};

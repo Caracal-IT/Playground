@@ -12,9 +12,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using PaymentEngine.Stores;
+using PaymentEngine.Terminals.Functions;
 using PaymentEngine.UseCases.Payments.Process;
 using Router;
 using Router.Clients;
+using MockClientFactory = PaymentEngine.Terminals.Clients.MockClientFactory;
 
 namespace PaymentEngine {
     public class Startup {
@@ -26,6 +28,7 @@ namespace PaymentEngine {
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
+            services.AddSingleton<TerminalExtensions, CustomTerminalExtensions>();
             services.AddSingleton<TerminalStore, FileTerminalStore>();
             services.AddSingleton<PaymentStore, FilePaymentStore>();
             services.AddSingleton<RouterEngine, Engine>();
