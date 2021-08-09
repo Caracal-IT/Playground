@@ -11,7 +11,7 @@ namespace PaymentEngine.Stores {
         Allocation GetAllocation(long id);
         ExportAllocation GetExportAllocation(long allocationId);
         IEnumerable<ExportAllocation> GetExportAllocations(IEnumerable<long> allocationIds);
-        void SetAllocationStatus(long id, long statusId);
+        void SetAllocationStatus(long id, long statusId, string terminal = null, string reference = null);
         IEnumerable<Terminal> GetActiveAccountTypeTerminals(long accountTypeId);
     }
 }

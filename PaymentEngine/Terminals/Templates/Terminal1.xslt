@@ -18,6 +18,7 @@
 
     <xsl:template match="response">
         <export-response>
+            <terminal>Terminal1</terminal>
             <name><xsl:value-of select="@name"/></name>
             <reference><xsl:value-of select="trans-ref"/></reference>
             <code>00</code>

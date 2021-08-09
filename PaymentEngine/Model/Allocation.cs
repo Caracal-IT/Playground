@@ -15,5 +15,11 @@ namespace PaymentEngine.Model {
         public decimal Charge { get; set; }
         [XmlAttribute(AttributeName="allocation-status-id")]
         public long AllocationStatusId { get; set; }
+        
+        [XmlAttribute(AttributeName="terminal")]
+        public string Terminal { get; set; }
+        
+        [XmlAttribute(AttributeName="reference")]
+        public string Reference { get; set; }
     }
 }

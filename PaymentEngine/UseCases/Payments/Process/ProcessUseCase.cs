@@ -6,8 +6,9 @@ using PaymentEngine.Model;
 using PaymentEngine.Stores;
 using PaymentEngine.Helpers;
 using Router;
-
+using static PaymentEngine.Helpers.Hashing;
 using static PaymentEngine.Helpers.Serializer;
+using Terminal = Router.Terminal;
 
 namespace PaymentEngine.UseCases.Payments.Process {
     public class ProcessUseCase {
@@ -45,11 +46,14 @@ namespace PaymentEngine.UseCases.Payments.Process {
                 items.ForEach(SetStatus);
                 
                 void SetStatus(ExportData data) {
-                    var statusId = data.Response.Any(i => i.Code == "00") ? 4 : 5;
+                    var response = data.Response.FirstOrDefault(i => i.Code == "00") ?? new ExportResponse();
+                    var statusId = response.Code == "00" ? 4 : 5;
+                    var terminal = response.Terminal;
+                    
                     data.Allocations.ForEach(SetAllocationStatus);
 
                     void SetAllocationStatus(ExportAllocation ea) => 
-                        _paymentStore.SetAllocationStatus(ea.AllocationId, statusId);
+                        _paymentStore.SetAllocationStatus(ea.AllocationId, statusId, terminal, data.Reference);
                 }
             }
 
@@ -60,7 +64,7 @@ namespace PaymentEngine.UseCases.Payments.Process {
                         Allocations = a.Select(i => i).ToList(),
                         Amount = a.Sum(i => i.Amount),
                         AccountTypeId = a.First().AccountTypeId,
-                        Reference = $"CREF_{a.Key.accountId}_{a.Key.customerId}",
+                        Reference = hash5(string.Join('*', a.Select(i => i.AllocationId))),
                         MetaData = a.First().MetaData
                     });
 
@@ -69,7 +73,7 @@ namespace PaymentEngine.UseCases.Payments.Process {
                     Allocations = new List<ExportAllocation> { a },
                     Amount = a.Amount,
                     AccountTypeId = a.AccountTypeId,
-                    Reference = $"REF_{a.AllocationId}_{a.AccountId}_{a.CustomerId}",
+                    Reference = hash5($"{a.AllocationId}_{a.AccountId}_{a.CustomerId}"),
                     MetaData = a.MetaData
                 });
         }

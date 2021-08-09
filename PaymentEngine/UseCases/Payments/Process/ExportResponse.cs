@@ -11,5 +11,8 @@ namespace PaymentEngine.UseCases.Payments.Process {
         public string Code { get; set; }
         [XmlElement("message")]
         public string Message { get; set; }
+        
+        [XmlElement("terminal")]
+        public string Terminal { get; set; }
     }
 }

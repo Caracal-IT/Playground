@@ -27,7 +27,7 @@ namespace PaymentEngine.Controllers {
             var store = _paymentStore.GetStore();
             var allocations = store.Allocations.AllocationList.Where(a => request.Allocations.Contains(a.Id)).ToList();
 
-            allocations.ForEach(a => a.AllocationStatusId = 1);
+            allocations.ForEach(a => _paymentStore.SetAllocationStatus(a.Id, 1));
             
             return allocations;
         }

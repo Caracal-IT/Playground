@@ -40,10 +40,14 @@ namespace PaymentEngine.Stores {
         public IEnumerable<ExportAllocation> GetExportAllocations(IEnumerable<long> allocationIds) =>
             allocationIds.Select(GetExportAllocation)
                          .Where(a => a.AccountId > 0);
-        
-        public void SetAllocationStatus(long id, long statusId) =>
-            GetAllocation(id).AllocationStatusId = statusId;
-        
+
+        public void SetAllocationStatus(long id, long statusId, string terminal = null, string reference = null) {
+            var allocation = GetAllocation(id);
+            allocation.AllocationStatusId = statusId;
+            allocation.Terminal = terminal;
+            allocation.Reference = reference;
+        }
+
         public IEnumerable<Terminal> GetActiveAccountTypeTerminals(long accountTypeId) =>
             _store.TerminalMaps
                 .TerminalMapList
