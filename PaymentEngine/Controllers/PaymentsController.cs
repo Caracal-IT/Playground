@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PaymentEngine.Model;
 using PaymentEngine.Stores;
+using PaymentEngine.UseCases.Payments.ExportData;
 using PaymentEngine.UseCases.Payments.Process;
 
 namespace PaymentEngine.Controllers {
@@ -31,8 +32,13 @@ namespace PaymentEngine.Controllers {
             return allocations;
         }
 
-        [HttpPost("Process")]
+        [HttpPost("process")]
         public async Task<ProcessResponse> ProcessAsync([FromServices] ProcessUseCase useCase, ProcessRequest request, CancellationToken token) => 
             await useCase.ExecuteAsync(request, token);
+        
+        [HttpPost("export-data")]
+        public async Task<ExportDataResponse> ExportDataAsync([FromServices] ExportDataUseCase useCase, ExportDataRequest request, CancellationToken token) => 
+            await useCase.ExecuteAsync(request, token);
+        
     }
 }

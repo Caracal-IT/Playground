@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using PaymentEngine.Stores;
 using PaymentEngine.Terminals.Functions;
+using PaymentEngine.UseCases.Payments.ExportData;
 using PaymentEngine.UseCases.Payments.Process;
 using Router;
 using Router.Clients;
@@ -33,7 +34,9 @@ namespace PaymentEngine {
             services.AddSingleton<PaymentStore, FilePaymentStore>();
             services.AddSingleton<RouterEngine, Engine>();
             services.AddSingleton<ClientFactory, MockClientFactory>();
+            
             services.AddSingleton<ProcessUseCase>();
+            services.AddSingleton<ExportDataUseCase>();
             
             services.AddControllers();
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "PaymentEngine", Version = "v1" }); });
