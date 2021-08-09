@@ -8,7 +8,6 @@ using PaymentEngine.Helpers;
 using Router;
 using static PaymentEngine.Helpers.Hashing;
 using static PaymentEngine.Helpers.Serializer;
-using Terminal = Router.Terminal;
 
 namespace PaymentEngine.UseCases.Payments.Process {
     public class ProcessUseCase {
