@@ -72,7 +72,7 @@ namespace PaymentEngine.UseCases.Payments.Process {
                     Allocations = new List<ExportAllocation> { a },
                     Amount = a.Amount,
                     AccountTypeId = a.AccountTypeId,
-                    Reference = hash5($"{a.AllocationId}_{a.AccountId}_{a.CustomerId}"),
+                    Reference = hash5($"{a.AllocationId}"),
                     MetaData = a.MetaData
                 });
         }
