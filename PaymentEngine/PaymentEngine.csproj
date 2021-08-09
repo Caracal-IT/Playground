@@ -14,28 +14,20 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="Resources\Templates\Terminals\Terminal2\InBound.xslt">
+      <Content Include="Resources\Templates\Terminals\Terminal2.xslt">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
-      <Content Include="Resources\Templates\Terminals\Terminal2\OutBound.xslt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <Content Include="Resources\Templates\Terminals\Terminal3\InBound.xslt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <Content Include="Resources\Templates\Terminals\Terminal3\OutBound.xslt">
+      <Content Include="Resources\Templates\Terminals\Terminal3.xslt">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
       <None Remove="Resources\Templates\Terminals\Terminal1\InBound.xslt" />
-      <Content Include="Resources\Templates\Terminals\Terminal1\InBound.xslt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
       <None Remove="Resources\Templates\Terminals\Terminal1\OutBound.xslt" />
-      <Content Include="Resources\Templates\Terminals\Terminal1\OutBound.xslt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
       <None Remove="Resources\Data\store.xml" />
       <Content Include="Resources\Data\store.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Resources\Templates\Terminals\Terminal1.xslt" />
+      <Content Include="Resources\Templates\Terminals\Terminal1.xslt">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
     </ItemGroup>

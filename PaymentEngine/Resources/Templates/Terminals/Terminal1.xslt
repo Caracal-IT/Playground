@@ -13,4 +13,13 @@
             </xsl:for-each>
         </request>
     </xsl:template>
+
+    <xsl:template match="response">
+        <export-response>
+            <name><xsl:value-of select="@name"/></name>
+            <reference><xsl:value-of select="trans-ref"/></reference>
+            <code>00</code>
+            <message>From Terminal 1 Response ($ <xsl:value-of select="amount"/>)</message>
+        </export-response>
+    </xsl:template>
 </xsl:stylesheet>
