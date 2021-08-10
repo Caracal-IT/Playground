@@ -34,9 +34,9 @@
     </xsl:template>
     
     <xsl:template match="callback-response/callback-request">
-        <callback-result code="08">
+        <terminal-response success="true">
             <xsl:attribute name="reference-number"><xsl:value-of select="@reference"/></xsl:attribute>
             <xsl:attribute name="return-code"><xsl:value-of select="@code"/></xsl:attribute>
-        </callback-result>
+        </terminal-response>
     </xsl:template>
 </xsl:stylesheet>

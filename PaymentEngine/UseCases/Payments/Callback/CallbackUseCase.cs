@@ -2,10 +2,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.OpenApi.Extensions;
+
 using PaymentEngine.Stores;
 using PaymentEngine.Terminals.Clients;
 using Router;
+
+using static PaymentEngine.Helpers.Serializer;
 
 namespace PaymentEngine.UseCases.Payments.Callback {
     public class CallbackUseCase {
@@ -35,7 +37,20 @@ namespace PaymentEngine.UseCases.Payments.Callback {
             };
 
             var response = await _engine.ProcessAsync(req, token);
-            return response.FirstOrDefault()??string.Empty;
+            var xml = response.FirstOrDefault();
+
+            if (string.IsNullOrWhiteSpace(xml)) return string.Empty;
+
+            var resp = DeSerialize<TerminalResponse>(xml);
+
+            if (resp.IsSuccessfull && resp.Code == "00") {
+                _paymentStore.GetStore().Allocations.AllocationList
+                             .Where(a => a.Reference.Equals(request.Reference))
+                             .ToList()
+                             .ForEach(a => a.AllocationStatusId = 6);
+            }
+            
+            return Serialize(resp);
         }
     }
 }
