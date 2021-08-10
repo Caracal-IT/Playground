@@ -2,9 +2,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.OpenApi.Extensions;
 using PaymentEngine.Model;
 using PaymentEngine.Stores;
 using PaymentEngine.Helpers;
+using PaymentEngine.Terminals.Clients;
 using Router;
 using static PaymentEngine.Helpers.Hashing;
 using static PaymentEngine.Helpers.Serializer;
@@ -31,6 +33,7 @@ namespace PaymentEngine.UseCases.Payments.Process {
 
             async Task Export(ExportData data) {
                 var req = new Request {
+                    RequestType = (int) RequestType.Process,
                     Data = Serialize(data), 
                     Terminals = _paymentStore.GetActiveAccountTypeTerminals(data.AccountTypeId)
                                              .ToDictionary(i => i.Name, i => i.RetryCount)

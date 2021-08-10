@@ -5,7 +5,7 @@ using static Router.Helpers.Serializer;
 
 namespace PaymentEngine.Terminals.Clients {
     public class Terminal3Client: Client {
-        public async Task<string> SendAsync(string message) {
+        public async Task<string> SendAsync(string message, int requestType) {
             await Task.Delay(0);
             
             var request = DeSerialize<Terminal3Request>(message);

@@ -46,13 +46,15 @@ namespace PaymentEngine.Controllers {
         public async Task<ProcessResponse> ProcessAsync([FromServices] ProcessUseCase useCase, ProcessRequest request, CancellationToken token) => 
             await useCase.ExecuteAsync(request, token);
 
-        [HttpPost("process/xml/callback")]
+        [HttpPost("process/xml/callback/{reference}")]
         [Produces("application/xml")]
-        public async Task<XmlDocument> ProcessXmlCallback([FromServices] CallbackUseCase useCase, CancellationToken token) {
+        public async Task<XmlDocument> ProcessXmlCallback([FromServices] CallbackUseCase useCase, [FromRoute] string reference, CancellationToken token) {
             using var reader = new StreamReader(Request.Body, Encoding.UTF8);
             var body = await reader.ReadToEndAsync();
-            
-            var request = $"<callback-request>{body}</callback-request>";
+            var request = new CallbackRequest {
+                Data = body,
+                Reference = reference
+            };
             var resp = await useCase.ExecuteAsync(request, token);
             
             var result = new XmlDocument();

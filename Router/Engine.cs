@@ -49,7 +49,7 @@ namespace Router {
             async Task<bool> ProcessRequestAsync(Terminal terminal) {
                 var message = Transformer.Transform(request.Data, terminal.Xslt!, _extensions);
                 var client = _factory.Create(terminal.Name);
-                var resp = await client.SendAsync(message);
+                var resp = await client.SendAsync(message, request.RequestType);
                 response.Add(Transformer.Transform(resp, terminal.Xslt!, _extensions));
 
                 return true;

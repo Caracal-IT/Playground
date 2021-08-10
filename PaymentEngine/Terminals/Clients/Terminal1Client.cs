@@ -5,25 +5,24 @@ using static Router.Helpers.Serializer;
 
 namespace PaymentEngine.Terminals.Clients {
     public class Terminal1Client: Client {
-        public Task<string> SendAsync(string message) {
-            if (message.Contains("<request")) {
-                var request = DeSerialize<Terminal1Request>(message);
+        public Task<string> SendAsync(string message, int requestType) {
+            switch (requestType) {
+                case (int) RequestType.Process: {
+                    var request = DeSerialize<Terminal1Request>(message);
 
-                var response = new Terminal1Response {
-                    Name = $"Terminal 1 - {request!.CardHolder}, Hash - {request!.Hash}",
-                    TransactionRef = request!.TransactionRef,
-                    Amount = request.Amount
-                };
+                    var response = new Terminal1Response {
+                        Name = $"Terminal 1 - {request!.CardHolder}, Hash - {request!.Hash}",
+                        TransactionRef = request!.TransactionRef,
+                        Amount = request.Amount
+                    };
 
-                return Task.FromResult(Serialize(response));
+                    return Task.FromResult(Serialize(response));
+                }
+                case (int) RequestType.Callback:
+                    return Task.FromResult($"<callback-response>{message}</callback-response>");
+                default:
+                    return Task.FromResult("<XmlData/>");
             }
-            
-            if (message.Contains("<callback-request")) {
-                
-                return Task.FromResult($"<callback-response>{message}</callback-response>");
-            }
-
-            return Task.FromResult("<XmlData/>");
         }
     }
     

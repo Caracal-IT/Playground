@@ -2,7 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.OpenApi.Extensions;
 using PaymentEngine.Stores;
+using PaymentEngine.Terminals.Clients;
 using Router;
 
 namespace PaymentEngine.UseCases.Payments.Callback {
@@ -17,13 +19,19 @@ namespace PaymentEngine.UseCases.Payments.Callback {
             _terminalStore = terminalStore;
         }
         
-        public async Task<string> ExecuteAsync(string xml, CancellationToken token) {
-            var terminalDef = _paymentStore.GetStore().Terminals.TerminalList.First();
-            var terminal = await _terminalStore.GetTerminalAsync(terminalDef.Name, token);
+        public async Task<string> ExecuteAsync(CallbackRequest request, CancellationToken token) {
+            var terminalName = _paymentStore.GetStore()
+                                            .Allocations
+                                            .AllocationList
+                                            .FirstOrDefault(a => a.Reference.Equals(request.Reference))
+                                            ?.Terminal;
+
+            if (terminalName == null) return "<XmlData/>";
             
             var req = new Request {
-                Data = xml, 
-                Terminals = new Dictionary<string, int>{ { "Terminal1", 2 } }
+                RequestType = (int) RequestType.Callback,
+                Data = $"<callback-request>{request.Data}</callback-request>", 
+                Terminals = new Dictionary<string, int>{ { terminalName, 2 } }
             };
 
             var response = await _engine.ProcessAsync(req, token);
