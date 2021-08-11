@@ -1,17 +1,11 @@
 using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Dynamic;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Linq;
 using System.Xml.Serialization;
 using Microsoft.AspNetCore.Mvc;
-using PaymentEngine.Helpers;
 using PaymentEngine.Model;
 using PaymentEngine.Stores;
 using PaymentEngine.UseCases.Payments.Callback;
@@ -48,19 +42,15 @@ namespace PaymentEngine.Controllers {
 
         [HttpPost("process/xml/callback/{reference}")]
         [Produces("application/xml")]
-        public async Task<XmlDocument> ProcessXmlCallback([FromServices] CallbackUseCase useCase, [FromRoute] string reference, CancellationToken token) {
+        public async Task<CallbackResponse> ProcessXmlCallback([FromServices] CallbackUseCase useCase, [FromRoute] string reference, CancellationToken token) {
             using var reader = new StreamReader(Request.Body, Encoding.UTF8);
             var body = await reader.ReadToEndAsync();
             var request = new CallbackRequest {
                 Data = body,
                 Reference = reference
             };
-            var resp = await useCase.ExecuteAsync(request, token);
             
-            var result = new XmlDocument();
-            result.LoadXml(resp);
-            
-            return result;
+            return await useCase.ExecuteAsync(request, token);
         }
         
         [HttpPost("process/callback")]

@@ -21,10 +21,10 @@ namespace PaymentEngine.UseCases.Payments.Callback {
             _terminalStore = terminalStore;
         }
         
-        public async Task<string> ExecuteAsync(CallbackRequest request, CancellationToken token) {
+        public async Task<CallbackResponse> ExecuteAsync(CallbackRequest request, CancellationToken token) {
             var allocations = _paymentStore.GetAllocationsByReference(request.Reference).ToList();
            
-            if (!allocations.Any()) return "<not-found/>";
+            if (!allocations.Any()) return new CallbackResponse();
             
             var req = new Request {
                 RequestType = (int) RequestType.Callback,
@@ -35,14 +35,14 @@ namespace PaymentEngine.UseCases.Payments.Callback {
             var response = await _engine.ProcessAsync(req, token);
             var xml = response.FirstOrDefault();
 
-            if (string.IsNullOrWhiteSpace(xml)) return "<not-found/>";
+            if (string.IsNullOrWhiteSpace(xml)) return new CallbackResponse();
 
             var resp = DeSerialize<TerminalResponse>(xml);
 
             if (resp.IsSuccessfull && resp.Code == "00") 
                 allocations.ForEach(a => a.AllocationStatusId = 6);
             
-            return Serialize(resp);
+            return new CallbackResponse{ TerminalResponse = resp};
         }
     }
 }
