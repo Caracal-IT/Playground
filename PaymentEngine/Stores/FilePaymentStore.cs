@@ -41,6 +41,11 @@ namespace PaymentEngine.Stores {
             allocationIds.Select(GetExportAllocation)
                          .Where(a => a.AccountId > 0);
 
+        public IEnumerable<Allocation> GetAllocationsByReference(string reference) =>
+            _store.Allocations
+                .AllocationList
+                .Where(a => !string.IsNullOrWhiteSpace(a.Terminal) && a.Reference.Equals(reference));
+
         public void SetAllocationStatus(long id, long statusId, string terminal = null, string reference = null) {
             var allocation = GetAllocation(id);
             allocation.AllocationStatusId = statusId;

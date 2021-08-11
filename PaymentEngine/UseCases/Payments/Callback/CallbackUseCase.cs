@@ -22,33 +22,25 @@ namespace PaymentEngine.UseCases.Payments.Callback {
         }
         
         public async Task<string> ExecuteAsync(CallbackRequest request, CancellationToken token) {
-            var terminalName = _paymentStore.GetStore()
-                                            .Allocations
-                                            .AllocationList
-                                            .FirstOrDefault(a => a.Reference.Equals(request.Reference))
-                                            ?.Terminal;
-
-            if (terminalName == null) return "<XmlData/>";
+            var allocations = _paymentStore.GetAllocationsByReference(request.Reference).ToList();
+           
+            if (!allocations.Any()) return "<not-found/>";
             
             var req = new Request {
                 RequestType = (int) RequestType.Callback,
                 Data = $"<callback-request>{request.Data}</callback-request>", 
-                Terminals = new Dictionary<string, int>{ { terminalName, 2 } }
+                Terminals = new Dictionary<string, int>{ { allocations.First().Terminal, 2 } }
             };
 
             var response = await _engine.ProcessAsync(req, token);
             var xml = response.FirstOrDefault();
 
-            if (string.IsNullOrWhiteSpace(xml)) return string.Empty;
+            if (string.IsNullOrWhiteSpace(xml)) return "<not-found/>";
 
             var resp = DeSerialize<TerminalResponse>(xml);
 
-            if (resp.IsSuccessfull && resp.Code == "00") {
-                _paymentStore.GetStore().Allocations.AllocationList
-                             .Where(a => a.Reference.Equals(request.Reference))
-                             .ToList()
-                             .ForEach(a => a.AllocationStatusId = 6);
-            }
+            if (resp.IsSuccessfull && resp.Code == "00") 
+                allocations.ForEach(a => a.AllocationStatusId = 6);
             
             return Serialize(resp);
         }
