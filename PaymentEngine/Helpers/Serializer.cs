@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Text;
 using System.Xml;
@@ -12,7 +13,13 @@ namespace PaymentEngine.Helpers {
             return xml.ToString();
         }
         
-        public static T DeSerialize<T>(string xml) where T : class, new() => 
-            new XmlSerializer(typeof(T)).Deserialize(new StringReader(xml)) as T ?? new T();
+        public static T DeSerialize<T>(string xml) where T : class, new() {
+            try {
+                return new XmlSerializer(typeof(T)).Deserialize(new StringReader(xml)) as T ?? new T();
+            }
+            catch (Exception ex) {
+                throw;
+            }
+        }
     }
 }

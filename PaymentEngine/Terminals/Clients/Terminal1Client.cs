@@ -5,7 +5,7 @@ using static Router.Helpers.Serializer;
 
 namespace PaymentEngine.Terminals.Clients {
     public class Terminal1Client: Client {
-        public Task<string> SendAsync(string message, int requestType) {
+        public async Task<string> SendAsync(string message, int requestType, string name = "") {
             switch (requestType) {
                 case (int) RequestType.Process: {
                     var request = DeSerialize<Terminal1Request>(message);
@@ -16,17 +16,17 @@ namespace PaymentEngine.Terminals.Clients {
                         Amount = request.Amount
                     };
 
-                    return Task.FromResult(Serialize(response));
+                    return await Task.FromResult(Serialize(response));
                 }
                 case (int) RequestType.Callback:
-                    return Task.FromResult($"<callback-response>{message}</callback-response>");
+                    return await Task.FromResult($"<callback-response>{message}</callback-response>");
                 default:
-                    return Task.FromResult("<XmlData/>");
+                    return await Task.FromResult("<XmlData/>");
             }
         }
     }
     
-    [XmlRoot("callback-request")]
+    [XmlRoot("request")]
     public class Callback {
         [XmlAttribute("reference")]
         public string Reference { get; set; }

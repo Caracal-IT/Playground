@@ -2,14 +2,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using PaymentEngine.Model;
 using PaymentEngine.Stores;
 using PaymentEngine.UseCases.Payments.Callback;
-using PaymentEngine.UseCases.Payments.ExportData;
 using PaymentEngine.UseCases.Payments.Process;
 
 namespace PaymentEngine.Controllers {
@@ -46,25 +48,25 @@ namespace PaymentEngine.Controllers {
             using var reader = new StreamReader(Request.Body, Encoding.UTF8);
             var body = await reader.ReadToEndAsync();
             var request = new CallbackRequest {
-                Data = body,
+                Data = body.Trim().ReplaceLineEndings(string.Empty),
                 Reference = reference
             };
             
             return await useCase.ExecuteAsync(request, token);
         }
         
-        [HttpPost("process/callback")]
-        public async Task<Callback> ProcessCallback(CancellationToken token) {
-            using var reader = new StreamReader(Request.Body, Encoding.UTF8);
-            var textFromBody = await reader.ReadToEndAsync();
-
-            return new Callback { Reference = "123456"};
+        [HttpPost("process/callback/{reference}")]
+        public async Task<CallbackResponse> ProcessCallback([FromServices] CallbackUseCase useCase, [FromRoute] string reference, [FromBody] JsonElement payload, CancellationToken token) {
+            var xml = JsonConvert.DeserializeXNode(payload.GetRawText(), "root")
+                                 .ToString(SaveOptions.DisableFormatting);
+            
+            var request = new CallbackRequest {
+                Data = xml.Substring(6, xml.Length - 13),
+                Reference = reference
+            };
+            
+            return await useCase.ExecuteAsync(request, token);
         }
-        
-        [HttpPost("export-data")]
-        public async Task<ExportDataResponse> ExportDataAsync([FromServices] ExportDataUseCase useCase, ExportDataRequest request, CancellationToken token) => 
-            await useCase.ExecuteAsync(request, token);
-        
     }
 
     [XmlRoot("callback")]

@@ -2,12 +2,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.OpenApi.Extensions;
 using PaymentEngine.Model;
 using PaymentEngine.Stores;
 using PaymentEngine.Helpers;
 using PaymentEngine.Terminals.Clients;
 using Router;
+
 using static PaymentEngine.Helpers.Hashing;
 using static PaymentEngine.Helpers.Serializer;
 
@@ -32,16 +32,17 @@ namespace PaymentEngine.UseCases.Payments.Process {
             return new ProcessResponse(items.SelectMany(i => i.Response));
 
             async Task Export(ExportData data) {
-                var req = new Request {
+                var req2 = new Request<ExportData> {
+                    Name = "process",
                     RequestType = (int) RequestType.Process,
-                    Data = Serialize(data), 
+                    Payload = data,
                     Terminals = _paymentStore.GetActiveAccountTypeTerminals(data.AccountTypeId)
                                              .ToDictionary(i => i.Name, i => i.RetryCount)
                 };
-                
-                var response = await _engine.ProcessAsync(req, cancellationToken);
-                var result = response.Select(DeSerialize<ExportResponse>);
-                data.Response.AddRange(result);
+
+               var response =  await _engine.ProcessAsync(req2, cancellationToken);
+               var result = response.Select(DeSerialize<ExportResponse>);
+               data.Response.AddRange(result);
             }
             
             void UpdateStatuses() {

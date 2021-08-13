@@ -1,9 +1,19 @@
 using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace Router {
-    public class Request {
+    [XmlRoot("request")]
+    public class Request<T> where T : class {
+        [XmlAttribute("name")]
+        public string Name { get; set; }
+
+        [XmlElement("payload")]
+        public T Payload { get; set; }
+        
+        [XmlIgnore]
         public int RequestType { get; set; } 
-        public string Data { get; set; } = string.Empty;
+        
+        [XmlIgnore]
         public Dictionary<string, int> Terminals { get; set; } = new Dictionary<string, int>();
     }
 }

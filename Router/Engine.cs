@@ -1,9 +1,14 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Linq;
+using System.Xml.XPath;
 using Router.Clients;
 using XsltTransform;
+
+using static Router.Helpers.Serializer;
 
 namespace Router {
     public class Engine: RouterEngine {
@@ -17,23 +22,29 @@ namespace Router {
             _extensions = extensions.GetExtensions();
         }
 
-        public async Task<List<string>> ExportDataAsync(Request request, List<string> preferredTerminals, CancellationToken token) {
+        public async Task<List<string>> ProcessAsync<T>(Request<T> request, CancellationToken token) where T : class {
             var terminals = await Task.WhenAll(request.Terminals.Select(i => GetTerminal(i, token)));
-            var terminal = terminals.FirstOrDefault(t => preferredTerminals.Contains(t.Name)) ?? terminals.FirstOrDefault();
-
-            return terminal == null 
-                ? new List<string>() 
-                : new List<string> { Transformer.Transform(request.Data, terminal.Xslt!, _extensions) };
-        }
-        
-        public async Task<List<string>> ProcessAsync(Request request, CancellationToken token) {
-            var terminals = await Task.WhenAll(request.Terminals.Select(i => GetTerminal(i, token)));
+            var requestXml = SerializeRequest();
+            
             var response = new List<string>();
-
+            
             foreach (var t in terminals)
                 if (await TryProcessAsync(t)) break;
             
             return response;
+
+            string SerializeRequest() {
+                var reqStr = Serialize(request);
+                var reqXml = XDocument.Parse(reqStr);
+
+                if (!request.Payload.ToString()!.StartsWith("<")) return reqXml.ToString();
+                
+                var n = reqXml.XPathSelectElement("request/payload");
+                n!.RemoveAll();
+                n!.Add(XDocument.Parse(request.Payload.ToString()!).Root!);
+
+                return reqXml.ToString();
+            }
 
             async Task<bool> TryProcessAsync(Terminal terminal) {
                 for (var i = 0; i < terminal.RetryCount; i++) {
@@ -47,10 +58,15 @@ namespace Router {
             }
             
             async Task<bool> ProcessRequestAsync(Terminal terminal) {
-                var message = Transformer.Transform(request.Data, terminal.Xslt!, _extensions);
+                var message = Transformer.Transform(requestXml, terminal.Xslt!, _extensions);
                 var client = _factory.Create(terminal.Name);
                 var resp = await client.SendAsync(message, request.RequestType);
-                response.Add(Transformer.Transform(resp, terminal.Xslt!, _extensions));
+                
+                var xDocument = XDocument.Parse(resp);
+                var xml = XDocument.Parse($"<request name='{request.Name}' />");
+                xml.Root!.Add(xDocument.Root);
+                
+                response.Add(Transformer.Transform(xml.ToString(), terminal.Xslt!, _extensions));
 
                 return true;
             }

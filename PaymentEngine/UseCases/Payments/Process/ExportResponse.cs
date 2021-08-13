@@ -1,7 +1,7 @@
 using System.Xml.Serialization;
 
 namespace PaymentEngine.UseCases.Payments.Process {
-    [XmlRoot("export-response")]
+    [XmlRoot("response")]
     public class ExportResponse {
         [XmlElement("reference")]
         public string Reference { get; set; }
