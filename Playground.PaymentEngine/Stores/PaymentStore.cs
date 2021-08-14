@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using System.IO;
-using System.Xml.Serialization;
 using Playground.PaymentEngine.Model;
 
 namespace Playground.PaymentEngine.Stores {
