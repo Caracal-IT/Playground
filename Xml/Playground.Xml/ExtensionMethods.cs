@@ -9,5 +9,8 @@ namespace Playground.Xml {
 
         public static XElement ToXml(this string xml) => 
             (string.IsNullOrWhiteSpace(xml) ? null : XDocument.Parse(xml).Root) ?? new XElement("xml");
+
+        public static XElement ToXml(this string json, string root) => 
+            DeserializeXNode(json, root).ToString(SaveOptions.DisableFormatting).ToXml();
     }
 }

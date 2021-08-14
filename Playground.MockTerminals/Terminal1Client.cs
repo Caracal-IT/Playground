@@ -1,16 +1,36 @@
 using System;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Playground.Router;
 using Playground.Router.Clients;
-
+using Playground.Xml;
 using static Playground.Xml.Serialization.Serializer;
 
 namespace Playground.MockTerminals {
+    public class RBProcessRequest {
+        public string Reference { get; set; }
+    }
+
+    public class RBProcessResponse {
+        public string Reference { get; set; }
+        public string Code { get; set; }
+    }
+    
     public class Terminal1Client: Client {
+        private static HttpClient _httpClient = new HttpClient();
+        
         public async Task<string> SendAsync(Configuration configuration, string message, Terminal terminal) {
             var requestType = configuration.Settings.FirstOrDefault(s => s.Name == "req-type")?.Value??string.Empty;
+
+            /*
+            var req = new RBProcessRequest { Reference = "Kate 1" };
+            var resp = await _httpClient.PostAsJsonAsync("https://localhost:5001/Rebilly/Process", req);
+            var resp2 = await resp.Content.ReadAsStringAsync();
+            var resp4 = resp2.ToXml("response");
+            */
             
             switch (requestType) {
                 case "process": {

@@ -56,7 +56,9 @@ namespace Playground.PaymentEngine.Controllers {
         
         [HttpPost("process/json/{method}/{reference}")]
         public async Task<object> ProcessCallback([FromServices] CallbackUseCase useCase, [FromRoute] string method, [FromRoute] string reference, [FromBody] JsonElement payload, CancellationToken token) {
-            var xml = DeserializeXNode(payload.GetRawText(), "root").ToString(SaveOptions.DisableFormatting);
+            var xml = payload.GetRawText()
+                             .ToXml("root")
+                             .ToString(SaveOptions.DisableFormatting);
             
             var request = new CallbackRequest {
                 Action = method.ToLower(),
