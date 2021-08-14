@@ -6,7 +6,7 @@
             <config>
                 <xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
                 <settings>
-                    <setting name="url" value="https://apple.com"/>
+                    <setting name="url" value="https://localhost:5001/Rebilly/Process"/>
                     <setting name="req-type" value="process"/>
                 </settings>
             </config>
@@ -36,7 +36,7 @@
             <response>
                 <response>
                     <terminal>Terminal1</terminal>
-                    <name><xsl:value-of select="response/@name"/></name>
+                    <name><xsl:value-of select="response/name"/></name>
                     <reference><xsl:value-of select="response/trans-ref"/></reference>
                     <code><xsl:value-of select="response/code"/></code>
                     <message>From Terminal 1 Response ($ <xsl:value-of select="response/amount"/>)</message>

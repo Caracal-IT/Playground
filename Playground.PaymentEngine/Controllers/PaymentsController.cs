@@ -12,7 +12,6 @@ using Playground.PaymentEngine.Stores;
 using Playground.PaymentEngine.UseCases.Payments.Callback;
 using Playground.PaymentEngine.UseCases.Payments.Process;
 using Playground.Xml;
-using static Newtonsoft.Json.JsonConvert;
 
 namespace Playground.PaymentEngine.Controllers {
     [ApiController]

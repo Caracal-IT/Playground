@@ -7,18 +7,11 @@ namespace Playground.PaymentEngine.Processors.Rebilly {
         [HttpPost("Process")]
         public RBProcessResponse Process([FromBody] RBProcessRequest request) {
             return new RBProcessResponse {
+                Name = nameof(RebillyController),
                 Reference = request.Reference,
-                Code = "00"
+                Code = request.Code,
+                Amount = request.Amount
             } ;
         }
-    }
-
-    public class RBProcessRequest {
-        public string Reference { get; set; }
-    }
-
-    public class RBProcessResponse {
-        public string Reference { get; set; }
-        public string Code { get; set; }
     }
 }
