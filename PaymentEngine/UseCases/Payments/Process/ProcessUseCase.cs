@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using PaymentEngine.Model;
 using PaymentEngine.Stores;
 using PaymentEngine.Helpers;
-using PaymentEngine.Terminals.Clients;
 using Router;
 
 using static PaymentEngine.Helpers.Hashing;
@@ -33,8 +32,7 @@ namespace PaymentEngine.UseCases.Payments.Process {
 
             async Task Export(ExportData data) {
                 var req2 = new Request<ExportData> {
-                    Name = "process",
-                    RequestType = (int) RequestType.Process,
+                    Name = nameof(ProcessUseCase),
                     Payload = data,
                     Terminals = _paymentStore.GetActiveAccountTypeTerminals(data.AccountTypeId)
                                              .ToDictionary(i => i.Name, i => i.RetryCount)

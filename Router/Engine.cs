@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -59,9 +58,15 @@ namespace Router {
             
             async Task<bool> ProcessRequestAsync(Terminal terminal) {
                 var message = Transformer.Transform(requestXml, terminal.Xslt!, _extensions);
+                var configXml = Transformer.Transform($"<request name='{request.Name}'><config/></request>", terminal.Xslt!, _extensions);
+                var config = new Configuration();
+
+                if (!string.IsNullOrWhiteSpace(configXml)) 
+                    config = DeSerialize<Configuration>(configXml)??new Configuration();
+
                 var client = _factory.Create(terminal.Name);
-                var resp = await client.SendAsync(message, request.RequestType);
-                
+                var resp = await client.SendAsync(config, message, terminal, request.Name);
+
                 var xDocument = XDocument.Parse(resp);
                 var xml = XDocument.Parse($"<request name='{request.Name}' />");
                 xml.Root!.Add(xDocument.Root);

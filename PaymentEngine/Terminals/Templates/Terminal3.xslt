@@ -1,7 +1,7 @@
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-    <xsl:template match="request[@name='process']">
+    <xsl:template match="request[@name='ProcessUseCase']">
         <xsl:if test="payload">
             <request>
                 <trans-ref><xsl:value-of select="@reference"/></trans-ref>

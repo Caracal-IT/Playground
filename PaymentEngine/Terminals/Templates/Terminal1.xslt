@@ -1,7 +1,16 @@
 <xsl:stylesheet version="1.0"
                 xmlns:scripts="utility:terminal1/v1"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-    <xsl:template match="request[@name='process']">
+    <xsl:template match="request[@name='ProcessUseCase']">
+        <xsl:if test="config">
+            <config>
+                <xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
+                <settings>
+                    <setting name="url" value="https://apple.com"/>
+                </settings>
+            </config>
+        </xsl:if>
+        
         <xsl:if test="payload">            
             <request>               
                 <trans-ref><xsl:value-of select="payload/@reference"/></trans-ref>
@@ -28,7 +37,7 @@
         </xsl:if>
     </xsl:template>
 
-    <xsl:template match="request[@name='callback']">
+    <xsl:template match="request[@name='CallbackUseCase']">
         <xsl:if test="payload">
             <callback-request>
                 <xsl:attribute name="reference"><xsl:value-of select="payload/callback/ref"/></xsl:attribute>
@@ -37,10 +46,19 @@
         </xsl:if>
 
         <xsl:if test="callback-response">
-            <terminal-response success="true">
-                <xsl:attribute name="reference-number"><xsl:value-of select="callback-response/callback-request/@reference"/></xsl:attribute>
-                <xsl:attribute name="return-code"><xsl:value-of select="callback-response/callback-request/@code"/></xsl:attribute>
-            </terminal-response>
+            <response>
+                <terminal-response success="true">
+                    <xsl:attribute name="reference-number"><xsl:value-of select="callback-response/callback-request/@reference"/></xsl:attribute>
+                    <xsl:attribute name="return-code"><xsl:value-of select="callback-response/callback-request/@code"/></xsl:attribute>
+                </terminal-response>
+                <response>
+                    <xsl:attribute name="reference"><xsl:value-of select="callback-response/callback-request/@reference"/></xsl:attribute>
+                    <xsl:attribute name="code"><xsl:value-of select="callback-response/callback-request/@code"/></xsl:attribute>
+                    <user>
+                        <name>Kate G</name>
+                    </user>
+                </response>
+            </response>
         </xsl:if>
     </xsl:template>
 </xsl:stylesheet>

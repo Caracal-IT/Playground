@@ -9,10 +9,12 @@ using System.Xml.Linq;
 using System.Xml.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using PaymentEngine.Model;
 using PaymentEngine.Stores;
 using PaymentEngine.UseCases.Payments.Callback;
 using PaymentEngine.UseCases.Payments.Process;
+using JsonSerializer = Newtonsoft.Json.JsonSerializer;
 
 namespace PaymentEngine.Controllers {
     [ApiController]
@@ -44,7 +46,7 @@ namespace PaymentEngine.Controllers {
 
         [HttpPost("process/xml/callback/{reference}")]
         [Produces("application/xml")]
-        public async Task<CallbackResponse> ProcessXmlCallback([FromServices] CallbackUseCase useCase, [FromRoute] string reference, CancellationToken token) {
+        public async Task<object> ProcessXmlCallback([FromServices] CallbackUseCase useCase, [FromRoute] string reference, CancellationToken token) {
             using var reader = new StreamReader(Request.Body, Encoding.UTF8);
             var body = await reader.ReadToEndAsync();
             var request = new CallbackRequest {
@@ -52,11 +54,16 @@ namespace PaymentEngine.Controllers {
                 Reference = reference
             };
             
-            return await useCase.ExecuteAsync(request, token);
+            var resp = await useCase.ExecuteAsync(request, token);
+            if (string.IsNullOrWhiteSpace(resp.Response)) return null;
+
+            var resp2 = JsonConvert.SerializeXNode(XDocument.Parse(resp.Response)).Replace("@", "");
+            var resp3 = XDocument.Parse(resp.Response).Root;
+            return resp3;
         }
         
         [HttpPost("process/callback/{reference}")]
-        public async Task<CallbackResponse> ProcessCallback([FromServices] CallbackUseCase useCase, [FromRoute] string reference, [FromBody] JsonElement payload, CancellationToken token) {
+        public async Task<object> ProcessCallback([FromServices] CallbackUseCase useCase, [FromRoute] string reference, [FromBody] JsonElement payload, CancellationToken token) {
             var xml = JsonConvert.DeserializeXNode(payload.GetRawText(), "root")
                                  .ToString(SaveOptions.DisableFormatting);
             
@@ -64,8 +71,13 @@ namespace PaymentEngine.Controllers {
                 Data = xml.Substring(6, xml.Length - 13),
                 Reference = reference
             };
+
+            var resp = await useCase.ExecuteAsync(request, token);
+            if (string.IsNullOrWhiteSpace(resp.Response)) return null;
             
-            return await useCase.ExecuteAsync(request, token);
+            var resp2 = JsonConvert.SerializeXNode(XDocument.Parse(resp.Response)).Replace("@", "");
+            var resp3 = System.Text.Json.JsonSerializer.Deserialize<object>(resp2);
+            return resp3;
         }
     }
 

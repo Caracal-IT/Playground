@@ -1,11 +1,12 @@
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using Router;
 using Router.Clients;
 using static Router.Helpers.Serializer;
 
 namespace PaymentEngine.Terminals.Clients {
     public class Terminal2Client: Client {
-        public async Task<string> SendAsync(string message, int requestType, string name = "") {
+        public async Task<string> SendAsync(Configuration configuration, string message, Terminal terminal, string requestName) {
             await Task.Delay(0);
             
             var request = DeSerialize<Terminal2Request>(message);

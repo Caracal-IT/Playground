@@ -1,13 +1,9 @@
 using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Dynamic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml;
 using System.Xml.Linq;
 using PaymentEngine.Stores;
-using PaymentEngine.Terminals.Clients;
 using Router;
 
 using static PaymentEngine.Helpers.Serializer;
@@ -24,40 +20,6 @@ namespace PaymentEngine.UseCases.Payments.Callback {
             _terminalStore = terminalStore;
         }
         
-        
-         public static dynamic Convert(XElement parent)
-        {
-            dynamic output = new ExpandoObject();
-
-            output.Name = parent.Name.LocalName;
-            output.Value = parent.Value;
-
-            output.HasAttributes = parent.HasAttributes;
-            if (parent.HasAttributes)
-            {
-                output.Attributes = new List<KeyValuePair<string, string>>();
-                foreach (XAttribute attr in parent.Attributes())
-                {
-                    KeyValuePair<string, string> temp = new KeyValuePair<string, string>(attr.Name.LocalName, attr.Value);
-                    output.Attributes.Add(temp);
-                }
-            }
-
-            output.HasElements = parent.HasElements;
-            if (parent.HasElements)
-            {
-                output.Elements = new List<ExpandoObject>();
-                foreach (XElement element in parent.Elements())
-                {
-                    dynamic temp = Convert(element);
-                    output.Elements.Add(temp);
-                }
-            }
-
-            return output;
-        } 
-         
-        
         public async Task<CallbackResponse> ExecuteAsync(CallbackRequest request, CancellationToken token) {
             var allocations = _paymentStore.GetAllocationsByReference(request.Reference).ToList();
            
@@ -65,8 +27,7 @@ namespace PaymentEngine.UseCases.Payments.Callback {
             
            
             var req2 = new Request<string> {
-                Name = "callback",
-                RequestType = (int) RequestType.Callback,
+                Name = nameof(CallbackUseCase),
                 Payload = request.Data,
                 Terminals = new Dictionary<string, int>{ { allocations.First().Terminal, 2 } }
             };
@@ -77,12 +38,14 @@ namespace PaymentEngine.UseCases.Payments.Callback {
 
             if (string.IsNullOrWhiteSpace(xml)) return new CallbackResponse();
 
-            var resp = DeSerialize<TerminalResponse>(xml);
+            var xDoc = XDocument.Parse(xml);
+            
+            var resp = DeSerialize<TerminalResponse>(xDoc.Root!.FirstNode!.ToString());
 
             if (resp.IsSuccessfull && resp.Code == "00") 
                 allocations.ForEach(a => a.AllocationStatusId = 6);
             
-            return new CallbackResponse{ TerminalResponse = resp};
+            return new CallbackResponse{ TerminalResponse = resp, Response = xDoc.Root!.LastNode!.ToString() };
         }
     }
 }
