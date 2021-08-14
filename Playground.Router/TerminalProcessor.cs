@@ -17,14 +17,15 @@ namespace Playground.Router {
         private readonly CancellationToken _cancellationToken;
 
         private readonly List<string> _response = new();
-        public string RequestXml;
+        public string RequestXml = string.Empty;
 
         private TerminalProcessor(
             Request<T> request,
             TerminalStore store,
             TerminalExtensions extensions,
             ClientFactory factory,
-            CancellationToken cancellationToken) {
+            CancellationToken cancellationToken) 
+        {
             _store = store;
             Factory = factory;
             Extensions = extensions.GetExtensions();
@@ -88,7 +89,7 @@ namespace Playground.Router {
                 
                 return true;
             }
-            catch (Exception ex) {
+            catch {
                 return false;
             }
         }
