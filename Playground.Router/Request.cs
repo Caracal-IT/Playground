@@ -14,6 +14,6 @@ namespace Playground.Router {
         public int RequestType { get; set; } 
         
         [XmlIgnore]
-        public Dictionary<string, int> Terminals { get; set; } = new Dictionary<string, int>();
+        public IEnumerable<string> Terminals { get; set; } = new List<string>();
     }
 }

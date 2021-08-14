@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml;
@@ -10,6 +11,10 @@ namespace Playground.XsltTransform.Extensions {
             transform.Load(xslt.Reader());
             return transform;
         }
+        
+        public static string Transform(this string xml, string xslt, IDictionary<string, object>? extensions = null) => 
+            Transformer.Transform(xml, xslt, extensions);
+        
         public static XmlTextReader Reader(this string text) =>
             new XmlTextReader(new StringReader(text));
 

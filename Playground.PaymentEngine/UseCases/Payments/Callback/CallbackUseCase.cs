@@ -24,15 +24,13 @@ namespace Playground.PaymentEngine.UseCases.Payments.Callback {
             var allocations = _paymentStore.GetAllocationsByReference(request.Reference).ToList();
            
             if (!allocations.Any()) return new CallbackResponse();
-            
-           
+
             var req2 = new Request<string> {
                 Name = request.Action,
                 Payload = request.Data,
-                Terminals = new Dictionary<string, int>{ { allocations.First().Terminal, 2 } }
+                Terminals = new []{ allocations.First().Terminal }
             };
-
-           
+            
             var response =  await _engine.ProcessAsync(req2, token);
             var xml = response.FirstOrDefault();
 

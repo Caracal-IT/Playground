@@ -7,7 +7,7 @@ namespace Playground.Xml {
         public static object? ToJson(this string xml) => 
             string.IsNullOrWhiteSpace(xml) ? null : Deserialize<object>(SerializeXNode(XDocument.Parse(xml)).Replace("@", ""));
 
-        public static XElement? ToXml(this string xml) => 
-            string.IsNullOrWhiteSpace(xml) ? null : XDocument.Parse(xml).Root;
+        public static XElement ToXml(this string xml) => 
+            (string.IsNullOrWhiteSpace(xml) ? null : XDocument.Parse(xml).Root) ?? new XElement("xml");
     }
 }

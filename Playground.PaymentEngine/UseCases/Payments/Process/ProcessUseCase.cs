@@ -34,8 +34,7 @@ namespace Playground.PaymentEngine.UseCases.Payments.Process {
                 var req2 = new Request<ExportData> {
                     Name = nameof(ProcessUseCase),
                     Payload = data,
-                    Terminals = _paymentStore.GetActiveAccountTypeTerminals(data.AccountTypeId)
-                                             .ToDictionary(i => i.Name, i => i.RetryCount)
+                    Terminals = _paymentStore.GetActiveAccountTypeTerminals(data.AccountTypeId).Select(i => i.Name)
                 };
 
                var response =  await _engine.ProcessAsync(req2, cancellationToken);
