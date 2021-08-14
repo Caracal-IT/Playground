@@ -46,7 +46,8 @@ namespace Playground.PaymentEngine.Stores {
 
             return new Terminal {
                 Name = name,
-                Xslt = await path.ReadFromFileAsync(cancellationToken)
+                Xslt = await path.ReadFromFileAsync(cancellationToken),
+                RetryCount = 0
             };
         }
     }
