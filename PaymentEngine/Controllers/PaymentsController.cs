@@ -44,12 +44,13 @@ namespace PaymentEngine.Controllers {
         public async Task<ProcessResponse> ProcessAsync([FromServices] ProcessUseCase useCase, ProcessRequest request, CancellationToken token) => 
             await useCase.ExecuteAsync(request, token);
 
-        [HttpPost("process/xml/callback/{reference}")]
+        [HttpPost("process/xml/{method}/{reference}")]
         [Produces("application/xml")]
-        public async Task<object> ProcessXmlCallback([FromServices] CallbackUseCase useCase, [FromRoute] string reference, CancellationToken token) {
+        public async Task<object> ProcessXmlCallback([FromServices] CallbackUseCase useCase, [FromRoute] string method, [FromRoute] string reference, CancellationToken token) {
             using var reader = new StreamReader(Request.Body, Encoding.UTF8);
             var body = await reader.ReadToEndAsync();
             var request = new CallbackRequest {
+                Action = method.ToLower(),
                 Data = body.Trim().ReplaceLineEndings(string.Empty),
                 Reference = reference
             };
@@ -62,12 +63,13 @@ namespace PaymentEngine.Controllers {
             return resp3;
         }
         
-        [HttpPost("process/callback/{reference}")]
-        public async Task<object> ProcessCallback([FromServices] CallbackUseCase useCase, [FromRoute] string reference, [FromBody] JsonElement payload, CancellationToken token) {
+        [HttpPost("process/json/{method}/{reference}")]
+        public async Task<object> ProcessCallback([FromServices] CallbackUseCase useCase, [FromRoute] string method, [FromRoute] string reference, [FromBody] JsonElement payload, CancellationToken token) {
             var xml = JsonConvert.DeserializeXNode(payload.GetRawText(), "root")
                                  .ToString(SaveOptions.DisableFormatting);
             
             var request = new CallbackRequest {
+                Action = method.ToLower(),
                 Data = xml.Substring(6, xml.Length - 13),
                 Reference = reference
             };
@@ -79,13 +81,5 @@ namespace PaymentEngine.Controllers {
             var resp3 = System.Text.Json.JsonSerializer.Deserialize<object>(resp2);
             return resp3;
         }
-    }
-
-    [XmlRoot("callback")]
-    public class Callback {
-        [XmlElement("ref")]
-        public string Reference { get; set; }
-        [XmlElement("status")]
-        public string Status { get; set; }
     }
 }

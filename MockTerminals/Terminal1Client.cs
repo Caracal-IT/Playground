@@ -1,22 +1,23 @@
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
-using PaymentEngine.UseCases.Payments.Callback;
-using PaymentEngine.UseCases.Payments.Process;
 using Router;
 using Router.Clients;
 using static Router.Helpers.Serializer;
 
-namespace PaymentEngine.Terminals.Clients {
+namespace MockTerminals {
     public class Terminal1Client: Client {
-        public async Task<string> SendAsync(Configuration configuration, string message, Terminal terminal, string requestName) {
-            switch (requestName) {
-                case nameof(ProcessUseCase): {
+        public async Task<string> SendAsync(Configuration configuration, string message, Terminal terminal) {
+            var requestType = configuration.Settings.FirstOrDefault(s => s.Name == "req-type")?.Value??string.Empty;
+            
+            switch (requestType) {
+                case "process": {
                     var request = DeSerialize<Terminal1Request>(message);
+                    var usr = terminal.Settings.FirstOrDefault(s => s.Name == "auth-user")?.Value ?? "";
 
                     var response = new Terminal1Response {
-                        Name = $"Terminal 1 - {request!.CardHolder}, Hash - {request!.Hash}",
+                        Name = $"User : {usr} Terminal 1 - {request!.CardHolder}, Hash - {request!.Hash}",
                         TransactionRef = request!.TransactionRef,
                         Amount = request.Amount,
                         Code = request.Code
@@ -27,7 +28,7 @@ namespace PaymentEngine.Terminals.Clients {
 
                     return await Task.FromResult(Serialize(response));
                 }
-                case nameof(CallbackUseCase):
+                case "callback":
                     return await Task.FromResult($"<callback-response>{message}</callback-response>");
                 default:
                     return await Task.FromResult("<XmlData/>");

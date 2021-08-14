@@ -1,6 +1,6 @@
 using Router.Clients;
 
-namespace PaymentEngine.Terminals.Clients {
+namespace MockTerminals {
     public class MockClientFactory: ClientFactory {
         public Client Create(string name) => name switch {
             "Terminal1" => new Terminal1Client(),

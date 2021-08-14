@@ -11,10 +11,10 @@ using static PaymentEngine.Helpers.Serializer;
 namespace PaymentEngine.UseCases.Payments.Callback {
     public class CallbackUseCase {
         private readonly PaymentStore _paymentStore;
-        private readonly RouterEngine _engine;
+        private readonly Engine _engine;
         private readonly TerminalStore _terminalStore;
         
-        public CallbackUseCase(PaymentStore paymentStore, RouterEngine engine, TerminalStore terminalStore) {
+        public CallbackUseCase(PaymentStore paymentStore, Engine engine, TerminalStore terminalStore) {
             _paymentStore = paymentStore;
             _engine = engine;
             _terminalStore = terminalStore;
@@ -27,7 +27,7 @@ namespace PaymentEngine.UseCases.Payments.Callback {
             
            
             var req2 = new Request<string> {
-                Name = nameof(CallbackUseCase),
+                Name = request.Action,
                 Payload = request.Data,
                 Terminals = new Dictionary<string, int>{ { allocations.First().Terminal, 2 } }
             };

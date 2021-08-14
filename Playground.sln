@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentEngine", "PaymentEng
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Router", "Router\Router.csproj", "{7C2C538D-E8EE-432F-8499-9CFEA1DA9846}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MockTerminals", "MockTerminals\MockTerminals.csproj", "{09ACC591-7EB4-4548-9B5A-C6BDAAFE5413}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,5 +41,9 @@ Global
 		{7C2C538D-E8EE-432F-8499-9CFEA1DA9846}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C2C538D-E8EE-432F-8499-9CFEA1DA9846}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C2C538D-E8EE-432F-8499-9CFEA1DA9846}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09ACC591-7EB4-4548-9B5A-C6BDAAFE5413}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09ACC591-7EB4-4548-9B5A-C6BDAAFE5413}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09ACC591-7EB4-4548-9B5A-C6BDAAFE5413}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09ACC591-7EB4-4548-9B5A-C6BDAAFE5413}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

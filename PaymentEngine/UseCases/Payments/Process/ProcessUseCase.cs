@@ -13,9 +13,9 @@ using static PaymentEngine.Helpers.Serializer;
 namespace PaymentEngine.UseCases.Payments.Process {
     public class ProcessUseCase {
         private readonly PaymentStore _paymentStore;
-        private readonly RouterEngine _engine;
+        private readonly Engine _engine;
         
-        public ProcessUseCase(PaymentStore paymentStore, RouterEngine engine) {
+        public ProcessUseCase(PaymentStore paymentStore, Engine engine) {
             _paymentStore = paymentStore;
             _engine = engine;
         }

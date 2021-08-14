@@ -10,7 +10,7 @@ using PaymentEngine.UseCases.Payments.Callback;
 using PaymentEngine.UseCases.Payments.Process;
 using Router;
 using Router.Clients;
-using MockClientFactory = PaymentEngine.Terminals.Clients.MockClientFactory;
+using MockClientFactory = MockTerminals.MockClientFactory;
 
 namespace PaymentEngine {
     public class Startup {
@@ -24,7 +24,7 @@ namespace PaymentEngine {
             services.AddSingleton<TerminalExtensions, CustomTerminalExtensions>();
             services.AddSingleton<TerminalStore, FileTerminalStore>();
             services.AddSingleton<PaymentStore, FilePaymentStore>();
-            services.AddSingleton<RouterEngine, Engine>();
+            services.AddSingleton<Engine, RouterEngine>();
             services.AddSingleton<ClientFactory, MockClientFactory>();
             
             services.AddSingleton<ProcessUseCase>();

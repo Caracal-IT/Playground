@@ -10,6 +10,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\MockTerminals\MockTerminals.csproj" />
       <ProjectReference Include="..\Router\Router.csproj" />
       <ProjectReference Include="..\Xml\XSLT\XsltTransform\XsltTransform.csproj" />
     </ItemGroup>
@@ -31,6 +32,10 @@
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
       <None Remove="Resources\Templates\Terminals\Terminal1.xslt" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Terminals\Clients" />
     </ItemGroup>
 
 </Project>

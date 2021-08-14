@@ -7,6 +7,7 @@
                 <xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
                 <settings>
                     <setting name="url" value="https://apple.com"/>
+                    <setting name="req-type" value="process"/>
                 </settings>
             </config>
         </xsl:if>
@@ -54,7 +55,17 @@
         </xsl:if>
     </xsl:template>
 
-    <xsl:template match="request[@name='CallbackUseCase']">
+    <xsl:template match="request[@name='callback']">
+        <xsl:if test="config">
+            <config>
+                <xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
+                <settings>
+                    <setting name="url" value="https://apple.com/callbach"/>
+                    <setting name="req-type" value="callback"/>
+                </settings>
+            </config>
+        </xsl:if>
+        
         <xsl:if test="payload">
             <callback-request>
                 <xsl:attribute name="reference"><xsl:value-of select="payload/callback/ref"/></xsl:attribute>

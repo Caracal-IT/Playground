@@ -4,15 +4,15 @@ using Router;
 using Router.Clients;
 using static Router.Helpers.Serializer;
 
-namespace PaymentEngine.Terminals.Clients {
+namespace MockTerminals {
     public class Terminal3Client: Client {
-        public async Task<string> SendAsync(Configuration configuration, string message, Terminal terminal, string requestName) {
+        public async Task<string> SendAsync(Configuration configuration, string message, Terminal terminal) {
             await Task.Delay(0);
             
             var request = DeSerialize<Terminal3Request>(message);
             
             var response = new Terminal3Response {
-                Name = requestName,
+                Name = "Terminal 3",
                 TransactionRef = request!.TransactionRef,
                 Amount = request!.Amount,
                 Code = request!.Code
