@@ -4,15 +4,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Xml", "Xml", "{C5A219C0-339
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "XSLT", "XSLT", "{D2F86735-50E9-4CF2-A40D-64E6F65F9708}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XsltTransform", "Xml\XSLT\XsltTransform\XsltTransform.csproj", "{42FFBAD9-CDA3-4F09-9B8D-C5770036E6E1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.XsltTransform", "Xml\XSLT\Playground.XsltTransform\Playground.XsltTransform.csproj", "{42FFBAD9-CDA3-4F09-9B8D-C5770036E6E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XsltTransformTests", "Xml\XSLT\XsltTransformTests\XsltTransformTests.csproj", "{AFA0B06F-97F4-4B84-BCFF-F1B411D8B94D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.XsltTransformTests", "Xml\XSLT\Playground.XsltTransformTests\Playground.XsltTransformTests.csproj", "{AFA0B06F-97F4-4B84-BCFF-F1B411D8B94D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentEngine", "PaymentEngine\PaymentEngine.csproj", "{3345CFCB-61A3-4735-AEE5-9EAFA29FA0F7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.PaymentEngine", "Playground.PaymentEngine\Playground.PaymentEngine.csproj", "{3345CFCB-61A3-4735-AEE5-9EAFA29FA0F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Router", "Router\Router.csproj", "{7C2C538D-E8EE-432F-8499-9CFEA1DA9846}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.Router", "Playground.Router\Playground.Router.csproj", "{7C2C538D-E8EE-432F-8499-9CFEA1DA9846}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MockTerminals", "MockTerminals\MockTerminals.csproj", "{09ACC591-7EB4-4548-9B5A-C6BDAAFE5413}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.MockTerminals", "Playground.MockTerminals\Playground.MockTerminals.csproj", "{09ACC591-7EB4-4548-9B5A-C6BDAAFE5413}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.Xml", "Xml\Playground.Xml\Playground.Xml.csproj", "{33F8E524-F211-48D2-9CF2-C1B63DE756B8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +25,7 @@ Global
 		{D2F86735-50E9-4CF2-A40D-64E6F65F9708} = {C5A219C0-339F-43E8-881A-296B419882C3}
 		{42FFBAD9-CDA3-4F09-9B8D-C5770036E6E1} = {D2F86735-50E9-4CF2-A40D-64E6F65F9708}
 		{AFA0B06F-97F4-4B84-BCFF-F1B411D8B94D} = {D2F86735-50E9-4CF2-A40D-64E6F65F9708}
+		{33F8E524-F211-48D2-9CF2-C1B63DE756B8} = {C5A219C0-339F-43E8-881A-296B419882C3}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{42FFBAD9-CDA3-4F09-9B8D-C5770036E6E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -45,5 +48,9 @@ Global
 		{09ACC591-7EB4-4548-9B5A-C6BDAAFE5413}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09ACC591-7EB4-4548-9B5A-C6BDAAFE5413}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09ACC591-7EB4-4548-9B5A-C6BDAAFE5413}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33F8E524-F211-48D2-9CF2-C1B63DE756B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33F8E524-F211-48D2-9CF2-C1B63DE756B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33F8E524-F211-48D2-9CF2-C1B63DE756B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33F8E524-F211-48D2-9CF2-C1B63DE756B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

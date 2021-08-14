@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Playground.MockTerminals\Playground.MockTerminals.csproj" />
+      <ProjectReference Include="..\Playground.Router\Playground.Router.csproj" />
+      <ProjectReference Include="..\Xml\Playground.Xml\Playground.Xml.csproj" />
+      <ProjectReference Include="..\Xml\XSLT\Playground.XsltTransform\Playground.XsltTransform.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="Terminals\Templates\Terminal1.xslt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Terminals\Templates\Terminal2.xslt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Terminals\Templates\Terminal3.xslt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Resources\Templates\Terminals\Terminal1\InBound.xslt" />
+      <None Remove="Resources\Templates\Terminals\Terminal1\OutBound.xslt" />
+      <None Remove="Resources\Data\store.xml" />
+      <Content Include="Resources\Data\store.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Resources\Templates\Terminals\Terminal1.xslt" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Terminals\Clients" />
+    </ItemGroup>
+
+</Project>
