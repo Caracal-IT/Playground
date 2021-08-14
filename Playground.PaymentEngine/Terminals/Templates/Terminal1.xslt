@@ -60,34 +60,34 @@
             <config>
                 <xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
                 <settings>
-                    <setting name="url" value="https://apple.com/callbach"/>
+                    <setting name="url" value="https://localhost:5001/Rebilly/Callback"/>
                     <setting name="req-type" value="callback"/>
                 </settings>
             </config>
         </xsl:if>
         
         <xsl:if test="payload">
-            <callback-request>
+            <request>
                 <xsl:attribute name="reference"><xsl:value-of select="payload/callback/ref"/></xsl:attribute>
                 <xsl:attribute name="code"><xsl:value-of select="payload/callback/status"/></xsl:attribute>
-            </callback-request>
+            </request>
         </xsl:if>
 
-        <xsl:if test="callback-response">
+        <xsl:if test="response">
             <response>
                 <response>
                     <terminal-response>
                         <xsl:attribute name="success">true</xsl:attribute>
-                        <xsl:attribute name="code"><xsl:value-of select="callback-response/callback-request/@code"/></xsl:attribute>
-                        <xsl:attribute name="reference"><xsl:value-of select="callback-response/callback-request/@reference"/></xsl:attribute>
+                        <xsl:attribute name="code"><xsl:value-of select="response/code"/></xsl:attribute>
+                        <xsl:attribute name="reference"><xsl:value-of select="response/reference"/></xsl:attribute>
                     </terminal-response>
-                    <return-response>
-                        <xsl:attribute name="reference"><xsl:value-of select="callback-response/callback-request/@reference"/></xsl:attribute>
-                        <xsl:attribute name="code"><xsl:value-of select="callback-response/callback-request/@code"/></xsl:attribute>
+                    <response>
+                        <xsl:attribute name="reference"><xsl:value-of select="response/reference"/></xsl:attribute>
+                        <xsl:attribute name="code"><xsl:value-of select="response/code"/></xsl:attribute>
                         <user>
                             <name>Kate G</name>
                         </user>
-                    </return-response>
+                    </response>
                 </response>
                 <terminal-response>
                     <xsl:attribute name="success">true</xsl:attribute>

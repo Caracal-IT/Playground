@@ -13,5 +13,14 @@ namespace Playground.PaymentEngine.Processors.Rebilly {
                 Amount = request.Amount
             } ;
         }
+        
+        [HttpPost("Callback")]
+        public RBCallbackResponse Callback([FromBody] RBCallbackRequest request) {
+            return new RBCallbackResponse {
+                Name = nameof(RebillyController),
+                Reference = request.Reference,
+                Code = request.Code
+            } ;
+        }
     }
 }
