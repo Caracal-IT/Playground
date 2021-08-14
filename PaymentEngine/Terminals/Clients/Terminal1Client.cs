@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
@@ -17,8 +18,12 @@ namespace PaymentEngine.Terminals.Clients {
                     var response = new Terminal1Response {
                         Name = $"Terminal 1 - {request!.CardHolder}, Hash - {request!.Hash}",
                         TransactionRef = request!.TransactionRef,
-                        Amount = request.Amount
+                        Amount = request.Amount,
+                        Code = request.Code
                     };
+
+                    if (request.Code == "10")
+                        throw new Exception("test");
 
                     return await Task.FromResult(Serialize(response));
                 }
@@ -51,6 +56,9 @@ namespace PaymentEngine.Terminals.Clients {
         
         [XmlElement("hash")]
         public string Hash { get; set; }
+        
+        [XmlElement("code")]
+        public string Code { get; set; }
     }
 
     [XmlRoot("response")]
@@ -62,5 +70,7 @@ namespace PaymentEngine.Terminals.Clients {
         
         [XmlElement("amount")]
         public decimal Amount { get; set; }
+        [XmlElement("code")]
+        public string Code { get; set; }
     }
 }

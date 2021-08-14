@@ -57,23 +57,36 @@ namespace Router {
             }
             
             async Task<bool> ProcessRequestAsync(Terminal terminal) {
-                var message = Transformer.Transform(requestXml, terminal.Xslt!, _extensions);
-                var configXml = Transformer.Transform($"<request name='{request.Name}'><config/></request>", terminal.Xslt!, _extensions);
-                var config = new Configuration();
+                try {
+                    var message = Transformer.Transform(requestXml, terminal.Xslt!, _extensions);
+                    var configXml = Transformer.Transform($"<request name='{request.Name}'><config/></request>", terminal.Xslt!, _extensions);
+                    var config = new Configuration();
 
-                if (!string.IsNullOrWhiteSpace(configXml)) 
-                    config = DeSerialize<Configuration>(configXml)??new Configuration();
+                    if (!string.IsNullOrWhiteSpace(configXml))
+                        config = DeSerialize<Configuration>(configXml) ?? new Configuration();
 
-                var client = _factory.Create(terminal.Name);
-                var resp = await client.SendAsync(config, message, terminal, request.Name);
+                    var client = _factory.Create(terminal.Name);
+                    var resp = await client.SendAsync(config, message, terminal, request.Name);
 
-                var xDocument = XDocument.Parse(resp);
-                var xml = XDocument.Parse($"<request name='{request.Name}' />");
-                xml.Root!.Add(xDocument.Root);
-                
-                response.Add(Transformer.Transform(xml.ToString(), terminal.Xslt!, _extensions));
+                    var xDocument = XDocument.Parse(resp);
+                    var xml = XDocument.Parse($"<request name='{request.Name}' />");
+                    xml.Root!.Add(xDocument.Root);
+                    xDocument =  XDocument.Parse(Transformer.Transform(xml.ToString(), terminal.Xslt!, _extensions));
 
-                return true;
+                    if (xDocument.Root!.Nodes().Count() > 1) {
+                        var results = DeSerialize<Response>(xDocument.Root!.LastNode!.ToString());
+                        
+                        if(!results!.Success)
+                            return results!.Success;
+                    }
+                    
+                    response.Add(xDocument.Root?.FirstNode?.ToString()??"");
+
+                    return true;
+                }
+                catch {
+                    return false;
+                }
             }
         }
 

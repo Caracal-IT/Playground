@@ -12,6 +12,7 @@ namespace PaymentEngine.Terminals.Clients {
             var request = DeSerialize<Terminal2Request>(message);
             
             var response = new Terminal2Response {
+                Name = requestName,
                 TransactionRef = request!.TransactionRef
             };
             

@@ -5,9 +5,9 @@ namespace PaymentEngine.UseCases.Payments.Callback {
     public class TerminalResponse {
         [XmlAttribute("success")]
         public bool IsSuccessfull { get; set; }
-        [XmlAttribute("reference-number")]
+        [XmlAttribute("reference")]
         public string Reference { get; set; }
-        [XmlAttribute("return-code")]
+        [XmlAttribute("code")]
         public string Code { get; set; }
     }
 }

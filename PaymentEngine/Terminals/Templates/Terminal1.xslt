@@ -22,17 +22,34 @@
                             <card-holder><xsl:value-of select="@value"/></card-holder>
                         </xsl:when>
                     </xsl:choose>
-                </xsl:for-each>                
+                </xsl:for-each>
+                <xsl:choose>
+                    <xsl:when test="payload/@amount = 10"><code>10</code></xsl:when>
+                    <xsl:when test="payload/@amount = 12"><code>05</code></xsl:when>
+                    <xsl:otherwise><code>00</code></xsl:otherwise>
+                </xsl:choose>
             </request>
         </xsl:if>
 
-        <xsl:if test="response">            
+        <xsl:if test="response">     
             <response>
-                <terminal>Terminal1</terminal>
-                <name><xsl:value-of select="response/@name"/></name>
-                <reference><xsl:value-of select="response/trans-ref"/></reference>
-                <code>00</code>
-                <message>From Terminal 1 Response ($ <xsl:value-of select="response/amount"/>)</message>
+                <response>
+                    <terminal>Terminal1</terminal>
+                    <name><xsl:value-of select="response/@name"/></name>
+                    <reference><xsl:value-of select="response/trans-ref"/></reference>
+                    <code><xsl:value-of select="response/code"/></code>
+                    <message>From Terminal 1 Response ($ <xsl:value-of select="response/amount"/>)</message>
+                </response>
+                <terminal-response>
+                    <xsl:choose>
+                        <xsl:when test="response/code = '05'">
+                            <xsl:attribute name="success">false</xsl:attribute>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="success">true</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </terminal-response>
             </response>
         </xsl:if>
     </xsl:template>
@@ -47,17 +64,23 @@
 
         <xsl:if test="callback-response">
             <response>
-                <terminal-response success="true">
-                    <xsl:attribute name="reference-number"><xsl:value-of select="callback-response/callback-request/@reference"/></xsl:attribute>
-                    <xsl:attribute name="return-code"><xsl:value-of select="callback-response/callback-request/@code"/></xsl:attribute>
-                </terminal-response>
                 <response>
-                    <xsl:attribute name="reference"><xsl:value-of select="callback-response/callback-request/@reference"/></xsl:attribute>
-                    <xsl:attribute name="code"><xsl:value-of select="callback-response/callback-request/@code"/></xsl:attribute>
-                    <user>
-                        <name>Kate G</name>
-                    </user>
+                    <terminal-response>
+                        <xsl:attribute name="success">true</xsl:attribute>
+                        <xsl:attribute name="code"><xsl:value-of select="callback-response/callback-request/@code"/></xsl:attribute>
+                        <xsl:attribute name="reference"><xsl:value-of select="callback-response/callback-request/@reference"/></xsl:attribute>
+                    </terminal-response>
+                    <return-response>
+                        <xsl:attribute name="reference"><xsl:value-of select="callback-response/callback-request/@reference"/></xsl:attribute>
+                        <xsl:attribute name="code"><xsl:value-of select="callback-response/callback-request/@code"/></xsl:attribute>
+                        <user>
+                            <name>Kate G</name>
+                        </user>
+                    </return-response>
                 </response>
+                <terminal-response>
+                    <xsl:attribute name="success">true</xsl:attribute>
+                </terminal-response>
             </response>
         </xsl:if>
     </xsl:template>

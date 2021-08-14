@@ -12,7 +12,10 @@ namespace PaymentEngine.Terminals.Clients {
             var request = DeSerialize<Terminal3Request>(message);
             
             var response = new Terminal3Response {
-                TransactionRef = request!.TransactionRef
+                Name = requestName,
+                TransactionRef = request!.TransactionRef,
+                Amount = request!.Amount,
+                Code = request!.Code
             };
             
             return Serialize(response);
@@ -23,13 +26,24 @@ namespace PaymentEngine.Terminals.Clients {
     public class Terminal3Request {
         [XmlElement("trans-ref")]
         public string TransactionRef { get; set; }
+        [XmlElement("amount")]
+        public decimal Amount { get; set; }
+        
+        [XmlElement("code")]
+        public string Code { get; set; }
     }
 
     [XmlRoot("response")]
     public class Terminal3Response {
         [XmlAttribute("name")] public string Name { get; set; } = nameof(Terminal3Response);
         
+        [XmlElement("amount")]
+        public decimal Amount { get; set; }
+        
         [XmlElement("trans-ref")]
         public string TransactionRef { get; set; }
+        
+        [XmlElement("code")]
+        public string Code { get; set; }
     }
 }
