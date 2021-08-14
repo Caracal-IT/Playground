@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -18,8 +19,13 @@ namespace Playground.PaymentEngine.Stores {
             _filePaymentStore = new FilePaymentStore();
             _store = _filePaymentStore.GetStore();
         }
+
+        public async Task<IEnumerable<Terminal>> GetTerminalsAsync(IEnumerable<string> terminals, CancellationToken cancellationToken) {
+            var tasks = terminals.Select(t => GetTerminalAsync(t, cancellationToken));
+            return await Task.WhenAll(tasks);
+        }
         
-        public async Task<Terminal> GetTerminalAsync(string name, CancellationToken token) {
+        private async Task<Terminal> GetTerminalAsync(string name, CancellationToken cancellationToken) {
             var path = Path.Join("Terminals", "Templates", $"{name}.xslt");
             
             if(!File.Exists(path))
@@ -31,7 +37,7 @@ namespace Playground.PaymentEngine.Stores {
                 return new Terminal {
                     Name = terminal.Name,
                     RetryCount = terminal.RetryCount,
-                    Xslt = await path.ReadFromFileAsync(token),
+                    Xslt = await path.ReadFromFileAsync(cancellationToken),
                     Settings = terminal.Settings
                                        .Select(s => new Setting{ Name  = s.Name, Value = s.Value})
                                        .ToList()
@@ -40,7 +46,7 @@ namespace Playground.PaymentEngine.Stores {
 
             return new Terminal {
                 Name = name,
-                Xslt = await path.ReadFromFileAsync(token)
+                Xslt = await path.ReadFromFileAsync(cancellationToken)
             };
         }
     }

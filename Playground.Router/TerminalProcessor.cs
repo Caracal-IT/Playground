@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -44,7 +43,7 @@ namespace Playground.Router {
 
         private async Task<List<string>> ProcessAsync() {
             RequestXml = SerializeRequest();
-            var terminals = await Task.WhenAll(Request.Terminals.Select(GetTerminal));
+            var terminals = await GetTerminals(Request.Terminals);
 
             foreach (var t in terminals)
                 if (await TryProcessAsync(t))
@@ -93,7 +92,7 @@ namespace Playground.Router {
             }
         }
 
-        private async Task<Terminal> GetTerminal(string key) =>
-            await _store.GetTerminalAsync(key, _cancellationToken);
+        private async Task<IEnumerable<Terminal>> GetTerminals(IEnumerable<string> terminals) =>
+            await _store.GetTerminalsAsync(terminals, _cancellationToken);
     }
 }

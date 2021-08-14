@@ -1,8 +1,9 @@
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Playground.Router {
     public interface TerminalStore {
-        Task<Terminal> GetTerminalAsync(string name, CancellationToken token);
+        Task<IEnumerable<Terminal>> GetTerminalsAsync(IEnumerable<string> terminals, CancellationToken cancellationToken);
     }
 }
