@@ -13,15 +13,6 @@ using static System.Text.Encoding;
 using static Playground.Xml.Serialization.Serializer;
 
 namespace Playground.MockTerminals {
-    public class RBProcessRequest {
-        public string Reference { get; set; }
-    }
-
-    public class RBProcessResponse {
-        public string Reference { get; set; }
-        public string Code { get; set; }
-    }
-    
     public class Terminal1Client: Client {
         private static HttpClient _httpClient = new HttpClient();
         
@@ -54,37 +45,6 @@ namespace Playground.MockTerminals {
         [XmlAttribute("reference")]
         public string? Reference { get; set; }
         [XmlAttribute("code")]
-        public string? Code { get; set; }
-    }
-
-    [XmlRoot("request")]
-    public class Terminal1Request {
-        [XmlElement("trans-ref")]
-        public string? TransactionRef { get; set; }
-        
-        [XmlElement("amount")]
-        public decimal Amount { get; set; }
-        
-        [XmlElement("card-holder")]
-        public string? CardHolder { get; set; }
-        
-        [XmlElement("hash")]
-        public string? Hash { get; set; }
-        
-        [XmlElement("code")]
-        public string? Code { get; set; }
-    }
-
-    [XmlRoot("response")]
-    public class Terminal1Response {
-        [XmlAttribute("name")] public string Name { get; set; } = nameof(Terminal1Response);
-        
-        [XmlElement("trans-ref")]
-        public string? TransactionRef { get; set; }
-        
-        [XmlElement("amount")]
-        public decimal Amount { get; set; }
-        [XmlElement("code")]
         public string? Code { get; set; }
     }
 }
