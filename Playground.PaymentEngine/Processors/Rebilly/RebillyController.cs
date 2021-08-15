@@ -6,8 +6,10 @@ namespace Playground.PaymentEngine.Processors.Rebilly {
     public class RebillyController: ControllerBase {
         [HttpPost("Process")]
         public RBProcessResponse Process([FromBody] RBProcessRequest request) {
+            var headers = Request.Headers;
+            
             return new RBProcessResponse {
-                Name = nameof(RebillyController),
+                Name = $"{nameof(RebillyController)} Auth User : {headers["auth-user"]}, API Key : {headers["api-key"]}",
                 Reference = request.Reference,
                 Code = request.Code,
                 Amount = request.Amount

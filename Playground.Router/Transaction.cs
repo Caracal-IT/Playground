@@ -78,9 +78,16 @@ namespace Playground.Router {
             var config = new Configuration();
 
             if (!string.IsNullOrWhiteSpace(configXml))
-                config = Serializer.DeSerialize<Configuration>(configXml) ?? new Configuration();
+                config = DeSerialize<Configuration>(configXml) ?? new Configuration();
 
-            return config;
+            config.Settings.AddRange(_terminal.Settings);
+            
+            var xsltSettings = config.Settings.Where(s => !_terminal.Settings.Any(t => t.Name.Equals(s.Name)));
+
+            var newConfig = new Configuration { Settings = _terminal.Settings };
+            newConfig.Settings.AddRange(xsltSettings);
+
+            return newConfig;
         }
 
         private string? ProcessResponseMessage(string response) {

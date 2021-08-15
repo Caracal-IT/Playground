@@ -6,6 +6,7 @@
             <config>
                 <settings>
                     <setting name="url" value="https://localhost:5001/Rebilly/Process"/>
+                    <setting name="header:api-key" value="6565744884400474747"/>
                 </settings>
             </config>
         </xsl:if>
@@ -58,7 +59,6 @@
             <config>
                 <settings>
                     <setting name="url" value="https://localhost:5001/Rebilly/Callback"/>
-                    <setting name="req-type" value="callback"/>
                 </settings>
             </config>
         </xsl:if>

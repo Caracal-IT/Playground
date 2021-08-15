@@ -23,6 +23,10 @@ namespace Playground.Router.Clients {
             var req = requestJson.request.ToString();
 
             var content = new StringContent(req, UTF8, "application/json");
+            configuration.Settings
+                        .Where(s => s.Name!.StartsWith("header:"))
+                        .ToList()
+                        .ForEach(s => content.Headers.Add(s.Name[7..], new[]{s.Value}));
 
             var resp = await _httpClient.PostAsync(url, content, cancellationToken);
             var result = await resp.Content.ReadAsStringAsync(cancellationToken);
