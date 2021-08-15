@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -21,6 +22,7 @@ namespace Playground.PaymentEngine.UseCases.Payments.Process {
         }
 
         public async Task<ProcessResponse> ExecuteAsync(ProcessRequest request, CancellationToken cancellationToken) {
+            var transactionId = Guid.NewGuid();
             var allocations = _paymentStore.GetExportAllocations(request.Allocations).ToList();
             var items = (request.Consolidate ? GetConsolidated() : GetExportData()).ToList();
             
@@ -37,7 +39,7 @@ namespace Playground.PaymentEngine.UseCases.Payments.Process {
                     Terminals = _paymentStore.GetActiveAccountTypeTerminals(data.AccountTypeId).Select(i => i.Name)
                 };
 
-               var response =  await _engine.ProcessAsync(req2, cancellationToken);
+               var response =  await _engine.ProcessAsync(transactionId, req2, cancellationToken);
                var result = response.Select(DeSerialize<ExportResponse>);
                data.Response.AddRange(result);
             }

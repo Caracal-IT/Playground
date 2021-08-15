@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Xml.Serialization;
+using Playground.PaymentEngine.Model;
 
 namespace Playground.PaymentEngine.UseCases.Payments.Process {
     [XmlRoot("response")]
@@ -14,5 +16,9 @@ namespace Playground.PaymentEngine.UseCases.Payments.Process {
         
         [XmlElement("terminal")]
         public string Terminal { get; set; }
+        
+        [XmlArray("meta-data")]
+        [XmlArrayItem("meta-data-item")]
+        public List<MetaData> MetaData { get; set; } = new();
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -26,8 +27,8 @@ namespace Playground.Router {
             _requestXml = SerializeRequest();
         }
 
-        public Transaction<T> Create(Terminal terminal) =>
-            new (_request.Name, _requestXml, terminal, _factory, _extensions);
+        public Transaction Create(Guid transactionId, Terminal terminal) =>
+            new (transactionId, _request.Name, _requestXml, terminal, _factory, _extensions);
         
         private string SerializeRequest() {
             var reqStr = Serialize(_request);
@@ -43,7 +44,8 @@ namespace Playground.Router {
         }
     }
     
-    internal class Transaction<T> where T : class { 
+    internal class Transaction {
+        private readonly Guid _transactionId;
         private readonly string _requestName;
         private readonly string _requestXml;
         private readonly Terminal _terminal;
@@ -51,12 +53,13 @@ namespace Playground.Router {
         private readonly Dictionary<string, object> _extensions;
 
         public Transaction(
+            Guid transactionId,
             string requestName,
             string requestXml,
             Terminal terminal,
             ClientFactory factory,
-            Dictionary<string, object> extensions) 
-        {
+            Dictionary<string, object> extensions) {
+            _transactionId = transactionId;
             _requestName = requestName;
             _requestXml = requestXml;
             _terminal = terminal;
@@ -66,7 +69,7 @@ namespace Playground.Router {
         
         public async Task<string?> ProcessAsync(CancellationToken cancellationToken) {
             var client = _factory.Create(_terminal);
-            var responseXml = await client.SendAsync(GetConfiguration(), GetClientMessage(), _terminal, cancellationToken);
+            var responseXml = await client.SendAsync(_transactionId, GetConfiguration(), GetClientMessage(), _terminal, cancellationToken);
 
             return ProcessResponseMessage(responseXml);
         }
@@ -91,20 +94,21 @@ namespace Playground.Router {
         }
 
         private string? ProcessResponseMessage(string response) {
-            var xml = WrapXmlInResponseTag(response).Transform(_terminal.Xslt!, _extensions)
+            var xml = WrapXmlInResponseTag(response)
+                .Transform(_terminal.Xslt!, _extensions)
                 .ToXml();
 
-            if (HasFailed(xml!))
+            if (HasFailed(xml))
                 return null;
 
-            return xml!.FirstNode?.ToString() ?? string.Empty;
+            return xml.FirstNode?.ToString() ?? string.Empty;
         }
 
         private string WrapXmlInResponseTag(string xmlStr) =>
             $"<request name='{_requestName}'>{xmlStr.ToXml()}</request>";
 
         private static bool HasFailed(XContainer xml) {
-            if (xml?.Nodes().Count() > 1)
+            if (xml.Nodes().Count() > 1)
                 return !Serializer.DeSerialize<Response>(xml.LastNode!.ToString())?.Success ?? true;
 
             return false;

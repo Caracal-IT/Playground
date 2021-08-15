@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -5,6 +6,7 @@ using Playground.Router.Clients;
 
 namespace Playground.Router {
     internal class TerminalProcessor<T> where T : class {
+        private readonly Guid _transactionId;
         private readonly Request<T> _request;
         private readonly TerminalStore _store;
         private readonly List<string> _response = new();
@@ -12,6 +14,7 @@ namespace Playground.Router {
         private readonly TransactionFactory<T> _transactionFactory;
 
         private TerminalProcessor(
+            Guid transactionId,
             Request<T> request,
             TerminalStore store,
             TerminalExtensions extensions,
@@ -20,18 +23,20 @@ namespace Playground.Router {
         {
             _store = store;
             _request = request;
+            _transactionId = transactionId;
             _cancellationToken = cancellationToken;
 
             _transactionFactory = new TransactionFactory<T>(request, factory, extensions);
         }
 
         public static async Task<List<string>> ProcessAsync<TS>(
+            Guid transactionId,
             Request<TS> request,
             TerminalStore store,
             TerminalExtensions extensions,
             ClientFactory factory,
             CancellationToken cancellationToken) where TS : class {
-            var p = new TerminalProcessor<TS>(request, store, extensions, factory, cancellationToken);
+            var p = new TerminalProcessor<TS>(transactionId, request, store, extensions, factory, cancellationToken);
             return await p.ProcessAsync();
         }
 
@@ -58,7 +63,7 @@ namespace Playground.Router {
         
         private async Task<bool> TryProcessRequestAsync(Terminal terminal) {
             try {
-                var response = await _transactionFactory.Create(terminal).ProcessAsync(_cancellationToken);
+                var response = await _transactionFactory.Create(_transactionId, terminal).ProcessAsync(_cancellationToken);
 
                 if (string.IsNullOrWhiteSpace(response))
                     return false;

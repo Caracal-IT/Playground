@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace Playground.Router {
             _factory = factory;
         }
 
-        public async Task<List<string>> ProcessAsync<T>(Request<T> request, CancellationToken cancellationToken) where T : class =>
-            await TerminalProcessor<T>.ProcessAsync(request, _store, _extensions, _factory, cancellationToken);
+        public async Task<List<string>> ProcessAsync<T>(Guid transactionId, Request<T> request, CancellationToken cancellationToken) where T : class =>
+            await TerminalProcessor<T>.ProcessAsync(transactionId, request, _store, _extensions, _factory, cancellationToken);
     }
 }

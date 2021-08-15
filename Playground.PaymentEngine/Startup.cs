@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Playground.PaymentEngine.Stores;
+using Playground.PaymentEngine.Terminals;
 using Playground.PaymentEngine.Terminals.Functions;
 using Playground.PaymentEngine.UseCases.Payments.Callback;
 using Playground.PaymentEngine.UseCases.Payments.Process;
@@ -27,6 +28,8 @@ namespace Playground.PaymentEngine {
             
             services.AddSingleton<ClientFactory, DefaultClientFactory>();
             services.AddSingleton<HttpTerminalClient>();
+            services.AddSingleton<IStreamHandler, StreamHandler>();
+            services.AddSingleton<StreamTerminalClient>();
             
             services.AddSingleton<ProcessUseCase>();
             services.AddSingleton<CallbackUseCase>();

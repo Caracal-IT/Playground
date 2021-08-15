@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,6 +19,8 @@ namespace Playground.PaymentEngine.UseCases.Payments.Callback {
         }
         
         public async Task<CallbackResponse> ExecuteAsync(CallbackRequest request, CancellationToken token) {
+            var transactionId = Guid.NewGuid();
+            
             var allocations = _paymentStore.GetAllocationsByReference(request.Reference).ToList();
            
             if (!allocations.Any()) return new CallbackResponse();
@@ -28,7 +31,7 @@ namespace Playground.PaymentEngine.UseCases.Payments.Callback {
                 Terminals = new []{ allocations.First().Terminal }
             };
             
-            var response =  await _engine.ProcessAsync(req2, token);
+            var response =  await _engine.ProcessAsync(transactionId, req2, token);
             var xml = response.FirstOrDefault();
 
             if (string.IsNullOrWhiteSpace(xml)) return new CallbackResponse();

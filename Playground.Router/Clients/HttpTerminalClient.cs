@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
@@ -14,7 +15,7 @@ namespace Playground.Router.Clients {
         public HttpTerminalClient(HttpClient httpClient) =>
             _httpClient = httpClient;
         
-        public async Task<string> SendAsync(Configuration configuration, string message, Terminal terminal, CancellationToken cancellationToken) {
+        public async Task<string> SendAsync(Guid transactionId, Configuration configuration, string message, Terminal terminal, CancellationToken cancellationToken) {
             if (configuration.Settings.All(s => s.Name != "url"))
                 return "<XmlData/>";
 
