@@ -12,13 +12,10 @@ using Terminal = Playground.Router.Terminal;
 
 namespace Playground.PaymentEngine.Stores {
     public class FileTerminalStore: TerminalStore {
-        private FilePaymentStore _filePaymentStore;
-        private Store _store;
+        private readonly Store _store;
 
-        public FileTerminalStore() {
-            _filePaymentStore = new FilePaymentStore();
-            _store = _filePaymentStore.GetStore();
-        }
+        public FileTerminalStore() =>
+            _store = new FilePaymentStore().GetStore();
 
         public async Task<IEnumerable<Terminal>> GetTerminalsAsync(IEnumerable<string> terminals, CancellationToken cancellationToken) {
             var tasks = terminals.Select(t => GetTerminalAsync(t, cancellationToken));
@@ -36,7 +33,7 @@ namespace Playground.PaymentEngine.Stores {
             if (terminal != null) {
                 return new Terminal {
                     Name = terminal.Name,
-                    Type = "http",
+                    Type = terminal.Type,
                     RetryCount = terminal.RetryCount,
                     Xslt = await path.ReadFromFileAsync(cancellationToken),
                     Settings = terminal.Settings

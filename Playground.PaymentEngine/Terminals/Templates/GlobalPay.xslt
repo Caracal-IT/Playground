@@ -20,7 +20,7 @@
         <xsl:if test="response">
             <response>
                 <response>
-                    <terminal>Terminal3</terminal>
+                    <terminal>GlobalPay</terminal>
                     <name><xsl:value-of select="response/name"/></name>
                     <xsl:choose>
                         <xsl:when test="response/amount = 12"><code>05</code></xsl:when>
@@ -28,7 +28,7 @@
                     </xsl:choose>
                     <reference><xsl:value-of select="response/reference"/></reference>
                     <amount><xsl:value-of select="response/amount"/></amount>
-                    <message>From Terminal 3 ($ <xsl:value-of select="response/amount"/>)</message>
+                    <message>From GlobalPay ($ <xsl:value-of select="response/amount"/>)</message>
                 </response>
             </response>
         </xsl:if>

@@ -11,12 +11,10 @@ namespace Playground.PaymentEngine.UseCases.Payments.Callback {
     public class CallbackUseCase {
         private readonly PaymentStore _paymentStore;
         private readonly Engine _engine;
-        private readonly TerminalStore _terminalStore;
-        
-        public CallbackUseCase(PaymentStore paymentStore, Engine engine, TerminalStore terminalStore) {
+
+        public CallbackUseCase(PaymentStore paymentStore, Engine engine) {
             _paymentStore = paymentStore;
             _engine = engine;
-            _terminalStore = terminalStore;
         }
         
         public async Task<CallbackResponse> ExecuteAsync(CallbackRequest request, CancellationToken token) {
@@ -39,7 +37,7 @@ namespace Playground.PaymentEngine.UseCases.Payments.Callback {
             
             var resp = DeSerialize<TerminalResponse>(xDoc.Root!.FirstNode!.ToString());
 
-            if (resp.IsSuccessfull && resp.Code == "00") 
+            if (resp!.IsSuccessful && resp.Code == "00") 
                 allocations.ForEach(a => a.AllocationStatusId = 6);
             
             return new CallbackResponse{ TerminalResponse = resp, Response = xDoc.Root!.LastNode!.ToString() };
