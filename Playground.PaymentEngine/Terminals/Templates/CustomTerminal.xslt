@@ -20,7 +20,7 @@
         <xsl:if test="response">
             <response>
                 <response>
-                    <terminal>Terminal2</terminal>
+                    <terminal>CustomTerminal</terminal>
                     <name><xsl:value-of select="response/name"/></name>
                     <reference><xsl:value-of select="response/reference"/></reference>
                     <code><xsl:value-of select="response/code"/></code>
