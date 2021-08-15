@@ -10,7 +10,10 @@ namespace Playground.PaymentEngine.Stores {
         ExportAllocation GetExportAllocation(long allocationId);
         IEnumerable<ExportAllocation> GetExportAllocations(IEnumerable<long> allocationIds);
         IEnumerable<Allocation> GetAllocationsByReference(string reference);
-        void SetAllocationStatus(long id, long statusId, string terminal = null, string reference = null);
         IEnumerable<Terminal> GetActiveAccountTypeTerminals(long accountTypeId);
+        
+        void SetAllocationStatus(long id, long statusId, string terminal = null, string reference = null);
+
+        void LogTerminalResults(IEnumerable<TerminalResult> results);
     }
 }

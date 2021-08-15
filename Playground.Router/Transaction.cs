@@ -67,7 +67,7 @@ namespace Playground.Router {
             _extensions = extensions;
         }
         
-        public async Task<string?> ProcessAsync(CancellationToken cancellationToken) {
+        public async Task<(string? message ,bool success)> ProcessAsync(CancellationToken cancellationToken) {
             var client = _factory.Create(_terminal);
             var responseXml = await client.SendAsync(_transactionId, GetConfiguration(), GetClientMessage(), _terminal, cancellationToken);
 
@@ -93,25 +93,24 @@ namespace Playground.Router {
             return newConfig;
         }
 
-        private string? ProcessResponseMessage(string response) {
+        private (string? message ,bool success) ProcessResponseMessage(string response) {
             var xml = WrapXmlInResponseTag(response)
                 .Transform(_terminal.Xslt!, _extensions)
                 .ToXml();
 
-            if (HasFailed(xml))
-                return null;
-
-            return xml.FirstNode?.ToString() ?? string.Empty;
+            var result = xml.FirstNode?.ToString(); 
+            
+            return (message: result, success: HasSucceeded(xml));
         }
 
         private string WrapXmlInResponseTag(string xmlStr) =>
             $"<request name='{_requestName}'>{xmlStr.ToXml()}</request>";
 
-        private static bool HasFailed(XContainer xml) {
+        private static bool HasSucceeded(XContainer xml) {
             if (xml.Nodes().Count() > 1)
-                return !Serializer.DeSerialize<Response>(xml.LastNode!.ToString())?.Success ?? true;
+                return Serializer.DeSerialize<Response>(xml.LastNode!.ToString())?.Success ?? true;
 
-            return false;
+            return true;
         }
     }
 }

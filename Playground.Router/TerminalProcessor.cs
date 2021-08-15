@@ -65,12 +65,12 @@ namespace Playground.Router {
             try {
                 var response = await _transactionFactory.Create(_transactionId, terminal).ProcessAsync(_cancellationToken);
 
-                if (string.IsNullOrWhiteSpace(response))
-                    return false;
+                if (string.IsNullOrWhiteSpace(response.message))
+                    return response.success;
                 
-                _response.Add(response);
+                _response.Add(response.message);
                 
-                return true;
+                return response.success;
             }
             catch {
                 return false;

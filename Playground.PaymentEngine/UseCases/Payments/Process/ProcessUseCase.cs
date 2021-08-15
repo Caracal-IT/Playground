@@ -29,8 +29,9 @@ namespace Playground.PaymentEngine.UseCases.Payments.Process {
             await items.Select(Export).WhenAll(maxConcurrentRequests: 50);
             
             UpdateStatuses();
-            
-            return new ProcessResponse(items.SelectMany(i => i.Response));
+            SaveResults();
+                
+            return new ProcessResponse(items.Select(i => i.Response.Last()));
 
             async Task Export(ExportData data) {
                 var req2 = new Request<ExportData> {
@@ -42,6 +43,23 @@ namespace Playground.PaymentEngine.UseCases.Payments.Process {
                var response =  await _engine.ProcessAsync(transactionId, req2, cancellationToken);
                var result = response.Select(DeSerialize<ExportResponse>);
                data.Response.AddRange(result);
+            }
+
+            void SaveResults() {
+                var results = items.SelectMany(i => i.Response).Select(MapResults);
+                _paymentStore.LogTerminalResults(results);
+            }
+
+            TerminalResult MapResults(ExportResponse response) {
+                return new TerminalResult {
+                    Code = response.Code,
+                    Date = DateTime.Now,
+                    Message = response.Message,
+                    Reference = response.Reference,
+                    Success = response.Code == "00",
+                    Terminal = response.Terminal,
+                    MetaData = response.MetaData
+                };
             }
             
             void UpdateStatuses() {

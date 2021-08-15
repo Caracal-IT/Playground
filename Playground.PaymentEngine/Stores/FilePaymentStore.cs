@@ -66,6 +66,9 @@ namespace Playground.PaymentEngine.Stores {
                 .Select(t => t.Terminal)
                 .ToList();
 
+        public void LogTerminalResults(IEnumerable<TerminalResult> results) =>
+            _store.TerminalResults.TerminalResultList.AddRange(results);
+        
         private void LoadStore() {
             var path = Path.Join("Resources", "Data", "store.xml");
             using var fileStream = new FileStream(path, FileMode.Open);
