@@ -19,6 +19,8 @@ namespace Playground.PaymentEngine.Controllers {
     public class PaymentsController: ControllerBase {
         private readonly PaymentStore _paymentStore;
         public PaymentsController(PaymentStore paymentStore) => _paymentStore = paymentStore;
+
+        public Store Get() => _paymentStore.GetStore();
         
         [HttpGet("allocations")]
         public List<Allocation> GetAllocations() => _paymentStore.GetStore().Allocations.AllocationList;

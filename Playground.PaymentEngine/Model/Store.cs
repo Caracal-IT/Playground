@@ -27,5 +27,7 @@ namespace Playground.PaymentEngine.Model {
 		public Terminals Terminals { get; set; }
 		[XmlElement(ElementName="terminal-maps")]
 		public TerminalMaps TerminalMaps { get; set; }
+		[XmlElement(ElementName="terminal-results")]
+		public TerminalResults TerminalResults { get; set; }
 	}
 }
