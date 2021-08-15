@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using Playground.Core.Events;
 using Playground.Router.Clients;
 using Playground.Xml;
 using Playground.Xml.Serialization;
@@ -16,19 +17,21 @@ using static Playground.Xml.Serialization.Serializer;
 namespace Playground.Router {
     internal class TransactionFactory<T> where T:class{
         private readonly Request<T> _request;
+        private readonly EventHub _eventHub;
         private readonly ClientFactory _factory;
         private readonly Dictionary<string, object> _extensions;
         private readonly string _requestXml;
         
-        public TransactionFactory(Request<T> request, ClientFactory factory, TerminalExtensions extensions) {
+        public TransactionFactory(EventHub eventHub, Request<T> request, ClientFactory factory, TerminalExtensions extensions) {
             _request = request;
             _factory = factory;
+            _eventHub = eventHub;
             _extensions = extensions.GetExtensions();
             _requestXml = SerializeRequest();
         }
 
         public Transaction Create(Guid transactionId, Terminal terminal) =>
-            new (transactionId, _request.Name, _requestXml, terminal, _factory, _extensions);
+            new (_eventHub, transactionId, _request.Name, _requestXml, terminal, _factory, _extensions);
         
         private string SerializeRequest() {
             var reqStr = Serialize(_request);
@@ -45,6 +48,7 @@ namespace Playground.Router {
     }
     
     internal class Transaction {
+        private EventHub _eventHub;
         private readonly Guid _transactionId;
         private readonly string _requestName;
         private readonly string _requestXml;
@@ -53,12 +57,15 @@ namespace Playground.Router {
         private readonly Dictionary<string, object> _extensions;
 
         public Transaction(
+            EventHub eventHub,
             Guid transactionId,
             string requestName,
             string requestXml,
             Terminal terminal,
             ClientFactory factory,
-            Dictionary<string, object> extensions) {
+            Dictionary<string, object> extensions) 
+        {
+            _eventHub = eventHub;
             _transactionId = transactionId;
             _requestName = requestName;
             _requestXml = requestXml;
@@ -69,8 +76,12 @@ namespace Playground.Router {
         
         public async Task<(string? message ,bool success)> ProcessAsync(CancellationToken cancellationToken) {
             var client = _factory.Create(_terminal);
-            var responseXml = await client.SendAsync(_transactionId, GetConfiguration(), GetClientMessage(), _terminal, cancellationToken);
-
+            var message = GetClientMessage();
+            
+            _eventHub.Publish($"Sending {_terminal.Name} {message}");
+            var responseXml = await client.SendAsync(_transactionId, GetConfiguration(), message, _terminal, cancellationToken);
+            _eventHub.Publish($"Received {_terminal.Name} {responseXml}");
+            
             return ProcessResponseMessage(responseXml);
         }
 

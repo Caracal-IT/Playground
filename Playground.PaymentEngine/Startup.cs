@@ -3,7 +3,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Playground.Core.Events;
+using Playground.PaymentEngine.Events;
 using Playground.PaymentEngine.Stores;
 using Playground.PaymentEngine.Terminals;
 using Playground.PaymentEngine.Terminals.Functions;
@@ -33,7 +36,9 @@ namespace Playground.PaymentEngine {
             
             services.AddSingleton<ProcessUseCase>();
             services.AddSingleton<CallbackUseCase>();
-            
+
+            services.AddSingleton<EventHub, WebEventHub>();
+
             services.AddControllers();
             services.AddHttpClient();
            
@@ -54,7 +59,7 @@ namespace Playground.PaymentEngine {
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
-            
+
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }

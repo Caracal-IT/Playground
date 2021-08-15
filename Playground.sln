@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.Router", "Playgr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.Xml", "Xml\Playground.Xml\Playground.Xml.csproj", "{33F8E524-F211-48D2-9CF2-C1B63DE756B8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.Core", "Playground.Core\Playground.Core.csproj", "{DCE8FECC-4242-4AF0-B441-8F10B2D8D439}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,5 +48,9 @@ Global
 		{33F8E524-F211-48D2-9CF2-C1B63DE756B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{33F8E524-F211-48D2-9CF2-C1B63DE756B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{33F8E524-F211-48D2-9CF2-C1B63DE756B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCE8FECC-4242-4AF0-B441-8F10B2D8D439}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCE8FECC-4242-4AF0-B441-8F10B2D8D439}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCE8FECC-4242-4AF0-B441-8F10B2D8D439}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCE8FECC-4242-4AF0-B441-8F10B2D8D439}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Playground.Core.Events;
 using Playground.Router.Clients;
 
 namespace Playground.Router {
@@ -14,6 +15,7 @@ namespace Playground.Router {
         private readonly TransactionFactory<T> _transactionFactory;
 
         private TerminalProcessor(
+            EventHub eventHub,
             Guid transactionId,
             Request<T> request,
             TerminalStore store,
@@ -26,17 +28,18 @@ namespace Playground.Router {
             _transactionId = transactionId;
             _cancellationToken = cancellationToken;
 
-            _transactionFactory = new TransactionFactory<T>(request, factory, extensions);
+            _transactionFactory = new TransactionFactory<T>(eventHub, request, factory, extensions);
         }
 
         public static async Task<List<string>> ProcessAsync<TS>(
+            EventHub eventHub,
             Guid transactionId,
             Request<TS> request,
             TerminalStore store,
             TerminalExtensions extensions,
             ClientFactory factory,
             CancellationToken cancellationToken) where TS : class {
-            var p = new TerminalProcessor<TS>(transactionId, request, store, extensions, factory, cancellationToken);
+            var p = new TerminalProcessor<TS>(eventHub, transactionId, request, store, extensions, factory, cancellationToken);
             return await p.ProcessAsync();
         }
 
@@ -63,14 +66,15 @@ namespace Playground.Router {
         
         private async Task<bool> TryProcessRequestAsync(Terminal terminal) {
             try {
-                var response = await _transactionFactory.Create(_transactionId, terminal).ProcessAsync(_cancellationToken);
+                var (message, success) = await _transactionFactory.Create(_transactionId, terminal)
+                                                                  .ProcessAsync(_cancellationToken);
 
-                if (string.IsNullOrWhiteSpace(response.message))
-                    return response.success;
+                if (string.IsNullOrWhiteSpace(message))
+                    return success;
                 
-                _response.Add(response.message);
+                _response.Add(message);
                 
-                return response.success;
+                return success;
             }
             catch {
                 return false;
