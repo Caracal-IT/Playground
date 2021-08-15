@@ -8,6 +8,8 @@ namespace Playground.PaymentEngine.Model {
         public long Id { get; set; }
         [XmlAttribute(AttributeName="name")]
         public string Name { get; set; }
+        [XmlAttribute(AttributeName="type")]
+        public string Type { get; set; }
         [XmlAttribute(AttributeName="retry-count")]
         public int RetryCount { get; set; }
         

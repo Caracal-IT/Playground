@@ -10,7 +10,6 @@ using Playground.PaymentEngine.UseCases.Payments.Callback;
 using Playground.PaymentEngine.UseCases.Payments.Process;
 using Playground.Router;
 using Playground.Router.Clients;
-using MockClientFactory = Playground.MockTerminals.MockClientFactory;
 
 namespace Playground.PaymentEngine {
     public class Startup {
@@ -25,12 +24,13 @@ namespace Playground.PaymentEngine {
             services.AddSingleton<TerminalStore, FileTerminalStore>();
             services.AddSingleton<PaymentStore, FilePaymentStore>();
             services.AddSingleton<Engine, RouterEngine>();
-            services.AddSingleton<ClientFactory, MockClientFactory>();
+            services.AddSingleton<ClientFactory, DefaultClientFactory>();
             
             services.AddSingleton<ProcessUseCase>();
             services.AddSingleton<CallbackUseCase>();
             
             services.AddControllers();
+            services.AddHttpClient();
            
             services.AddMvc()
                 .AddXmlSerializerFormatters()

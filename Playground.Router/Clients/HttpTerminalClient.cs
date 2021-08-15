@@ -8,8 +8,11 @@ using static System.Text.Encoding;
 
 namespace Playground.Router.Clients {
     public class HttpTerminalClient: Client {
-        private static readonly HttpClient HttpClient = new HttpClient();
-
+        private readonly HttpClient _httpClient;
+        
+        public HttpTerminalClient(HttpClient httpClient) =>
+            _httpClient = httpClient;
+        
         public async Task<string> SendAsync(Configuration configuration, string message, Terminal terminal) {
             if (configuration.Settings.All(s => s.Name != "url"))
                 return "<XmlData/>";
@@ -18,7 +21,7 @@ namespace Playground.Router.Clients {
             dynamic requestJson = JObject.Parse(message.ToJson()!.ToString());
             var req = requestJson.request.ToString();
 
-            var resp = await HttpClient.PostAsync(url, new StringContent(req, UTF8, "application/json"));
+            var resp = await _httpClient.PostAsync(url, new StringContent(req, UTF8, "application/json"));
             var result = await resp.Content.ReadAsStringAsync();
             return result.ToXml("response").ToString(SaveOptions.None);
         }

@@ -4,10 +4,8 @@
     <xsl:template match="request[@name='ProcessUseCase']">
         <xsl:if test="config">
             <config>
-                <xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
                 <settings>
                     <setting name="url" value="https://localhost:5001/Rebilly/Process"/>
-                    <setting name="req-type" value="process"/>
                 </settings>
             </config>
         </xsl:if>
@@ -58,7 +56,6 @@
     <xsl:template match="request[@name='callback']">
         <xsl:if test="config">
             <config>
-                <xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
                 <settings>
                     <setting name="url" value="https://localhost:5001/Rebilly/Callback"/>
                     <setting name="req-type" value="callback"/>

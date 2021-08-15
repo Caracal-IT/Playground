@@ -12,8 +12,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.PaymentEngine", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.Router", "Playground.Router\Playground.Router.csproj", "{7C2C538D-E8EE-432F-8499-9CFEA1DA9846}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.MockTerminals", "Playground.MockTerminals\Playground.MockTerminals.csproj", "{09ACC591-7EB4-4548-9B5A-C6BDAAFE5413}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.Xml", "Xml\Playground.Xml\Playground.Xml.csproj", "{33F8E524-F211-48D2-9CF2-C1B63DE756B8}"
 EndProject
 Global
@@ -44,10 +42,6 @@ Global
 		{7C2C538D-E8EE-432F-8499-9CFEA1DA9846}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C2C538D-E8EE-432F-8499-9CFEA1DA9846}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C2C538D-E8EE-432F-8499-9CFEA1DA9846}.Release|Any CPU.Build.0 = Release|Any CPU
-		{09ACC591-7EB4-4548-9B5A-C6BDAAFE5413}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{09ACC591-7EB4-4548-9B5A-C6BDAAFE5413}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{09ACC591-7EB4-4548-9B5A-C6BDAAFE5413}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{09ACC591-7EB4-4548-9B5A-C6BDAAFE5413}.Release|Any CPU.Build.0 = Release|Any CPU
 		{33F8E524-F211-48D2-9CF2-C1B63DE756B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{33F8E524-F211-48D2-9CF2-C1B63DE756B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{33F8E524-F211-48D2-9CF2-C1B63DE756B8}.Release|Any CPU.ActiveCfg = Release|Any CPU

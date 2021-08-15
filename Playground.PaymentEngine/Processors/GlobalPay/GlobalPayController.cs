@@ -7,18 +7,11 @@ namespace Playground.PaymentEngine.Processors.GlobalPay {
         [HttpPost("Process")]
         public GPProcessResponse Process([FromBody] GPProcessRequest request) {
             return new GPProcessResponse {
+                Name = nameof(GlobalPayController),
                 Reference = request.Reference,
-                Code = "00"
+                Code = request.Code,
+                Amount = request.Amount
             } ;
         }
-    }
-
-    public class GPProcessRequest {
-        public string Reference { get; set; }
-    }
-
-    public class GPProcessResponse {
-        public string Reference { get; set; }
-        public string Code { get; set; }
     }
 }

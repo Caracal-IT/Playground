@@ -22,7 +22,7 @@ namespace Playground.Router {
         }
             
         private async Task<string?> ProcessAsync() {
-            var client = _processor.Factory.Create(_terminal.Name);
+            var client = _processor.Factory.Create(_terminal);
             var responseXml = await client.SendAsync(GetConfiguration(), GetClientMessage(), _terminal);
 
             return ProcessResponseMessage(responseXml);

@@ -1,11 +1,11 @@
-using System.Text.Json.Serialization;
+ using System.Text.Json.Serialization;
 
-namespace Playground.PaymentEngine.Processors.Rebilly {
-    public class RBProcessResponse {
+namespace Playground.PaymentEngine.Processors.GlobalPay {
+    public class GPProcessResponse {
         [JsonPropertyName("name")] 
         public string Name { get; set; }
         
-        [JsonPropertyName("trans-ref")]
+        [JsonPropertyName("reference")]
         public string Reference { get; set; }
         
         [JsonPropertyName("code")]

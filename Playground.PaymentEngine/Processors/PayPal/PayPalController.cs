@@ -7,18 +7,11 @@ namespace Playground.PaymentEngine.Processors.PayPal {
         [HttpPost("Process")]
         public PPProcessResponse Process([FromBody] PPProcessRequest request) {
             return new PPProcessResponse {
+                Name = nameof(PayPalController),
                 Reference = request.Reference,
-                Code = "00"
+                Code = request.Code,
+                Amount = request.Amount
             } ;
         }
-    }
-
-    public class PPProcessRequest {
-        public string Reference { get; set; }
-    }
-
-    public class PPProcessResponse {
-        public string Reference { get; set; }
-        public string Code { get; set; }
     }
 }

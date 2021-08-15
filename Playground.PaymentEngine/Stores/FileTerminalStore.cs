@@ -36,6 +36,7 @@ namespace Playground.PaymentEngine.Stores {
             if (terminal != null) {
                 return new Terminal {
                     Name = terminal.Name,
+                    Type = "http",
                     RetryCount = terminal.RetryCount,
                     Xslt = await path.ReadFromFileAsync(cancellationToken),
                     Settings = terminal.Settings
@@ -46,6 +47,7 @@ namespace Playground.PaymentEngine.Stores {
 
             return new Terminal {
                 Name = name,
+                Type = "http",
                 Xslt = await path.ReadFromFileAsync(cancellationToken),
                 RetryCount = 0
             };
