@@ -5,14 +5,15 @@
         <xsl:if test="config">
             <config>
                 <settings>
-                    <setting name="url" value="https://localhost:5001/PayPal/Process"/>
+                    <setting name="url" value="https://localhost:5001/CustomProvider/Process"/>
+                    <setting name="content-type" value="application/xml"/>
                 </settings>
             </config>
         </xsl:if>
         
         <xsl:if test="payload">
             <request>
-                <reference><xsl:value-of select="payload/@reference"/></reference>
+                <xsl:attribute name="reference"><xsl:value-of select="payload/@reference"/></xsl:attribute>
                 <code>00</code>
                 <amount><xsl:value-of select="payload/@amount"/></amount>
             </request>
@@ -22,9 +23,9 @@
                 <response>
                     <terminal>CustomTerminal</terminal>
                     <name><xsl:value-of select="response/name"/></name>
-                    <reference><xsl:value-of select="response/reference"/></reference>
+                    <reference><xsl:value-of select="response/@reference"/></reference>
                     <code><xsl:value-of select="response/code"/></code>
-                    <message>From Terminal 2</message>
+                    <message>From Custom Terminal</message>
                 </response>
             </response>
         </xsl:if>

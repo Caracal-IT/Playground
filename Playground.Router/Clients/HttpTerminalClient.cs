@@ -19,10 +19,12 @@ namespace Playground.Router.Clients {
                 return "<XmlData/>";
 
             var url = configuration.Settings.First(s => s.Name == "url").Value;
-            dynamic requestJson = JObject.Parse(message.ToJson()!.ToString());
-            var req = requestJson.request.ToString();
+            var contentType = configuration.Settings.FirstOrDefault(s => s.Name == "content-type")?.Value?.ToLower() ?? "application/json";
+            var isXml = contentType == "application/xml";
+            
+            string request = isXml ? message : GetJsonText();
+            var content = new StringContent(request, UTF8, contentType);
 
-            var content = new StringContent(req, UTF8, "application/json");
             configuration.Settings
                         .Where(s => s.Name!.StartsWith("header:"))
                         .ToList()
@@ -30,7 +32,16 @@ namespace Playground.Router.Clients {
 
             var resp = await _httpClient.PostAsync(url, content, cancellationToken);
             var result = await resp.Content.ReadAsStringAsync(cancellationToken);
-            return result.ToXml("response").ToString(SaveOptions.None);
+            
+            return isXml ? result : JsonResponseToXml();
+            
+            string GetJsonText() {
+                dynamic requestJson = JObject.Parse(message.ToJson()!.ToString());
+                return requestJson.request.ToString();
+            }
+
+            string JsonResponseToXml() =>
+                result!.ToXml("response").ToString(SaveOptions.None);
         }
     }
 }

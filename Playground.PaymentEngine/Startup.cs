@@ -24,7 +24,9 @@ namespace Playground.PaymentEngine {
             services.AddSingleton<TerminalStore, FileTerminalStore>();
             services.AddSingleton<PaymentStore, FilePaymentStore>();
             services.AddSingleton<Engine, RouterEngine>();
+            
             services.AddSingleton<ClientFactory, DefaultClientFactory>();
+            services.AddSingleton<HttpTerminalClient>();
             
             services.AddSingleton<ProcessUseCase>();
             services.AddSingleton<CallbackUseCase>();
