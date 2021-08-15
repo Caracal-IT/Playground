@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Xml.Serialization;
+using Playground.PaymentEngine.Model;
 
 namespace Playground.PaymentEngine.Terminals {
     [XmlRoot("request")]
@@ -12,10 +14,8 @@ namespace Playground.PaymentEngine.Terminals {
         [XmlElement("amount")]
         public decimal Amount { get; set; }
         
-        [XmlElement("card-holder")]
-        public string CardHolder { get; set; }
-        
-        [XmlElement("hash")]
-        public string Hash { get; set; }
+        [XmlArray("meta-data")]
+        [XmlArrayItem("meta-data-item")]
+        public List<MetaData> MetaData { get; set; }
     }
 }

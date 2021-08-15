@@ -1,6 +1,11 @@
 <xsl:stylesheet version="1.0"
                 xmlns:scripts="utility:hashing/v1"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+    <xsl:decimal-format
+            name="Cz2"
+            grouping-separator=" "
+            decimal-separator=","/>
+    
     <xsl:template match="request[@name='ProcessUseCase']">
         <xsl:if test="config">
             <config>
@@ -17,13 +22,34 @@
                 <reference><xsl:value-of select="payload/@reference"/></reference>
                 <amount><xsl:value-of select="payload/@amount"/></amount>
                 <hash><xsl:value-of select="scripts:Hash256(@reference)"/></hash>
-                <xsl:for-each select="payload/meta-data">
-                    <xsl:choose>
-                        <xsl:when test="@name = 'account-holder'">
-                            <card-holder><xsl:value-of select="@value"/></card-holder>
-                        </xsl:when>
-                    </xsl:choose>
-                </xsl:for-each>
+                <meta-data>
+                    <meta-data-item>
+                        <xsl:attribute name="name">Reference</xsl:attribute>
+                        <xsl:attribute name="value"><xsl:value-of select="payload/@reference"/></xsl:attribute>
+                    </meta-data-item>
+                    <meta-data-item>
+                        <xsl:attribute name="name">Amount Name</xsl:attribute>
+                        <xsl:attribute name="value"><xsl:value-of select="format-number(number(payload/@amount) * 100, '# ##0.00', 'Cz2')"/></xsl:attribute>
+                    </meta-data-item>
+
+                    <xsl:for-each select="payload/meta-data">
+                        <xsl:choose>
+                            <xsl:when test="@name = 'account-holder'">
+                                <meta-data-item>
+                                    <xsl:attribute name="name">Account Holder</xsl:attribute>
+                                    <xsl:attribute name="value"><xsl:value-of select="@value"/></xsl:attribute>
+                                </meta-data-item>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <meta-data-item>
+                                    <xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
+                                    <xsl:attribute name="value"><xsl:value-of select="@value"/></xsl:attribute>
+                                </meta-data-item>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:for-each>
+                    
+                </meta-data>
             </request>
         </xsl:if>
 
