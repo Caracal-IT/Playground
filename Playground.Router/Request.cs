@@ -4,8 +4,7 @@ using System.Xml.Serialization;
 namespace Playground.Router {
     [XmlRoot("request")]
     public class Request<T> where T : class {
-        [XmlAttribute("name")]
-        public string? Name { get; set; }
+        [XmlAttribute("name")] public string Name { get; set; } = "request";
 
         [XmlElement("payload")]
         public T? Payload { get; set; }

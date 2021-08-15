@@ -1,21 +1,15 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml.Linq;
-using System.Xml.XPath;
 using Playground.Router.Clients;
-using static Playground.Xml.Serialization.Serializer;
 
 namespace Playground.Router {
     internal class TerminalProcessor<T> where T : class {
+        private readonly Request<T> _request;
         private readonly TerminalStore _store;
-        internal readonly ClientFactory Factory;
-        internal readonly Dictionary<string, object> Extensions;
-        internal readonly Request<T> Request;
-        private readonly CancellationToken _cancellationToken;
-
         private readonly List<string> _response = new();
-        public string RequestXml = string.Empty;
+        private readonly CancellationToken _cancellationToken;
+        private readonly TransactionFactory<T> _transactionFactory;
 
         private TerminalProcessor(
             Request<T> request,
@@ -25,10 +19,10 @@ namespace Playground.Router {
             CancellationToken cancellationToken) 
         {
             _store = store;
-            Factory = factory;
-            Extensions = extensions.GetExtensions();
-            Request = request;
+            _request = request;
             _cancellationToken = cancellationToken;
+
+            _transactionFactory = new TransactionFactory<T>(request, factory, extensions);
         }
 
         public static async Task<List<string>> ProcessAsync<TS>(
@@ -42,8 +36,7 @@ namespace Playground.Router {
         }
 
         private async Task<List<string>> ProcessAsync() {
-            RequestXml = SerializeRequest();
-            var terminals = await GetTerminals(Request.Terminals);
+            var terminals = await GetTerminals(_request.Terminals);
 
             foreach (var t in terminals)
                 if (await TryProcessAsync(t))
@@ -51,20 +44,7 @@ namespace Playground.Router {
 
             return _response;
         }
-
-        private string SerializeRequest() {
-            var reqStr = Serialize(Request);
-            var reqXml = XDocument.Parse(reqStr);
-
-            if (!Request.Payload!.ToString()!.StartsWith("<")) return reqXml.ToString();
-
-            var n = reqXml.XPathSelectElement("request/payload");
-            n!.RemoveAll();
-            n.Add(XDocument.Parse(Request.Payload.ToString()!).Root!);
-
-            return reqXml.ToString();
-        }
-
+        
         private async Task<bool> TryProcessAsync(Terminal terminal) {
             for (var i = 0; i < terminal.RetryCount; i++) {
                 if (await TryProcessRequestAsync(terminal))
@@ -78,7 +58,7 @@ namespace Playground.Router {
         
         private async Task<bool> TryProcessRequestAsync(Terminal terminal) {
             try {
-                var response = await Transaction<T>.ProcessAsync(this, terminal);
+                var response = await _transactionFactory.Create(terminal).ProcessAsync(_cancellationToken);
 
                 if (string.IsNullOrWhiteSpace(response))
                     return false;

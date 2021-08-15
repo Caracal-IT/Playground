@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Newtonsoft.Json.Linq;
@@ -13,7 +14,7 @@ namespace Playground.Router.Clients {
         public HttpTerminalClient(HttpClient httpClient) =>
             _httpClient = httpClient;
         
-        public async Task<string> SendAsync(Configuration configuration, string message, Terminal terminal) {
+        public async Task<string> SendAsync(Configuration configuration, string message, Terminal terminal, CancellationToken cancellationToken) {
             if (configuration.Settings.All(s => s.Name != "url"))
                 return "<XmlData/>";
 
@@ -21,8 +22,10 @@ namespace Playground.Router.Clients {
             dynamic requestJson = JObject.Parse(message.ToJson()!.ToString());
             var req = requestJson.request.ToString();
 
-            var resp = await _httpClient.PostAsync(url, new StringContent(req, UTF8, "application/json"));
-            var result = await resp.Content.ReadAsStringAsync();
+            var content = new StringContent(req, UTF8, "application/json");
+
+            var resp = await _httpClient.PostAsync(url, content, cancellationToken);
+            var result = await resp.Content.ReadAsStringAsync(cancellationToken);
             return result.ToXml("response").ToString(SaveOptions.None);
         }
     }
