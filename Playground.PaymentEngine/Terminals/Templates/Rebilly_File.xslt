@@ -21,35 +21,32 @@
                 <code>00</code>
                 <reference><xsl:value-of select="payload/@reference"/></reference>
                 <amount><xsl:value-of select="payload/@amount"/></amount>
-                <hash><xsl:value-of select="scripts:Hash256(@reference)"/></hash>
+                <hash><xsl:value-of select="scripts:Hash256(@reference)"/></hash>               
                 <meta-data>
-                    <meta-data-item>
-                        <xsl:attribute name="name">Reference</xsl:attribute>
-                        <xsl:attribute name="value"><xsl:value-of select="payload/@reference"/></xsl:attribute>
-                    </meta-data-item>
-                    <meta-data-item>
-                        <xsl:attribute name="name">Amount Name</xsl:attribute>
-                        <xsl:attribute name="value"><xsl:value-of select="format-number(number(payload/@amount) * 100, '# ##0.00', 'Cz2')"/></xsl:attribute>
-                    </meta-data-item>
-
-                    <xsl:for-each select="payload/meta-data">
-                        <xsl:choose>
-                            <xsl:when test="@name = 'account-holder'">
-                                <meta-data-item>
-                                    <xsl:attribute name="name">Account Holder</xsl:attribute>
-                                    <xsl:attribute name="value"><xsl:value-of select="@value"/></xsl:attribute>
-                                </meta-data-item>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <meta-data-item>
-                                    <xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
-                                    <xsl:attribute name="value"><xsl:value-of select="@value"/></xsl:attribute>
-                                </meta-data-item>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                    </xsl:for-each>
-                    
+                    <xsl:attribute name="name">Reference</xsl:attribute>
+                    <xsl:attribute name="value"><xsl:value-of select="payload/@reference"/></xsl:attribute>
                 </meta-data>
+                <meta-data>
+                    <xsl:attribute name="name">Amount</xsl:attribute>
+                    <xsl:attribute name="value"><xsl:value-of select="format-number(number(payload/@amount) * 100, '# ##0.00', 'Cz2')"/></xsl:attribute>
+                </meta-data>
+
+                <xsl:for-each select="payload/meta-data">
+                    <xsl:choose>
+                        <xsl:when test="@name = 'account-holder'">
+                            <meta-data>
+                                <xsl:attribute name="name">Account Holder</xsl:attribute>
+                                <xsl:attribute name="value"><xsl:value-of select="@value"/></xsl:attribute>
+                            </meta-data>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <meta-data>
+                                <xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
+                                <xsl:attribute name="value"><xsl:value-of select="@value"/></xsl:attribute>
+                            </meta-data>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:for-each>
             </request>
         </xsl:if>
 

@@ -14,6 +14,7 @@ using Playground.PaymentEngine.UseCases.Payments.Callback;
 using Playground.PaymentEngine.UseCases.Payments.Process;
 using Playground.Router;
 using Playground.Router.Clients;
+using Playground.Router.Clients.File;
 
 namespace Playground.PaymentEngine {
     public class Startup {
@@ -31,8 +32,7 @@ namespace Playground.PaymentEngine {
             
             services.AddSingleton<ClientFactory, DefaultClientFactory>();
             services.AddSingleton<HttpTerminalClient>();
-            services.AddSingleton<IStreamHandler, StreamHandler>();
-            services.AddSingleton<StreamTerminalClient>();
+            services.AddSingleton<FileTerminalClient>();
             
             services.AddSingleton<ProcessUseCase>();
             services.AddSingleton<CallbackUseCase>();
