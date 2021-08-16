@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace Playground.Router {
+namespace Playground.Router.Old {
     [XmlRoot("config")]
     public class Configuration {
         [XmlAttribute("name")]
@@ -9,6 +9,6 @@ namespace Playground.Router {
 
         [XmlArray("settings")]
         [XmlArrayItem("setting")]
-        public List<Setting> Settings { get; set; } = new ();
+        public List<Setting> Settings { get; set; } = new();
     }
 }

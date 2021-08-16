@@ -5,10 +5,13 @@ using System.Xml.Serialization;
 
 namespace Playground.Xml.Serialization {
     public static class Serializer {
-        public static string Serialize<T>(T data) {
+        public static string Serialize<T>(T? data) =>
+            data?.Serialize()??string.Empty;
+            
+        public static string Serialize(this object data) {
             var xml = new StringBuilder();
             var ns = new XmlSerializerNamespaces(new XmlQualifiedName[] { new XmlQualifiedName(string.Empty, string.Empty) });
-            new XmlSerializer(typeof(T)).Serialize(new StringWriter(xml), data, ns);
+            new XmlSerializer(data.GetType()).Serialize(new StringWriter(xml), data, ns);
             return xml.ToString();
         }
         

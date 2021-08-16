@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Newtonsoft.Json.Linq;
+using Playground.Router.Old;
 using Playground.Xml;
 using static System.Text.Encoding;
 
@@ -15,7 +16,7 @@ namespace Playground.Router.Clients {
         public HttpTerminalClient(HttpClient httpClient) =>
             _httpClient = httpClient;
         
-        public async Task<string> SendAsync(Guid transactionId, Configuration configuration, string message, Terminal terminal, CancellationToken cancellationToken) {
+        public async Task<string> SendAsync(Configuration configuration, string message, CancellationToken cancellationToken) {
             if (configuration.Settings.All(s => s.Name != "url"))
                 return "<XmlData/>";
 

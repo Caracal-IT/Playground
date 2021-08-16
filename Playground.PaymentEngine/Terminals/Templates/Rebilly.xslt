@@ -13,10 +13,10 @@
         
         <xsl:if test="payload">            
             <request>               
-                <trans-ref><xsl:value-of select="payload/@reference"/></trans-ref>
-                <amount><xsl:value-of select="payload/@amount"/></amount>
-                <hash><xsl:value-of select="scripts:Hash256(@reference)"/></hash>
-                <xsl:for-each select="payload/meta-data">
+                <trans-ref><xsl:value-of select="payload/export-data/@reference"/></trans-ref>
+                <amount><xsl:value-of select="payload/export-data/@amount"/></amount>
+                <hash><xsl:value-of select="scripts:Hash256(export-data/@reference)"/></hash>
+                <xsl:for-each select="payload/export-data/meta-data">
                     <xsl:choose>
                         <xsl:when test="@name = 'account-holder'">
                             <card-holder><xsl:value-of select="@value"/></card-holder>
@@ -24,8 +24,8 @@
                     </xsl:choose>
                 </xsl:for-each>
                 <xsl:choose>
-                    <xsl:when test="payload/@amount = 10"><code>10</code></xsl:when>
-                    <xsl:when test="payload/@amount = 12"><code>05</code></xsl:when>
+                    <xsl:when test="payload/export-data/@amount = 10"><code>10</code></xsl:when>
+                    <xsl:when test="payload/export-data/@amount = 12"><code>05</code></xsl:when>
                     <xsl:otherwise><code>00</code></xsl:otherwise>
                 </xsl:choose>
             </request>

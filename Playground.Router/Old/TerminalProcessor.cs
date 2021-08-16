@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Playground.Core.Events;
 using Playground.Router.Clients;
 
-namespace Playground.Router {
+namespace Playground.Router.Old {
     internal class TerminalProcessor<T> where T : class {
         private readonly Guid _transactionId;
         private readonly Request<T> _request;
@@ -53,7 +53,7 @@ namespace Playground.Router {
             return _response;
         }
         
-        private async Task<bool> TryProcessAsync(Terminal terminal) {
+        private async Task<bool> TryProcessAsync(OldTerminal terminal) {
             for (var i = 0; i < terminal.RetryCount; i++) {
                 if (await TryProcessRequestAsync(terminal))
                     return true;
@@ -64,7 +64,7 @@ namespace Playground.Router {
             return false;
         }
         
-        private async Task<bool> TryProcessRequestAsync(Terminal terminal) {
+        private async Task<bool> TryProcessRequestAsync(OldTerminal terminal) {
             try {
                 var (message, success) = await _transactionFactory.Create(_transactionId, terminal)
                                                                   .ProcessAsync(_cancellationToken);
@@ -81,7 +81,7 @@ namespace Playground.Router {
             }
         }
 
-        private async Task<IEnumerable<Terminal>> GetTerminals(IEnumerable<string> terminals) =>
+        private async Task<IEnumerable<OldTerminal>> GetTerminals(IEnumerable<string> terminals) =>
             await _store.GetTerminalsAsync(terminals, _cancellationToken);
     }
 }

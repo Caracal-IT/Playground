@@ -7,8 +7,8 @@ using Playground.Router;
 
 using Playground.PaymentEngine.Extensions;
 using Playground.PaymentEngine.Model;
-using Setting = Playground.Router.Setting;
-using Terminal = Playground.Router.Terminal;
+using Playground.Router.Old;
+using Setting = Playground.Router.Old.Setting;
 
 namespace Playground.PaymentEngine.Stores {
     public class FileTerminalStore: TerminalStore {
@@ -17,21 +17,21 @@ namespace Playground.PaymentEngine.Stores {
         public FileTerminalStore() =>
             _store = new FilePaymentStore().GetStore();
 
-        public async Task<IEnumerable<Terminal>> GetTerminalsAsync(IEnumerable<string> terminals, CancellationToken cancellationToken) {
+        public async Task<IEnumerable<OldTerminal>> GetTerminalsAsync(IEnumerable<string> terminals, CancellationToken cancellationToken) {
             var tasks = terminals.Select(t => GetTerminalAsync(t, cancellationToken));
             return await Task.WhenAll(tasks);
         }
         
-        private async Task<Terminal> GetTerminalAsync(string name, CancellationToken cancellationToken) {
+        private async Task<OldTerminal> GetTerminalAsync(string name, CancellationToken cancellationToken) {
             var path = Path.Join("Terminals", "Templates", $"{name}.xslt");
             
             if(!File.Exists(path))
-                return new Terminal{ Name = name, Xslt = string.Empty};
+                return new OldTerminal{ Name = name, Xslt = string.Empty};
 
             var terminal = _store.Terminals.TerminalList.FirstOrDefault(t => t.Name == name);
 
             if (terminal != null) {
-                return new Terminal {
+                return new OldTerminal {
                     Name = terminal.Name,
                     Type = terminal.Type,
                     RetryCount = terminal.RetryCount,
@@ -42,7 +42,7 @@ namespace Playground.PaymentEngine.Stores {
                 }; 
             }
 
-            return new Terminal {
+            return new OldTerminal {
                 Name = name,
                 Type = "http",
                 Xslt = await path.ReadFromFileAsync(cancellationToken),

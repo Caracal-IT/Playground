@@ -11,10 +11,9 @@ using Playground.Xml;
 using Playground.Xml.Serialization;
 using Playground.XsltTransform;
 using Playground.XsltTransform.Extensions;
-
 using static Playground.Xml.Serialization.Serializer;
 
-namespace Playground.Router {
+namespace Playground.Router.Old {
     internal class TransactionFactory<T> where T:class{
         private readonly Request<T> _request;
         private readonly EventHub _eventHub;
@@ -30,7 +29,7 @@ namespace Playground.Router {
             _requestXml = SerializeRequest();
         }
 
-        public Transaction Create(Guid transactionId, Terminal terminal) =>
+        public Transaction Create(Guid transactionId, OldTerminal terminal) =>
             new (_eventHub, transactionId, _request.Name, _requestXml, terminal, _factory, _extensions);
         
         private string SerializeRequest() {
@@ -52,7 +51,7 @@ namespace Playground.Router {
         private readonly Guid _transactionId;
         private readonly string _requestName;
         private readonly string _requestXml;
-        private readonly Terminal _terminal;
+        private readonly OldTerminal _terminal;
         private readonly ClientFactory _factory;
         private readonly Dictionary<string, object> _extensions;
 
@@ -61,7 +60,7 @@ namespace Playground.Router {
             Guid transactionId,
             string requestName,
             string requestXml,
-            Terminal terminal,
+            OldTerminal terminal,
             ClientFactory factory,
             Dictionary<string, object> extensions) 
         {
@@ -74,8 +73,9 @@ namespace Playground.Router {
             _extensions = extensions;
         }
         
-        public async Task<(string? message ,bool success)> ProcessAsync(CancellationToken cancellationToken) {
-            var client = _factory.Create(_terminal);
+        public Task<(string? message ,bool success)> ProcessAsync(CancellationToken cancellationToken) {
+            /*
+            var client = //_factory.Create(_terminal);
             var message = GetClientMessage();
             
             _eventHub.Publish($"Sending {_terminal.Name} {message}");
@@ -83,6 +83,8 @@ namespace Playground.Router {
             _eventHub.Publish($"Received {_terminal.Name} {responseXml}");
             
             return ProcessResponseMessage(responseXml);
+            */
+            throw new Exception();
         }
 
         private string GetClientMessage() => Transformer.Transform(_requestXml, _terminal.Xslt!, _extensions);

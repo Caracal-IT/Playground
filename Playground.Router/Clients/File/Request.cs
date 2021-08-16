@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using Playground.Router.Old;
 
 namespace Playground.Router.Clients.File {
     [XmlRoot("request")]

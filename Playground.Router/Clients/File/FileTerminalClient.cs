@@ -10,13 +10,14 @@ namespace Playground.Router.Clients.File {
     public class FileTerminalClient : Client {
         private static ReaderWriterLock _locker = new();
 
-        public Task<string> SendAsync(Guid transactionId, Configuration configuration, string message, Terminal terminal,
-            CancellationToken cancellationToken) {
+        public Task<string> SendAsync(Configuration configuration, string message, CancellationToken cancellationToken) {
             var request = DeSerialize<Request>(message);
             var filePath = configuration.Settings.First(s => s.Name == "file_path").Value;
-
+            var terminal = configuration.Settings.First(s => s.Name == "Terminal").Value;
+            var transactionId = configuration.Settings.First(s => s.Name == "TransactionId").Value;
+            
             var parent = Directory.GetCurrentDirectory();
-            var fileName = $"{filePath}/{terminal.Name}_{transactionId}.csv";
+            var fileName = $"{filePath}/{terminal}_{transactionId}.csv";
             var path = $"{parent}/{fileName}";
 
             try {

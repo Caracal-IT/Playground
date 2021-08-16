@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Playground.Router;
+using Playground.Router.Old;
 
 namespace Playground.PaymentEngine.Terminals.Functions {
     public class CustomTerminalExtensions: TerminalExtensions {
