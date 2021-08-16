@@ -10,7 +10,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Playground.MockTerminals\Playground.MockTerminals.csproj" />
       <ProjectReference Include="..\Playground.Router\Playground.Router.csproj" />
       <ProjectReference Include="..\Xml\Playground.Xml\Playground.Xml.csproj" />
       <ProjectReference Include="..\Xml\XSLT\Playground.XsltTransform\Playground.XsltTransform.csproj" />
