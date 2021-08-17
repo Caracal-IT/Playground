@@ -66,6 +66,9 @@ namespace Playground.PaymentEngine.Stores {
                 .Select(t => t.Terminal)
                 .ToList();
 
+        public IEnumerable<Terminal> GetTerminals() =>
+            _store.Terminals.TerminalList;    
+        
         public void LogTerminalResults(IEnumerable<TerminalResult> results) =>
             _store.TerminalResults.TerminalResultList.AddRange(results);
         

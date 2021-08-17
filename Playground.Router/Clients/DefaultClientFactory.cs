@@ -1,5 +1,4 @@
 using Playground.Router.Clients.File;
-using Playground.Router.Old;
 
 namespace Playground.Router.Clients {
     public class DefaultClientFactory: ClientFactory {

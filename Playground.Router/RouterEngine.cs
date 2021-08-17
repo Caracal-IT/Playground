@@ -6,56 +6,42 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using System.Xml.XPath;
-using Playground.Core.Events;
 using Playground.Router.Clients;
-using Playground.Router.Old;
 using Playground.Xml.Serialization;
 using Playground.XsltTransform;
+using Playground.XsltTransform.Extensions;
 
 namespace Playground.Router {
     public class RouterEngine : Engine {
-        private readonly TerminalStore _store;
         private readonly ClientFactory _factory;
-        private readonly TerminalExtensions _extensions;
-        private readonly EventHub _eventHub;
 
-        public RouterEngine(EventHub eventHub, TerminalStore store, TerminalExtensions extensions, ClientFactory factory) {
-            _store = store;
-            _eventHub = eventHub;
-            _extensions = extensions;
-            _factory = factory;
-        }
+        public RouterEngine(ClientFactory factory) => _factory = factory;
 
-        public async Task<List<string>> ProcessAsync<T>(Guid transactionId, Old.Request<T> request, CancellationToken cancellationToken)
-            where T : class =>
-            await TerminalProcessor<T>.ProcessAsync(_eventHub, transactionId, request, _store, _extensions, _factory, cancellationToken);
-
-        public async Task<Response> ProcessAsync2(Request request, CancellationToken cancellationToken) =>
+        public async Task<IEnumerable<Response>> ProcessAsync(Request request, CancellationToken cancellationToken) =>
             await Transaction.ProcessAsync(request,  _factory, cancellationToken);
     }
 
     public class Transaction {
         private Request _request;
-        private Response _response;
+        private List<Response> _responses;
         private ClientFactory _clientFactory;
         private CancellationToken _cancellationToken;
         
         private string _requestXml;
-        private readonly Dictionary<string, object> _extensions;
-        
+
         private Transaction(Request request, ClientFactory clientFactory, CancellationToken cancellationToken) {
             _request = request;
             _clientFactory = clientFactory;
             _cancellationToken = cancellationToken;
             
-            _response = new Response();
-            _extensions = request.Extensions?.GetExtensions() ?? new Dictionary<string, object>();
+            _responses = new List<Response>();
+            _requestXml = string.Empty;
         }
         
-        public static async Task<Response> ProcessAsync(Request request, ClientFactory clientFactory, CancellationToken cancellationToken) =>
+        public static async Task<IEnumerable<Response>> ProcessAsync(Request request, ClientFactory clientFactory, CancellationToken cancellationToken) =>
             await new Transaction(request, clientFactory, cancellationToken).ProcessAsync();
 
-        private async Task<Response> ProcessAsync() {
+        private async Task<IEnumerable<Response>> ProcessAsync() {
             _requestXml = SerializeRequest();
             
             foreach (var terminal in _request.Terminals) {
@@ -65,11 +51,11 @@ namespace Playground.Router {
                 await Task.Delay(100, _cancellationToken);
             }
             
-            return _response;
+            return _responses;
         }
         
         private string SerializeRequest() {
-            var xml = XDocument.Parse(_request.Serialize());
+            var xml = XDocument.Parse(_request.ToXml());
 
             if (!PayloadIsXml()) return xml.ToString();
 
@@ -89,15 +75,25 @@ namespace Playground.Router {
         }
 
         private async Task<bool> ProcessAsync(Terminal terminal) {
-            var request = Transformer.Transform(_requestXml, terminal.Xslt, _extensions);
+            var request = _requestXml.Transform(terminal.Xslt, _request.Extensions);
             var client = _clientFactory.Create(terminal);
-            var responseXml = await client.SendAsync(GetConfiguration(terminal), request, _cancellationToken);
+            var responseXml = WrapResponse(await client.SendAsync(GetConfiguration(terminal), request, _cancellationToken));
+            var result = responseXml.Transform(terminal.Xslt, _request.Extensions).ToXDocument();
+            var response = result.Root!.FirstNode!.ToObject<TerminalResponse>();
             
-            return true;
+            _responses.Add(new Response {
+                Result = result.Root!.LastNode!.ToString(),
+                TerminalResponse = response
+            });
+            
+            return response.Success;
+
+            string WrapResponse(string xml) => $"<request name='{_request.Name}'>{xml.ToXDocument().Root}</request>";
         }
-        
+
+
         private Configuration GetConfiguration(Terminal terminal) {
-            var configXml = Transformer.Transform($"<request name='{_request.Name}'><config/></request>", terminal.Xslt!, _extensions);
+            var configXml = Transformer.Transform($"<request name='{_request.Name}'><config/></request>", terminal.Xslt, _request.Extensions);
             var config = new Configuration();
 
             if (!string.IsNullOrWhiteSpace(configXml))
@@ -116,8 +112,17 @@ namespace Playground.Router {
         }
     }
 
+    [XmlRoot("terminal-response")]
+    public class TerminalResponse {
+        [XmlAttribute("success")] public bool Success { get; set; } = true;
+        [XmlAttribute("code")] public string Code { get; set; } = "00";
+        [XmlAttribute("reference")] public string Reference { get; set; } = string.Empty;
+    }
+    
+    [XmlRoot("response")]
     public class Response {
-            
+        public TerminalResponse TerminalResponse { get; set; } = new();
+        public string Result { get; set; } = string.Empty;
     }
         
         [XmlRoot("request")]
@@ -125,7 +130,7 @@ namespace Playground.Router {
             [XmlIgnore] public Guid TransactionId { get; set; } = Guid.NewGuid();
             [XmlAttribute("name")] public string Name { get; set; } = "request";
             [XmlElement("payload")] public string Payload { get; set; } = string.Empty;
-            [XmlIgnore] public IEnumerable<Terminal> Terminals { get; set; } = new Terminal[0];
-            [XmlIgnore] public TerminalExtensions? Extensions { get; set; }
+            [XmlIgnore] public IEnumerable<Terminal> Terminals { get; set; } = Array.Empty<Terminal>();
+            [XmlIgnore] public Dictionary<string, object> Extensions { get; set; } = new();
         }
     }

@@ -3,47 +3,39 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Playground.PaymentEngine.Services.Routing;
 using Playground.PaymentEngine.Stores;
-using Playground.Router;
-using Playground.Router.Old;
 using static Playground.Xml.Serialization.Serializer;
 
 namespace Playground.PaymentEngine.UseCases.Payments.Callback {
     public class CallbackUseCase {
         private readonly PaymentStore _paymentStore;
-        private readonly Engine _engine;
+        private readonly IRoutingService _routingService;
 
-        public CallbackUseCase(PaymentStore paymentStore, Engine engine) {
+        public CallbackUseCase(PaymentStore paymentStore, IRoutingService routingService) {
             _paymentStore = paymentStore;
-            _engine = engine;
+            _routingService = routingService;
         }
         
-        public async Task<CallbackResponse> ExecuteAsync(CallbackRequest request, CancellationToken token) {
+        public async Task<CallbackResponse> ExecuteAsync(CallbackRequest request, CancellationToken cancellationToken) {
             var transactionId = Guid.NewGuid();
             
             var allocations = _paymentStore.GetAllocationsByReference(request.Reference).ToList();
            
             if (!allocations.Any()) return new CallbackResponse();
+            var terminals = new[] { allocations.First().Terminal };
 
-            var req2 = new Request<string> {
-                Name = request.Action,
-                Payload = request.Data,
-                Terminals = new []{ allocations.First().Terminal }
-            };
+            var req = new RoutingRequest(transactionId, request.Action, request.Data, terminals);
+
+            var responses =  await _routingService.Send(req, cancellationToken);
+            var response = responses.FirstOrDefault();
             
-            var response =  await _engine.ProcessAsync(transactionId, req2, token);
-            var xml = response.FirstOrDefault();
-
-            if (string.IsNullOrWhiteSpace(xml)) return new CallbackResponse();
-
-            var xDoc = XDocument.Parse(xml);
+            if (response?.Result == null) return new CallbackResponse();
             
-            var resp = DeSerialize<TerminalResponse>(xDoc.Root!.FirstNode!.ToString());
-
-            if (resp!.IsSuccessful && resp.Code == "00") 
+            if (response.TerminalResponse.Success) 
                 allocations.ForEach(a => a.AllocationStatusId = 6);
             
-            return new CallbackResponse{ TerminalResponse = resp, Response = xDoc.Root!.LastNode!.ToString() };
+            return new CallbackResponse{  Response = response.Result };
         }
     }
 }

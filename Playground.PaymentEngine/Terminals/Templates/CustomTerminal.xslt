@@ -13,13 +13,18 @@
         
         <xsl:if test="payload">
             <request>
-                <xsl:attribute name="reference"><xsl:value-of select="payload/@reference"/></xsl:attribute>
+                <xsl:attribute name="reference"><xsl:value-of select="payload/export-data/@reference"/></xsl:attribute>
                 <code>00</code>
-                <amount><xsl:value-of select="payload/@amount"/></amount>
+                <amount><xsl:value-of select="payload/export-data/@amount"/></amount>
             </request>
         </xsl:if>
         <xsl:if test="response">
             <response>
+                <terminal-response>
+                    <xsl:attribute name="success">true</xsl:attribute>
+                    <xsl:attribute name="code"><xsl:value-of select="response/code"/></xsl:attribute>
+                    <xsl:attribute name="reference"><xsl:value-of select="response/@reference"/></xsl:attribute>
+                </terminal-response>
                 <response>
                     <terminal>CustomTerminal</terminal>
                     <name><xsl:value-of select="response/name"/></name>

@@ -1,37 +1,30 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Playground.PaymentEngine.Extensions;
 using Playground.PaymentEngine.Helpers;
 using Playground.PaymentEngine.Model;
+using Playground.PaymentEngine.Services.Routing;
 using Playground.PaymentEngine.Stores;
-using Playground.Router;
-using Playground.Router.Old;
 using static Playground.PaymentEngine.Helpers.Hashing;
 using static Playground.Xml.Serialization.Serializer;
-using Setting = Playground.Router.Setting;
-using Terminal = Playground.Router.Terminal;
 
 namespace Playground.PaymentEngine.UseCases.Payments.Process {
     public class ProcessUseCase {
         private readonly PaymentStore _paymentStore;
-        private readonly TerminalExtensions _extensions;
-        private readonly Engine _engine;
+        private readonly IRoutingService _routingService;
         
-        public ProcessUseCase(PaymentStore paymentStore, TerminalExtensions extensions, Engine engine) {
+        public ProcessUseCase(PaymentStore paymentStore, IRoutingService routingService) {
             _paymentStore = paymentStore;
-            _extensions = extensions;
-            _engine = engine;
+            _routingService = routingService;
         }
 
         public async Task<ProcessResponse> ExecuteAsync(ProcessRequest request, CancellationToken cancellationToken) {
             var transactionId = Guid.NewGuid();
             var allocations = _paymentStore.GetExportAllocations(request.Allocations).ToList();
             var items = (request.Consolidate ? GetConsolidated() : GetExportData()).ToList();
-            
+
             await items.Select(Export).WhenAll(maxConcurrentRequests: 50);
             
             UpdateStatuses();
@@ -40,44 +33,14 @@ namespace Playground.PaymentEngine.UseCases.Payments.Process {
             return new ProcessResponse(items.Select(i => i.Response.Last()));
 
             async Task Export(ExportData data) {
-                /*
-                var req2 = new Request<ExportData> {
-                    Name = nameof(ProcessUseCase),
-                    Payload = data,
-                    Terminals = _paymentStore.GetActiveAccountTypeTerminals(data.AccountTypeId).Select(i => i.Name)
-                };
+                var terminals = _paymentStore.GetActiveAccountTypeTerminals(data.AccountTypeId)
+                                             .Select(t => t.Name);
+                
+                var req = new RoutingRequest(transactionId, nameof(ProcessUseCase), data.ToXml(), terminals);
+                var response = await _routingService.Send(req, cancellationToken);
 
-               var response =  await _engine.ProcessAsync(transactionId, req2, cancellationToken);
-               var result = response.Select(DeSerialize<ExportResponse>);
-               data.Response.AddRange(result);
-*/
-               var terminals = _paymentStore.GetActiveAccountTypeTerminals(data.AccountTypeId)
-                   .Select(async t => new Terminal {
-                       Name = t.Name,
-                       Settings = t.Settings.Select(s => new Setting(s.Name, s.Value)),
-                       Type = t.Type,
-                       RetryCount = t.RetryCount,
-                       Xslt = await GetXslt(t.Name)
-                   });
-               
-                var req = new Request { 
-                    TransactionId = transactionId,
-                    Name = nameof(ProcessUseCase),
-                    Payload = data.Serialize(),
-                    Extensions = _extensions,
-                    Terminals = await Task.WhenAll(terminals)
-               };
-
-               var response = await _engine.ProcessAsync2(req, cancellationToken);
-
-
-               async Task<string> GetXslt(string name) {
-                   var path = Path.Join("Terminals", "Templates", $"{name}.xslt");
-
-                   if (!File.Exists(path)) return string.Empty;
-
-                   return await path.ReadFromFileAsync(cancellationToken);
-               }
+                var result = response.Select(r => r.Result).Select(DeSerialize<ExportResponse>);
+                data.Response.AddRange(result);
             }
 
             void SaveResults() {

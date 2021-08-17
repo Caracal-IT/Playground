@@ -33,14 +33,8 @@
 
         <xsl:if test="response">     
             <response>
-                <response>
-                    <terminal>Rebilly</terminal>
-                    <name><xsl:value-of select="response/name"/></name>
-                    <reference><xsl:value-of select="response/trans-ref"/></reference>
-                    <code><xsl:value-of select="response/code"/></code>
-                    <message>From Rebilly Response ($ <xsl:value-of select="response/amount"/>)</message>
-                </response>
                 <terminal-response>
+                    <xsl:attribute name="reference"><xsl:value-of select="response/trans-ref"/></xsl:attribute>
                     <xsl:choose>
                         <xsl:when test="response/code = '05'">
                             <xsl:attribute name="success">false</xsl:attribute>
@@ -50,6 +44,13 @@
                         </xsl:otherwise>
                     </xsl:choose>
                 </terminal-response>
+                <response>
+                    <terminal>Rebilly</terminal>
+                    <name><xsl:value-of select="response/name"/></name>
+                    <reference><xsl:value-of select="response/trans-ref"/></reference>
+                    <code><xsl:value-of select="response/code"/></code>
+                    <message>From Rebilly Response ($ <xsl:value-of select="response/amount"/>)</message>
+                </response>
             </response>
         </xsl:if>
     </xsl:template>
@@ -72,23 +73,18 @@
 
         <xsl:if test="response">
             <response>
-                <response>
-                    <terminal-response>
-                        <xsl:attribute name="success">true</xsl:attribute>
-                        <xsl:attribute name="code"><xsl:value-of select="response/code"/></xsl:attribute>
-                        <xsl:attribute name="reference"><xsl:value-of select="response/reference"/></xsl:attribute>
-                    </terminal-response>
-                    <response>
-                        <xsl:attribute name="reference"><xsl:value-of select="response/reference"/></xsl:attribute>
-                        <xsl:attribute name="code"><xsl:value-of select="response/code"/></xsl:attribute>
-                        <user>
-                            <name>Kate G</name>
-                        </user>
-                    </response>
-                </response>
                 <terminal-response>
                     <xsl:attribute name="success">true</xsl:attribute>
+                    <xsl:attribute name="code"><xsl:value-of select="response/code"/></xsl:attribute>
+                    <xsl:attribute name="reference"><xsl:value-of select="response/reference"/></xsl:attribute>
                 </terminal-response>
+                <response>
+                    <xsl:attribute name="reference"><xsl:value-of select="response/reference"/></xsl:attribute>
+                    <xsl:attribute name="code"><xsl:value-of select="response/code"/></xsl:attribute>
+                    <user>
+                        <name>Kate G</name>
+                    </user>
+                </response>
             </response>
         </xsl:if>
     </xsl:template>

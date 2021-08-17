@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Playground.Core.Events;
 using Playground.PaymentEngine.Events;
+using Playground.PaymentEngine.Services.Routing;
 using Playground.PaymentEngine.Stores;
 using Playground.PaymentEngine.Terminals;
 using Playground.PaymentEngine.Terminals.Functions;
@@ -15,7 +16,6 @@ using Playground.PaymentEngine.UseCases.Payments.Process;
 using Playground.Router;
 using Playground.Router.Clients;
 using Playground.Router.Clients.File;
-using Playground.Router.Old;
 
 namespace Playground.PaymentEngine {
     public class Startup {
@@ -26,8 +26,7 @@ namespace Playground.PaymentEngine {
         public IConfiguration Configuration { get; }
         
         public void ConfigureServices(IServiceCollection services) {
-            services.AddSingleton<TerminalExtensions, CustomTerminalExtensions>();
-            services.AddSingleton<TerminalStore, FileTerminalStore>();
+            services.AddSingleton<Terminals.Functions.XsltExtensions, CustomExtensions>();
             services.AddSingleton<PaymentStore, FilePaymentStore>();
             services.AddSingleton<Engine, RouterEngine>();
             
@@ -39,6 +38,8 @@ namespace Playground.PaymentEngine {
             services.AddSingleton<CallbackUseCase>();
 
             services.AddSingleton<EventHub, WebEventHub>();
+            
+            services.AddSingleton<IRoutingService, RoutingService>();
 
             services.AddControllers();
             services.AddHttpClient();
