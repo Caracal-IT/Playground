@@ -1,14 +1,21 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
+using Microsoft.Extensions.Caching.Memory;
 using Playground.PaymentEngine.Model;
+using Playground.PaymentEngine.Services.CacheService;
 
 namespace Playground.PaymentEngine.Stores {
     public class FilePaymentStore: PaymentStore {
         private Store _store;
+        private readonly ICacheService _cacheService;
 
-        public FilePaymentStore() => LoadStore();
+        public FilePaymentStore(ICacheService cacheService) {
+            _cacheService = cacheService;
+            LoadStore();
+        }
 
         public Store GetStore() => _store;
 
@@ -67,8 +74,8 @@ namespace Playground.PaymentEngine.Stores {
                 .ToList();
 
         public IEnumerable<Terminal> GetTerminals() =>
-            _store.Terminals.TerminalList;    
-        
+            _cacheService.GetValue(nameof(GetTerminals), () => _store.Terminals.TerminalList);
+
         public void LogTerminalResults(IEnumerable<TerminalResult> results) =>
             _store.TerminalResults.TerminalResultList.AddRange(results);
         

@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Playground.Core.Events;
 using Playground.PaymentEngine.Events;
+using Playground.PaymentEngine.Services.CacheService;
 using Playground.PaymentEngine.Services.Routing;
 using Playground.PaymentEngine.Stores;
 using Playground.PaymentEngine.Terminals.Functions;
@@ -38,9 +39,12 @@ namespace Playground.PaymentEngine {
             services.AddSingleton<EventHub, WebEventHub>();
             
             services.AddSingleton<IRoutingService, RoutingService>();
+            services.AddSingleton<ICacheService, CacheService>();
 
             services.AddControllers();
             services.AddHttpClient();
+
+            services.AddMemoryCache();
            
             services.AddMvc()
                 .AddXmlSerializerFormatters()
