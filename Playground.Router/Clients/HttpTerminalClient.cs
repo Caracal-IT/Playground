@@ -2,7 +2,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using Newtonsoft.Json.Linq;
 using Playground.Xml;
 using static System.Text.Encoding;
@@ -33,15 +32,12 @@ namespace Playground.Router.Clients {
             var resp = await _httpClient.PostAsync(url, content, cancellationToken);
             var result = await resp.Content.ReadAsStringAsync(cancellationToken);
             
-            return isXml ? result : JsonResponseToXml();
+            return isXml ? result : result.ToXml("response");
             
             string GetJsonText() {
                 dynamic requestJson = JObject.Parse(message.ToJson()!.ToString());
                 return requestJson.request.ToString();
             }
-
-            string JsonResponseToXml() =>
-                result.ToXml("response").ToString(SaveOptions.None);
         }
     }
 }

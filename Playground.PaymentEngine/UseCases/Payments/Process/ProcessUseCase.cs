@@ -7,6 +7,7 @@ using Playground.PaymentEngine.Helpers;
 using Playground.PaymentEngine.Model;
 using Playground.PaymentEngine.Services.Routing;
 using Playground.PaymentEngine.Stores;
+using Playground.Xml;
 using static Playground.PaymentEngine.Helpers.Hashing;
 using static Playground.Xml.Serialization.Serializer;
 

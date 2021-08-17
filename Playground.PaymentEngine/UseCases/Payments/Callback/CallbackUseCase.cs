@@ -2,10 +2,8 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using Playground.PaymentEngine.Services.Routing;
 using Playground.PaymentEngine.Stores;
-using static Playground.Xml.Serialization.Serializer;
 
 namespace Playground.PaymentEngine.UseCases.Payments.Callback {
     public class CallbackUseCase {

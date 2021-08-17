@@ -8,7 +8,6 @@ using Playground.PaymentEngine.Extensions;
 using Playground.PaymentEngine.Stores;
 using Playground.PaymentEngine.Terminals.Functions;
 using Playground.Router;
-using Playground.Xml.Serialization;
 
 namespace Playground.PaymentEngine.Services.Routing {
     public record RoutingRequest(Guid TransactionId, string Name, string Payload, IEnumerable<string> Terminals);

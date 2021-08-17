@@ -1,4 +1,3 @@
-using System;
 using System.Xml.Serialization;
 
 namespace Playground.Router.Clients.File {

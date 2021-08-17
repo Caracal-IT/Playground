@@ -7,6 +7,7 @@ using System.Xml.Linq;
 using System.Xml.Serialization;
 using System.Xml.XPath;
 using Playground.Router.Clients;
+using Playground.Xml;
 using Playground.Xml.Serialization;
 using Playground.XsltTransform;
 using Playground.XsltTransform.Extensions;
@@ -56,17 +57,11 @@ namespace Playground.Router {
         
         private string SerializeRequest() {
             var xml = XDocument.Parse(_request.ToXml());
-
-            if (!PayloadIsXml()) return xml.ToString();
-
             var n = xml.XPathSelectElement("request/payload");
             n!.RemoveAll();
             n.Add(XDocument.Parse($"{_request.Payload}").Root!);
 
             return xml.ToString();
-
-            bool PayloadIsXml() =>
-                _request.Payload.StartsWith("<");
         }
 
         private async Task<bool> TryProcessAsync(Terminal terminal) {

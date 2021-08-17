@@ -52,14 +52,13 @@ namespace Playground.PaymentEngine.Controllers {
             };
             
             var response = await useCase.ExecuteAsync(request, token);
-            return response.Response.ToXml();
+            return XDocument.Parse(response.Response).Root;
         }
         
         [HttpPost("process/json/{method}/{reference}")]
         public async Task<object> ProcessCallback([FromServices] CallbackUseCase useCase, [FromRoute] string method, [FromRoute] string reference, [FromBody] JsonElement payload, CancellationToken token) {
             var xml = payload.GetRawText()
-                             .ToXml("root")
-                             .ToString(SaveOptions.DisableFormatting);
+                             .ToXml("root");
             
             var request = new CallbackRequest {
                 Action = method.ToLower(),
