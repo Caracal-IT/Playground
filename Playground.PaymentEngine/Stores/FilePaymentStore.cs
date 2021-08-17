@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
-using Microsoft.Extensions.Caching.Memory;
 using Playground.PaymentEngine.Model;
 using Playground.PaymentEngine.Services.CacheService;
 
@@ -61,17 +59,19 @@ namespace Playground.PaymentEngine.Stores {
         }
 
         public IEnumerable<Terminal> GetActiveAccountTypeTerminals(long accountTypeId) =>
-            _store.TerminalMaps
-                .TerminalMapList
-                .Join(_store.Terminals.TerminalList,
-                    tm => tm.TerminalId,
-                    t => t.Id,
-                    (tm, t) => new { Map = tm, Terminal = t }
-                )
-                .Where(t => t.Map.Enabled && t.Map.AccountTypeId == accountTypeId)
-                .OrderBy(t => t.Map.Order)
-                .Select(t => t.Terminal)
-                .ToList();
+            _cacheService.GetValue($"{nameof(GetTerminals)}_{accountTypeId}", () => 
+                _store.TerminalMaps
+                    .TerminalMapList
+                    .Join(_store.Terminals.TerminalList,
+                        tm => tm.TerminalId,
+                        t => t.Id,
+                        (tm, t) => new { Map = tm, Terminal = t }
+                    )
+                    .Where(t => t.Map.Enabled && t.Map.AccountTypeId == accountTypeId)
+                    .OrderBy(t => t.Map.Order)
+                    .Select(t => t.Terminal)
+                    .ToList()
+            );
 
         public IEnumerable<Terminal> GetTerminals() =>
             _cacheService.GetValue(nameof(GetTerminals), () => _store.Terminals.TerminalList);
