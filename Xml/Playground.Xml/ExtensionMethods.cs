@@ -10,7 +10,7 @@ using static Playground.Xml.Serialization.Serializer;
 namespace Playground.Xml {
     public static class ExtensionMethods {
         public static object? ToJson(this string xml) => 
-            string.IsNullOrWhiteSpace(xml) ? null : Deserialize<object>(SerializeXNode(XDocument.Parse(xml)).Replace("@", ""));
+            string.IsNullOrWhiteSpace(xml) ? null : Deserialize<object>(SerializeXNode(XDocument.Parse(xml)).Replace("@", string.Empty));
         
         public static string ToXml(this string json, string root) => 
             DeserializeXNode(json, root).ToString(SaveOptions.DisableFormatting);
