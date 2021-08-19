@@ -1,6 +1,11 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=386f7cb0_002D9e15_002D41e0_002Dbb05_002D9a47ed8f37bd/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="A_Transformer" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=0fb6d6f0_002Dd440_002D4c06_002D86ab_002D04087ae30264/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Task3 #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
-    &lt;TestId&gt;xUnit::AFA0B06F-97F4-4B84-BCFF-F1B411D8B94D::net6.0::XsltTransformTests.A_Transformer&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::5027204C-471E-44A2-B869-EAFCB0124333::net6.0::Playground.Rules.Tests.A_Rules_Engine.Should_Run_Rules&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=8509ec51_002Ddb72_002D4ebe_002Db2e7_002D9d0c714aff8a/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Task3" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;xUnit::5027204C-471E-44A2-B869-EAFCB0124333::net6.0::Playground.Rules.Tests.MyCustomAction+A_MicroEngine.Task3&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

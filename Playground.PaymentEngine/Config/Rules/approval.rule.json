@@ -1,0 +1,16 @@
+[
+    {
+        "WorkflowName": "approval",
+        "Rules": [
+            {
+                "RuleName": "FundsAvailable",
+                "SuccessEvent": "Valid Balance",
+                "ErrorMessage": "No funds available",
+                "Enabled": true,
+                "ErrorType": "Warning",
+                "RuleExpressionType": "LambdaExpression",
+                "Expression": "balance > amount"
+            }
+        ]
+    }
+]

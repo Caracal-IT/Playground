@@ -1,20 +1,26 @@
+using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Playground.Core.Events;
 using Playground.PaymentEngine.Events;
+using Playground.PaymentEngine.Helpers;
 using Playground.PaymentEngine.Services.CacheService;
 using Playground.PaymentEngine.Services.Routing;
 using Playground.PaymentEngine.Stores;
 using Playground.PaymentEngine.Terminals.Functions;
 using Playground.PaymentEngine.UseCases.Payments.Callback;
 using Playground.PaymentEngine.UseCases.Payments.Process;
+using Playground.PaymentEngine.UseCases.Payments.RunApprovalRules;
 using Playground.Router;
 using Playground.Router.Clients;
 using Playground.Router.Clients.File;
+using Playground.Rules;
+using Engine = Playground.Router.Engine;
 
 namespace Playground.PaymentEngine {
     public class Startup {
@@ -25,7 +31,14 @@ namespace Playground.PaymentEngine {
         public IConfiguration Configuration { get; }
         
         public void ConfigureServices(IServiceCollection services) {
-            services.AddSingleton<Terminals.Functions.XsltExtensions, CustomExtensions>();
+            services.AddLogging();
+            
+            IFileProvider physicalProvider = new PhysicalFileProvider(Directory.GetCurrentDirectory());
+            services.AddSingleton(physicalProvider);
+            services.AddSingleton<RuleStore, FileRuleStore>();
+            services.AddSingleton<Rules.Engine>();
+            
+            services.AddSingleton<XsltExtensions, CustomExtensions>();
             services.AddSingleton<PaymentStore, FilePaymentStore>();
             services.AddSingleton<Engine, RouterEngine>();
             
@@ -35,6 +48,7 @@ namespace Playground.PaymentEngine {
             
             services.AddSingleton<ProcessUseCase>();
             services.AddSingleton<CallbackUseCase>();
+            services.AddSingleton<RunApprovalRulesUseCase>();
 
             services.AddSingleton<EventHub, WebEventHub>();
             

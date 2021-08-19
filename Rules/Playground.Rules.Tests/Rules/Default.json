@@ -1,0 +1,61 @@
+[
+  {
+    "WorkflowName": "default",        
+    "Rules": [
+      {
+        "RuleName": "Rule1",        
+        "ErrorMessage": "Over expected.",
+        "Enabled": true,
+        "ErrorType": "Warning",
+        "RuleExpressionType": "LambdaExpression",             
+        "Expression": "input1.amount < 30",
+        "Actions": {
+          "OnSuccess": {
+            "Name": "OutputExpression",
+            "Context": {
+              "Expression": "input1.amount * 5000"
+            }
+          },
+          "OnFailure": null
+        },
+        "SuccessEvent": "Rule One"
+      },
+      {
+        "RuleName": "Rule1_test",        
+        "ErrorMessage": "Over expected.",
+        "Enabled": true,
+        "ErrorType": "Warning",
+        "RuleExpressionType": "LambdaExpression",                
+        "Expression": "input1.amount < 200",
+        "Actions": {
+          "OnSuccess": {
+            "Name": "MyCustomAction",
+            "Context": {
+              "customContextInput": "input1.amount"
+            }
+          },
+          "OnFailure": null
+        },
+        "SuccessEvent": "Rule 2"
+      },
+      {
+        "RuleName": "Rule3_test",        
+        "ErrorMessage": "Over expected.  3",
+        "Enabled": true,
+        "ErrorType": "Warning",
+        "RuleExpressionType": "LambdaExpression",                
+        "Expression": "Utils.CheckContains(input1, 1)",        
+        "SuccessEvent": "Rule 3"
+      },
+      {
+        "RuleName": "Rule4_test",       
+        "ErrorMessage": "Over expected.  4",
+        "Enabled": true,
+        "ErrorType": "Warning",
+        "RuleExpressionType": "LambdaExpression",
+        "Expression": "Utils.CheckContains(input1, 200)",        
+        "SuccessEvent": "Rule 4"
+      }
+    ]
+  }
+]

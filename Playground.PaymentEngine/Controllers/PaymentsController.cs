@@ -11,6 +11,7 @@ using Playground.PaymentEngine.Model;
 using Playground.PaymentEngine.Stores;
 using Playground.PaymentEngine.UseCases.Payments.Callback;
 using Playground.PaymentEngine.UseCases.Payments.Process;
+using Playground.PaymentEngine.UseCases.Payments.RunApprovalRules;
 using Playground.Xml;
 
 namespace Playground.PaymentEngine.Controllers {
@@ -20,10 +21,15 @@ namespace Playground.PaymentEngine.Controllers {
         private readonly PaymentStore _paymentStore;
         public PaymentsController(PaymentStore paymentStore) => _paymentStore = paymentStore;
 
+        [HttpGet]
         public Store Get() => _paymentStore.GetStore();
         
         [HttpGet("allocations")]
         public List<Allocation> GetAllocations() => _paymentStore.GetStore().Allocations.AllocationList;
+
+        [HttpPost("approval-rules/run")]
+        public Task<RunApprovalRulesResponse> RunApprovalRules([FromServices] RunApprovalRulesUseCase useCase, RunApprovalRulesRequest request, CancellationToken cancellationToken) => 
+            useCase.ExecuteAsync(request, cancellationToken);
 
         [HttpPost("auto-allocate")]
         public List<Allocation> AutoAllocate(ProcessRequest request) {

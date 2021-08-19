@@ -5,12 +5,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Playground.Router\Playground.Router.csproj" />
+      <ProjectReference Include="..\Rules\Playground.Rules\Playground.Rules.csproj" />
       <ProjectReference Include="..\Xml\Playground.Xml\Playground.Xml.csproj" />
       <ProjectReference Include="..\Xml\XSLT\Playground.XsltTransform\Playground.XsltTransform.csproj" />
     </ItemGroup>
@@ -38,6 +39,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Config" />
       <Folder Include="Exports" />
     </ItemGroup>
 
