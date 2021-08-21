@@ -38,7 +38,7 @@ namespace Playground.PaymentEngine.Controllers {
         [HttpPost("approval-rules/last")]
         public IEnumerable<RuleHistory> GetLatestApprovalRules(List<long> request, CancellationToken cancellationToken) =>
             _paymentStore.GetRuleHistories(request)
-                         .GroupBy(r => new {wId = r.Metadata.First().Value}, (key, h) => h.Last());
+                         .GroupBy(r =>r.WithdrawalId, (_, h) => h.Last());
 
         [HttpPost("auto-allocate")]
         public List<Allocation> AutoAllocate(ProcessRequest request) {

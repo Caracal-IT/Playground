@@ -85,9 +85,7 @@ namespace Playground.PaymentEngine.Stores {
         public IEnumerable<RuleHistory> GetRuleHistories(IEnumerable<long> withdrawalIds) =>
             _store.RuleHistories
                 .Histories
-                .Select(h => new {wid = h.Metadata.FirstOrDefault(m => m.Name == "withdrawal-id"), history = h} )
-                .Where(h => withdrawalIds.Contains(Convert.ToInt64(h.wid?.Value??"0")))
-                .Select(h => h.history);
+                .Where(h => withdrawalIds.Contains(h.WithdrawalId));
 
         public void LogTerminalResults(IEnumerable<TerminalResult> results) =>
             _store.TerminalResults.TerminalResultList.AddRange(results);

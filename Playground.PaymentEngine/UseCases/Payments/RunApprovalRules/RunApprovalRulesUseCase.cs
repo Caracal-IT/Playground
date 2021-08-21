@@ -65,6 +65,7 @@ namespace Playground.PaymentEngine.UseCases.Payments.RunApprovalRules {
 
         private static RuleHistory GetRuleHistory(long withdrawalId, IEnumerable<ApprovalRuleOutcome> outcomes) =>
             new() {
+                WithdrawalId = withdrawalId,
                 TransactionId =  Guid.NewGuid(),
                 TransactionDate = DateTime.Now,
                 Rules = outcomes.Select(MapRule).ToList(),
