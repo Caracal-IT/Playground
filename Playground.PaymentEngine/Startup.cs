@@ -52,10 +52,8 @@ namespace Playground.PaymentEngine {
             services.AddSingleton<CallbackUseCase>();
             
             services.AddSingleton<RunApprovalRulesUseCase>();
-            services.AddSingleton<TerminalAction<RuleInput>>();
+            services.AddSingleton<TerminalAction>();
             
-            
-
             services.AddSingleton<EventHub, WebEventHub>();
             
             services.AddSingleton<IRoutingService, RoutingService>();

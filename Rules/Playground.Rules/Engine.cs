@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
+using Playground.Rules.CustomActions.Terminal;
 using RulesEngine.Actions;
 using RulesEngine.Models;
 
@@ -11,9 +11,13 @@ using RulesEngine.Models;
 namespace Playground.Rules {
     public class Engine {
         private readonly RuleStore _ruleStore;
+        private readonly TerminalAction? _terminalAction;
+        private readonly Dictionary<string, Func<ActionBase>> _customActions;
         
-        public Engine(RuleStore ruleStore) {
+        public Engine(RuleStore ruleStore, TerminalAction? terminalAction) {
             _ruleStore = ruleStore;
+            _terminalAction = terminalAction;
+            _customActions = GetCustomActions();
         }
 
         public Task<IEnumerable<Result>> ExecuteAsync<T>(
@@ -31,6 +35,15 @@ namespace Playground.Rules {
             Dictionary<string, Func<ActionBase>>? customActions = null)
             => TryExecuteRulesAsync(workflowName, request, customTypes, customActions, cancellationToken);
 
+        private Dictionary<string, Func<ActionBase>> GetCustomActions() {
+            var actions = new Dictionary<string, Func<ActionBase>>();
+            
+            if(_terminalAction != null)
+                actions.Add("TerminalAction", () => _terminalAction );
+           
+            return actions;
+        }
+        
         private async Task<IEnumerable<Result>> TryExecuteRulesAsync<T>(
             string workflowName,
             T request,
@@ -50,9 +63,16 @@ namespace Playground.Rules {
             CancellationToken cancellationToken) 
         {
             var workflow = await _ruleStore.GetRulesAsync(workflowName, cancellationToken);
+
+            var actions = new Dictionary<string, Func<ActionBase>>(_customActions);
+            
+            if(customActions != null)
+                foreach (var keyValuePair in customActions) 
+                    actions.TryAdd(keyValuePair.Key, keyValuePair.Value);
+
             var reSettings = new ReSettings {
                 CustomTypes = customTypes?.ToArray(),
-                CustomActions = customActions
+                CustomActions = customActions??_customActions
             };
             
             var engine = new RulesEngine.RulesEngine(workflow.ToArray(), null, reSettings);

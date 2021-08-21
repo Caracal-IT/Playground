@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -7,22 +6,16 @@ using Playground.PaymentEngine.Helpers;
 using Playground.PaymentEngine.Model;
 using Playground.PaymentEngine.Stores;
 using Playground.Rules;
-using Playground.Rules.CustomActions.Terminal;
-using RulesEngine.Actions;
 using RulesEngine.Models;
 
 namespace Playground.PaymentEngine.UseCases.Payments.RunApprovalRules {
     public class RunApprovalRulesUseCase {
         private readonly Engine _engine;
         private readonly PaymentStore _store;
-        private readonly TerminalAction<RuleInput> _terminalAction;
-        private readonly Dictionary<string, Func<ActionBase>> _customActions;
 
-        public RunApprovalRulesUseCase(TerminalAction<RuleInput> terminalAction, PaymentStore store, Engine engine) {
+        public RunApprovalRulesUseCase(PaymentStore store, Engine engine) {
             _store = store;
             _engine = engine;
-            _terminalAction = terminalAction;
-            _customActions = GetCustomActions();
         }
 
         public async Task<RunApprovalRulesResponse> ExecuteAsync(RunApprovalRulesRequest request, CancellationToken cancellationToken) {
@@ -38,15 +31,9 @@ namespace Playground.PaymentEngine.UseCases.Payments.RunApprovalRules {
             return new RunApprovalRulesResponse { Outcomes = outcomes };
             
             Task<IEnumerable<Result>> RunRules(RuleInput input) 
-                =>_engine.ExecuteAsync("approval", input, _customActions, cancellationToken);
+                =>_engine.ExecuteAsync("approval", input, cancellationToken);
         }
 
-        private Dictionary<string, Func<ActionBase>> GetCustomActions() {
-            return new Dictionary<string, Func<ActionBase>> {
-               {"TerminalAction", () => _terminalAction }
-           };
-        }
-        
         private static RuleInput MapInput(Withdrawal withdrawal) => 
             new() {
                 WithdrawalId = withdrawal.Id,

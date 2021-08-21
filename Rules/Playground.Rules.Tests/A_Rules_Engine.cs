@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Playground.Rules.CustomActions.Terminal;
 using RulesEngine.Actions;
 using Xunit;
 
@@ -59,7 +60,7 @@ namespace Playground.Rules.Tests {
 
        [Fact]
        public async Task Should_Run_Rules() {
-           var engine = new Engine(new FileRuleStore());
+           var engine = new Engine(new FileRuleStore(), null);
            
            var request = new WithdrawalRequest { Name = "Request 1", Amount = 10 };
 
