@@ -9,7 +9,7 @@
                 "Enabled": true,
                 "ErrorType": "Warning",
                 "RuleExpressionType": "LambdaExpression",
-                "Expression": "balance > amount"
+                "Expression": "balance >= amount"
             }
         ]
     }

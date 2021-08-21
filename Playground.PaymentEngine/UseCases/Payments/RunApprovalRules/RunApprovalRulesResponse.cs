@@ -1,5 +1,7 @@
+using System.Collections.Generic;
+
 namespace Playground.PaymentEngine.UseCases.Payments.RunApprovalRules {
     public class RunApprovalRulesResponse {
-        public string Response { get; set; }
+        public List<ApprovalRuleOutcome> Outcomes { get; set; } = new();
     }
 }

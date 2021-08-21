@@ -14,7 +14,7 @@ namespace Playground.Xml {
             string.IsNullOrWhiteSpace(xml) ? null : Deserialize<object>(SerializeXNode(XDocument.Parse(xml)).Replace("@", string.Empty));
         
         public static string ToXml(this string json, string root) => 
-            DeserializeXNode(json, root).ToString(SaveOptions.DisableFormatting);
+            DeserializeXNode(json, root)!.ToString(SaveOptions.DisableFormatting);
         
         public static string ToXml(this object data) {
             var xml = new StringBuilder();

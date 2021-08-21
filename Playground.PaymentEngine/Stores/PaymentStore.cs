@@ -12,6 +12,7 @@ namespace Playground.PaymentEngine.Stores {
         IEnumerable<Allocation> GetAllocationsByReference(string reference);
         IEnumerable<Terminal> GetActiveAccountTypeTerminals(long accountTypeId);
         IEnumerable<Terminal> GetTerminals();
+        IEnumerable<Withdrawal> GetWithdrawals(IEnumerable<long> withdrawalIds);
         
         void SetAllocationStatus(long id, long statusId, string terminal = null, string reference = null);
 

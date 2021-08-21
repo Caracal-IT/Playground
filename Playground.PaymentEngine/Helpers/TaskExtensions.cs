@@ -15,5 +15,16 @@ namespace Playground.PaymentEngine.Helpers {
                 finally { semaphore.Release(); }
             }
         }
+        
+        public static Task<T[]> WhenAll<T>(this IEnumerable<Task<T>> tasks, int maxConcurrentRequests) {
+            SemaphoreSlim semaphore = new(initialCount: 1, maxConcurrentRequests);
+            return Task.WhenAll(tasks.Select(Process));
+
+            async Task<T> Process(Task<T> task) {
+                await semaphore.WaitAsync();
+                try { return await task; }
+                finally { semaphore.Release(); }
+            }
+        }
     }
 }

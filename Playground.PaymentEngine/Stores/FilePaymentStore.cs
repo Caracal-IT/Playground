@@ -51,6 +51,11 @@ namespace Playground.PaymentEngine.Stores {
                 .AllocationList
                 .Where(a => !string.IsNullOrWhiteSpace(a.Terminal) && a.Reference.Equals(reference));
 
+        public IEnumerable<Withdrawal> GetWithdrawals(IEnumerable<long> withdrawalIds) =>
+            _store.Withdrawals
+                .WithdrawalList
+                .Where(w => withdrawalIds.Contains(w.Id));
+
         public void SetAllocationStatus(long id, long statusId, string terminal = null, string reference = null) {
             var allocation = GetAllocation(id);
             allocation.AllocationStatusId = statusId;
