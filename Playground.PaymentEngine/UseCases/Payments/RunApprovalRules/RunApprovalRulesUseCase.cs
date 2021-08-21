@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -7,6 +8,7 @@ using Playground.PaymentEngine.Model;
 using Playground.PaymentEngine.Stores;
 using Playground.Rules;
 using RulesEngine.Models;
+using Rule = Playground.PaymentEngine.Model.Rule;
 
 namespace Playground.PaymentEngine.UseCases.Payments.RunApprovalRules {
     public class RunApprovalRulesUseCase {
@@ -28,6 +30,7 @@ namespace Playground.PaymentEngine.UseCases.Payments.RunApprovalRules {
                                   .Select(MapToOutcome)
                                   .ToList();
 
+            AddRules(outcomes);
             return new RunApprovalRulesResponse { Outcomes = outcomes };
             
             Task<IEnumerable<Result>> RunRules(RuleInput input) 
@@ -54,5 +57,25 @@ namespace Playground.PaymentEngine.UseCases.Payments.RunApprovalRules {
             var isOutputSuccessful = result.Output as ActionResult?? new ActionResult{Output = true};
             return result.IsSuccessful && (bool) isOutputSuccessful.Output;
         }
+
+        private void AddRules(IEnumerable<ApprovalRuleOutcome> outcomes) {
+            var rules = outcomes.GroupBy(outcome => outcome.WithdrawalId, GetRuleHistory);
+            _store.AddRuleHistories(rules);
+        }
+
+        private static RuleHistory GetRuleHistory(long withdrawalId, IEnumerable<ApprovalRuleOutcome> outcomes) =>
+            new() {
+                TransactionId =  Guid.NewGuid(),
+                TransactionDate = DateTime.Now,
+                Rules = outcomes.Select(MapRule).ToList(),
+                Metadata = new List<MetaData>{ new(){ Name = "withdrawal-id", Value = $"{withdrawalId}"}}
+            };
+
+        private static Rule MapRule(ApprovalRuleOutcome outcome) =>
+            new Rule {
+                RuleName = outcome.RuleName,
+                Message = outcome.Message,
+                IsSuccessful = outcome.IsSuccessful
+            };
     }
 }

@@ -23,7 +23,8 @@
                     "OnSuccess": {
                         "Name": "TerminalAction",
                         "Context": {
-                            "terminal": "Orca"
+                            "terminal": "Orca",
+                            "action": "FraudDetection"
                         }
                     },
                     "OnFailure": null

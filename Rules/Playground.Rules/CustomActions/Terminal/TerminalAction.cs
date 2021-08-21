@@ -18,8 +18,10 @@ namespace Playground.Rules.CustomActions.Terminal {
 
         public override async ValueTask<object> Run(ActionContext context, RuleParameter[] ruleParameters) {
             var terminal = context.GetContext<string>("terminal");
+            var action = context.GetContext<string>("action");
+            
             var customInput = ruleParameters.First().Value;
-            var routeReq = new RoutingRequest(Guid.NewGuid(), "FraudDetection", customInput.ToXml(), new []{ terminal });
+            var routeReq = new RoutingRequest(Guid.NewGuid(), action, customInput.ToXml(), new []{ terminal });
 
             var routeResponse = await _routingService.Send(routeReq, CancellationToken.None);
             var lastResponse = routeResponse.LastOrDefault();

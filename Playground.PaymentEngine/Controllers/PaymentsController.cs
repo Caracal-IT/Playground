@@ -31,6 +31,15 @@ namespace Playground.PaymentEngine.Controllers {
         public Task<RunApprovalRulesResponse> RunApprovalRules([FromServices] RunApprovalRulesUseCase useCase, RunApprovalRulesRequest request, CancellationToken cancellationToken) => 
             useCase.ExecuteAsync(request, cancellationToken);
 
+        [HttpPost("approval-rules")]
+        public IEnumerable<RuleHistory> GetApprovalRules(List<long> request, CancellationToken cancellationToken) =>
+            _paymentStore.GetRuleHistories(request);
+        
+        [HttpPost("approval-rules/last")]
+        public IEnumerable<RuleHistory> GetLatestApprovalRules(List<long> request, CancellationToken cancellationToken) =>
+            _paymentStore.GetRuleHistories(request)
+                         .GroupBy(r => new {wId = r.Metadata.First().Value}, (key, h) => h.Last());
+
         [HttpPost("auto-allocate")]
         public List<Allocation> AutoAllocate(ProcessRequest request) {
             var store = _paymentStore.GetStore();

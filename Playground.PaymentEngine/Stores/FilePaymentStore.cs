@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -81,8 +82,18 @@ namespace Playground.PaymentEngine.Stores {
         public IEnumerable<Terminal> GetTerminals() =>
             _cacheService.GetValue(nameof(GetTerminals), () => _store.Terminals.TerminalList);
 
+        public IEnumerable<RuleHistory> GetRuleHistories(IEnumerable<long> withdrawalIds) =>
+            _store.RuleHistories
+                .Histories
+                .Select(h => new {wid = h.Metadata.FirstOrDefault(m => m.Name == "withdrawal-id"), history = h} )
+                .Where(h => withdrawalIds.Contains(Convert.ToInt64(h.wid?.Value??"0")))
+                .Select(h => h.history);
+
         public void LogTerminalResults(IEnumerable<TerminalResult> results) =>
             _store.TerminalResults.TerminalResultList.AddRange(results);
+
+        public void AddRuleHistories(IEnumerable<RuleHistory> histories) =>
+            _store.RuleHistories.Histories.AddRange(histories);
         
         private void LoadStore() {
             var path = Path.Join("Resources", "Data", "store.xml");

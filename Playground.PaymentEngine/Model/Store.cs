@@ -9,6 +9,8 @@ namespace Playground.PaymentEngine.Model {
 		public WithdrawalStatuses WithdrawalStatuses { get; set; }
 		[XmlElement(ElementName="withdrawal-groups")]
 		public WithdrawalGroups WithdrawalGroups { get; set; }
+		[XmlElement(ElementName="rule-histories")]
+		public RuleHistories RuleHistories { get; set; }
 		[XmlElement(ElementName="allocations")]
 		public Allocations Allocations { get; set; }
 		[XmlElement(ElementName="allocation-statuses")]
