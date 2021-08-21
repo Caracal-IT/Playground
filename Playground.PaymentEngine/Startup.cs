@@ -16,6 +16,7 @@ using Playground.PaymentEngine.Terminals.Functions;
 using Playground.PaymentEngine.UseCases.Payments.Callback;
 using Playground.PaymentEngine.UseCases.Payments.Process;
 using Playground.PaymentEngine.UseCases.Payments.RunApprovalRules;
+using Playground.PaymentEngine.UseCases.Payments.RunApprovalRules.CustomActions;
 using Playground.Router;
 using Playground.Router.Clients;
 using Playground.Router.Clients.File;
@@ -38,6 +39,7 @@ namespace Playground.PaymentEngine {
             services.AddSingleton<RuleStore, FileRuleStore>();
             services.AddSingleton<Rules.Engine>();
             
+            
             services.AddSingleton<XsltExtensions, CustomExtensions>();
             services.AddSingleton<PaymentStore, FilePaymentStore>();
             services.AddSingleton<Engine, RouterEngine>();
@@ -48,7 +50,11 @@ namespace Playground.PaymentEngine {
             
             services.AddSingleton<ProcessUseCase>();
             services.AddSingleton<CallbackUseCase>();
+            
             services.AddSingleton<RunApprovalRulesUseCase>();
+            services.AddSingleton<HttpCustomAction>();
+            
+            
 
             services.AddSingleton<EventHub, WebEventHub>();
             

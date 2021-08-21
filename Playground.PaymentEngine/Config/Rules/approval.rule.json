@@ -10,6 +10,24 @@
                 "ErrorType": "Warning",
                 "RuleExpressionType": "LambdaExpression",
                 "Expression": "balance >= amount"
+            },
+            {
+                "RuleName": "Validate Customer",
+                "SuccessEvent": "Valid Customer",
+                "ErrorMessage": "Customer Rejected",
+                "Enabled": true,
+                "ErrorType": "Warning",
+                "RuleExpressionType": "LambdaExpression",
+                "Expression": "true",
+                "Actions": {
+                    "OnSuccess": {
+                        "Name": "HttpCustomAction",
+                        "Context": {
+                            "customContextInput": "customerId"
+                        }
+                    },
+                    "OnFailure": null
+                }
             }
         ]
     }
