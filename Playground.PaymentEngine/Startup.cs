@@ -16,11 +16,11 @@ using Playground.PaymentEngine.Terminals.Functions;
 using Playground.PaymentEngine.UseCases.Payments.Callback;
 using Playground.PaymentEngine.UseCases.Payments.Process;
 using Playground.PaymentEngine.UseCases.Payments.RunApprovalRules;
-using Playground.PaymentEngine.UseCases.Payments.RunApprovalRules.CustomActions;
 using Playground.Router;
 using Playground.Router.Clients;
 using Playground.Router.Clients.File;
 using Playground.Rules;
+using Playground.Rules.CustomActions.Terminal;
 using Engine = Playground.Router.Engine;
 
 namespace Playground.PaymentEngine {
@@ -52,7 +52,7 @@ namespace Playground.PaymentEngine {
             services.AddSingleton<CallbackUseCase>();
             
             services.AddSingleton<RunApprovalRulesUseCase>();
-            services.AddSingleton<HttpCustomAction>();
+            services.AddSingleton<TerminalAction<RuleInput>>();
             
             
 

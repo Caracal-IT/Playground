@@ -9,4 +9,8 @@
       <PackageReference Include="RulesEngine" Version="3.3.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\Playground.Router\Playground.Router.csproj" />
+    </ItemGroup>
+
 </Project>

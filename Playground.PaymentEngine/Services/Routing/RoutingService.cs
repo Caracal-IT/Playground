@@ -10,8 +10,6 @@ using Playground.PaymentEngine.Terminals.Functions;
 using Playground.Router;
 
 namespace Playground.PaymentEngine.Services.Routing {
-    public record RoutingRequest(Guid TransactionId, string Name, string Payload, IEnumerable<string> Terminals);
-    
     public class RoutingService: IRoutingService {
         private readonly PaymentStore _paymentStore;
         private readonly Engine _engine;
@@ -61,8 +59,5 @@ namespace Playground.PaymentEngine.Services.Routing {
                 return await path.ReadFromFileAsync(cancellationToken);
             }   
         }
-
-
-
     }
 }

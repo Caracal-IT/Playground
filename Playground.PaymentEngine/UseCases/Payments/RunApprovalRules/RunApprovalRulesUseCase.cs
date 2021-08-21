@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using Playground.PaymentEngine.Helpers;
 using Playground.PaymentEngine.Model;
 using Playground.PaymentEngine.Stores;
-using Playground.PaymentEngine.UseCases.Payments.RunApprovalRules.CustomActions;
 using Playground.Rules;
+using Playground.Rules.CustomActions.Terminal;
 using RulesEngine.Actions;
 using RulesEngine.Models;
 
@@ -15,13 +15,13 @@ namespace Playground.PaymentEngine.UseCases.Payments.RunApprovalRules {
     public class RunApprovalRulesUseCase {
         private readonly Engine _engine;
         private readonly PaymentStore _store;
-        private readonly HttpCustomAction _httpAction;
+        private readonly TerminalAction<RuleInput> _terminalAction;
         private readonly Dictionary<string, Func<ActionBase>> _customActions;
 
-        public RunApprovalRulesUseCase(HttpCustomAction httpAction, PaymentStore store, Engine engine) {
+        public RunApprovalRulesUseCase(TerminalAction<RuleInput> terminalAction, PaymentStore store, Engine engine) {
             _store = store;
             _engine = engine;
-            _httpAction = httpAction;
+            _terminalAction = terminalAction;
             _customActions = GetCustomActions();
         }
 
@@ -43,7 +43,7 @@ namespace Playground.PaymentEngine.UseCases.Payments.RunApprovalRules {
 
         private Dictionary<string, Func<ActionBase>> GetCustomActions() {
             return new Dictionary<string, Func<ActionBase>> {
-               {"HttpCustomAction", () => _httpAction }
+               {"TerminalAction", () => _terminalAction }
            };
         }
         

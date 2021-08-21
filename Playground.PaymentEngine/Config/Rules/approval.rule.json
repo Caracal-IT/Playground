@@ -21,9 +21,9 @@
                 "Expression": "true",
                 "Actions": {
                     "OnSuccess": {
-                        "Name": "HttpCustomAction",
+                        "Name": "TerminalAction",
                         "Context": {
-                            "customContextInput": "customerId"
+                            "terminal": "Orca"
                         }
                     },
                     "OnFailure": null
