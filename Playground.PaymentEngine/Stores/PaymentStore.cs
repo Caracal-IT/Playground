@@ -7,12 +7,14 @@ namespace Playground.PaymentEngine.Stores {
 
         Account GetAccount(long id);
         Allocation GetAllocation(long id);
+        Customer GetCustomer(long id);
         ExportAllocation GetExportAllocation(long allocationId);
         IEnumerable<ExportAllocation> GetExportAllocations(IEnumerable<long> allocationIds);
         IEnumerable<Allocation> GetAllocationsByReference(string reference);
         IEnumerable<Terminal> GetActiveAccountTypeTerminals(long accountTypeId);
         IEnumerable<Terminal> GetTerminals();
         IEnumerable<Withdrawal> GetWithdrawals(IEnumerable<long> withdrawalIds);
+        IEnumerable<WithdrawalGroup> GetWithdrawalGroups(IEnumerable<long> withdrawalGroupIds);
         IEnumerable<RuleHistory> GetRuleHistories(IEnumerable<long> withdrawalIds);
 
         void SetAllocationStatus(long id, long statusId, string terminal = null, string reference = null);

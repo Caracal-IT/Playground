@@ -9,6 +9,7 @@ using System.Xml.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Playground.PaymentEngine.Model;
 using Playground.PaymentEngine.Stores;
+using Playground.PaymentEngine.UseCases.Payments.AutoAllocate;
 using Playground.PaymentEngine.UseCases.Payments.Callback;
 using Playground.PaymentEngine.UseCases.Payments.Process;
 using Playground.PaymentEngine.UseCases.Payments.RunApprovalRules;
@@ -38,25 +39,19 @@ namespace Playground.PaymentEngine.Controllers {
         [HttpPost("approval-rules/last")]
         public IEnumerable<RuleHistory> GetLatestApprovalRules(List<long> request, CancellationToken cancellationToken) =>
             _paymentStore.GetRuleHistories(request)
-                         .GroupBy(r =>r.WithdrawalId, (_, h) => h.Last());
+                         .GroupBy(r =>r.WithdrawalGroupId, (_, h) => h.Last());
 
         [HttpPost("auto-allocate")]
-        public List<Allocation> AutoAllocate(ProcessRequest request) {
-            var store = _paymentStore.GetStore();
-            var allocations = store.Allocations.AllocationList.Where(a => request.Allocations.Contains(a.Id)).ToList();
-
-            allocations.ForEach(a => _paymentStore.SetAllocationStatus(a.Id, 1));
-            
-            return allocations;
-        }
+        public Task<AutoAllocateResponse> AutoAllocate([FromServices]  AutoAllocateUseCase useCase, AutoAllocateRequest request, CancellationToken cancellationToken) => 
+            useCase.ExecuteAsync(request, cancellationToken);
 
         [HttpPost("process")]
-        public async Task<ProcessResponse> ProcessAsync([FromServices] ProcessUseCase useCase, ProcessRequest request, CancellationToken token) => 
-            await useCase.ExecuteAsync(request, token);
+        public async Task<ProcessResponse> ProcessAsync([FromServices] ProcessUseCase useCase, ProcessRequest request, CancellationToken cancellationToken) => 
+            await useCase.ExecuteAsync(request, cancellationToken);
 
         [HttpPost("process/xml/{method}/{reference}")]
         [Produces("application/xml")]
-        public async Task<object> ProcessXmlCallback([FromServices] CallbackUseCase useCase, [FromRoute] string method, [FromRoute] string reference, CancellationToken token) {
+        public async Task<object> ProcessXmlCallback([FromServices] CallbackUseCase useCase, [FromRoute] string method, [FromRoute] string reference, CancellationToken cancellationToken) {
             using var reader = new StreamReader(Request.Body, Encoding.UTF8);
             var body = await reader.ReadToEndAsync();
             
@@ -66,12 +61,12 @@ namespace Playground.PaymentEngine.Controllers {
                 Reference = reference
             };
             
-            var response = await useCase.ExecuteAsync(request, token);
+            var response = await useCase.ExecuteAsync(request, cancellationToken);
             return XDocument.Parse(response.Response).Root;
         }
         
         [HttpPost("process/json/{method}/{reference}")]
-        public async Task<object> ProcessCallback([FromServices] CallbackUseCase useCase, [FromRoute] string method, [FromRoute] string reference, [FromBody] JsonElement payload, CancellationToken token) {
+        public async Task<object> ProcessCallback([FromServices] CallbackUseCase useCase, [FromRoute] string method, [FromRoute] string reference, [FromBody] JsonElement payload, CancellationToken cancellationToken) {
             var xml = payload.GetRawText()
                              .ToXml("root");
             
@@ -81,7 +76,7 @@ namespace Playground.PaymentEngine.Controllers {
                 Reference = reference
             };
 
-            var response = await useCase.ExecuteAsync(request, token);
+            var response = await useCase.ExecuteAsync(request, cancellationToken);
             return response.Response.ToJson();
         }
     }

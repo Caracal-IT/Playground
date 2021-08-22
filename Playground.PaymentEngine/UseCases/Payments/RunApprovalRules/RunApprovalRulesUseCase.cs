@@ -21,7 +21,7 @@ namespace Playground.PaymentEngine.UseCases.Payments.RunApprovalRules {
         }
 
         public async Task<RunApprovalRulesResponse> ExecuteAsync(RunApprovalRulesRequest request, CancellationToken cancellationToken) {
-            var results = await _store.GetWithdrawals(request.Withdrawals)
+            var results = await _store.GetWithdrawalGroups(request.WithdrawalGroups)
                                       .Select(MapInput)
                                       .Select(RunRules)
                                       .WhenAll(50);
@@ -37,17 +37,21 @@ namespace Playground.PaymentEngine.UseCases.Payments.RunApprovalRules {
                 =>_engine.ExecuteAsync("approval", input, cancellationToken);
         }
 
-        private static RuleInput MapInput(Withdrawal withdrawal) => 
-            new() {
-                WithdrawalId = withdrawal.Id,
-                CustomerId = withdrawal.CustomerId,
-                Balance = withdrawal.Balance,
-                Amount = withdrawal.Amount
+        private RuleInput MapInput(WithdrawalGroup withdrawalGroup) {
+            var withdrawals = _store.GetWithdrawals(withdrawalGroup.WithdrawalIds).ToList();
+            var customer = _store.GetCustomer(withdrawals.First().CustomerId);
+
+            return new() {
+                WithdrawalGroupId = withdrawalGroup.Id,
+                CustomerId = customer.Id,
+                Balance = customer.Balance,
+                Amount = withdrawals.Sum(w => w.Amount)
             };
-        
+        }
+
         private static ApprovalRuleOutcome MapToOutcome(Result result) =>
             new() {
-                WithdrawalId = ((RuleInput)result.Input)!.WithdrawalId,
+                WithdrawalGroupId = ((RuleInput)result.Input)!.WithdrawalGroupId,
                 RuleName = result.Name,
                 IsSuccessful = IsSuccessful(result),
                 Message = result.Message
@@ -59,17 +63,17 @@ namespace Playground.PaymentEngine.UseCases.Payments.RunApprovalRules {
         }
 
         private void AddRules(IEnumerable<ApprovalRuleOutcome> outcomes) {
-            var rules = outcomes.GroupBy(outcome => outcome.WithdrawalId, GetRuleHistory);
+            var rules = outcomes.GroupBy(outcome => outcome.WithdrawalGroupId, GetRuleHistory);
             _store.AddRuleHistories(rules);
         }
 
-        private static RuleHistory GetRuleHistory(long withdrawalId, IEnumerable<ApprovalRuleOutcome> outcomes) =>
+        private static RuleHistory GetRuleHistory(long withdrawalGroupId, IEnumerable<ApprovalRuleOutcome> outcomes) =>
             new() {
-                WithdrawalId = withdrawalId,
+                WithdrawalGroupId = withdrawalGroupId,
                 TransactionId =  Guid.NewGuid(),
                 TransactionDate = DateTime.Now,
                 Rules = outcomes.Select(MapRule).ToList(),
-                Metadata = new List<MetaData>{ new(){ Name = "withdrawal-id", Value = $"{withdrawalId}"}}
+                Metadata = new List<MetaData>{ new(){ Name = "withdrawal-id", Value = $"{withdrawalGroupId}"}}
             };
 
         private static Rule MapRule(ApprovalRuleOutcome outcome) =>

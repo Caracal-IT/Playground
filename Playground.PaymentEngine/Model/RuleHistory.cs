@@ -5,8 +5,8 @@ using System.Xml.Serialization;
 namespace Playground.PaymentEngine.Model {
     [XmlRoot(ElementName="rule-history")]
     public class RuleHistory {
-        [XmlAttribute(AttributeName="withdrawal-id")]
-        public long WithdrawalId { get; set; }
+        [XmlAttribute(AttributeName="withdrawal-group-id")]
+        public long WithdrawalGroupId { get; set; }
         [XmlAttribute(AttributeName="transaction-id")]
         public Guid TransactionId { get; set; }
         [XmlAttribute(AttributeName="transaction-date")]

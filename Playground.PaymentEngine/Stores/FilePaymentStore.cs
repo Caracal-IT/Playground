@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -29,6 +28,11 @@ namespace Playground.PaymentEngine.Stores {
                   .FirstOrDefault(a => a.Id == id)
                   ??new Allocation();
 
+        public Customer GetCustomer(long id) =>
+            _store.Customers
+                  .CustomerList
+                  .FirstOrDefault(c => c.Id == id);
+        
         public ExportAllocation GetExportAllocation(long allocationId) {
             var allocation = GetAllocation(allocationId);
             var account = GetAccount(allocation.AccountId);
@@ -56,6 +60,11 @@ namespace Playground.PaymentEngine.Stores {
             _store.Withdrawals
                 .WithdrawalList
                 .Where(w => withdrawalIds.Contains(w.Id));
+        
+        public IEnumerable<WithdrawalGroup> GetWithdrawalGroups(IEnumerable<long> withdrawalGroupIds) => 
+            _store.WithdrawalGroups
+                  .WithdrawalGroupList
+                  .Where(g => withdrawalGroupIds.Contains(g.Id));
 
         public void SetAllocationStatus(long id, long statusId, string terminal = null, string reference = null) {
             var allocation = GetAllocation(id);
@@ -82,10 +91,10 @@ namespace Playground.PaymentEngine.Stores {
         public IEnumerable<Terminal> GetTerminals() =>
             _cacheService.GetValue(nameof(GetTerminals), () => _store.Terminals.TerminalList);
 
-        public IEnumerable<RuleHistory> GetRuleHistories(IEnumerable<long> withdrawalIds) =>
+        public IEnumerable<RuleHistory> GetRuleHistories(IEnumerable<long> withdrawalGroupIds) =>
             _store.RuleHistories
                 .Histories
-                .Where(h => withdrawalIds.Contains(h.WithdrawalId));
+                .Where(h => withdrawalGroupIds.Contains(h.WithdrawalGroupId));
 
         public void LogTerminalResults(IEnumerable<TerminalResult> results) =>
             _store.TerminalResults.TerminalResultList.AddRange(results);

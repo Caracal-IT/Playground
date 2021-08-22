@@ -13,6 +13,7 @@ using Playground.PaymentEngine.Services.CacheService;
 using Playground.PaymentEngine.Services.Routing;
 using Playground.PaymentEngine.Stores;
 using Playground.PaymentEngine.Terminals.Functions;
+using Playground.PaymentEngine.UseCases.Payments.AutoAllocate;
 using Playground.PaymentEngine.UseCases.Payments.Callback;
 using Playground.PaymentEngine.UseCases.Payments.Process;
 using Playground.PaymentEngine.UseCases.Payments.RunApprovalRules;
@@ -50,6 +51,7 @@ namespace Playground.PaymentEngine {
             
             services.AddSingleton<ProcessUseCase>();
             services.AddSingleton<CallbackUseCase>();
+            services.AddSingleton<AutoAllocateUseCase>();
             
             services.AddSingleton<RunApprovalRulesUseCase>();
             services.AddSingleton<TerminalAction>();
