@@ -61,7 +61,7 @@ namespace Playground.PaymentEngine.UseCases.Payments.AutoAllocate {
             return result;
 
             Allocation CreateAllocation(Account account, decimal amount) =>
-                new Allocation {
+                new() {
                     AccountId = account.Id,
                     Amount = amount,
                     AllocationStatusId = 1,
