@@ -3,13 +3,15 @@ using System.Xml.Serialization;
 namespace Playground.PaymentEngine.Model {
     [XmlRoot(ElementName="account-type")]
     public class AccountType {
-        [XmlAttribute(AttributeName="id")]
+        [XmlAttribute("id")]
         public long Id { get; set; }
-        [XmlAttribute(AttributeName="name")]
+        [XmlAttribute("name")]
         public string Name { get; set; }
-        [XmlAttribute(AttributeName="charge")]
+        [XmlAttribute("charge")]
         public string Charge { get; set; }
-        [XmlAttribute(AttributeName="threshold", DataType="decimal")]
+        [XmlAttribute("threshold", DataType="decimal")]
         public decimal Threshold { get; set; }
+        [XmlAttribute("process-order")]
+        public int ProcessOrder { get; set; }
     }
 }

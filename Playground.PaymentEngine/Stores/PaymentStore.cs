@@ -9,6 +9,7 @@ namespace Playground.PaymentEngine.Stores {
         Allocation GetAllocation(long id);
         Customer GetCustomer(long id);
         IEnumerable<Account> GetCustomerAccounts(long id);
+        IEnumerable<AccountType> GetAccountTypes(IEnumerable<long> accountTypeIds);
         ExportAllocation GetExportAllocation(long allocationId);
         IEnumerable<ExportAllocation> GetExportAllocations(IEnumerable<long> allocationIds);
         IEnumerable<Allocation> GetAllocationsByReference(string reference);

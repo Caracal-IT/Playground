@@ -30,6 +30,9 @@ namespace Playground.PaymentEngine.Stores {
 
         public IEnumerable<Account> GetCustomerAccounts(long id) =>
             _store.Accounts.Where(a => a.CustomerId == id);
+
+        public IEnumerable<AccountType> GetAccountTypes(IEnumerable<long> accountTypeIds) =>
+            _store.AccountTypes.Where(t => accountTypeIds.Contains(t.Id));
         
         public ExportAllocation GetExportAllocation(long allocationId) {
             var allocation = GetAllocation(allocationId);

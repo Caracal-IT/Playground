@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -43,20 +42,35 @@ namespace Playground.PaymentEngine.UseCases.Payments.AutoAllocate {
 
             var customer = _store.GetCustomer(withdrawalGroup.CustomerId);
             var accounts = _store.GetCustomerAccounts(customer.Id).ToList();
-            var allocationAmount = Math.Floor(withdrawalAmount / accounts.Count);
+            var accountTypes = _store.GetAccountTypes(accounts.Select(a => a.AccountTypeId));
 
-            var sum = 0M;
-            foreach (var account in accounts) {
-                var amount = Math.Min(allocationAmount, withdrawalAmount - sum);
-                if (amount <= 0) break;
-                
+            var orderedAccounts = accounts.Join(
+                    accountTypes, 
+                    a => a.AccountTypeId, 
+                    t => t.Id, 
+                    (a, t) => new {Account = a, Order = t.ProcessOrder}
+                )
+                .OrderBy(a => a.Order)
+                .ThenBy(a => a.Account.IsPreferredAccount)
+                .Select(a => a.Account)
+                .ToList();
+            
+            foreach (var account in orderedAccounts.Where(a => a.Exposure > 0)) {
+                var amount = withdrawalAmount - account.Exposure >= 0 ? account.Exposure : withdrawalAmount;
                 CreateAllocation(account, amount);
+                withdrawalAmount -= amount;
                 
-                sum += amount;
+                if(withdrawalAmount <= 0)
+                    break;
             }
 
+            if (withdrawalAmount <= 0) return result;
+            
+            var preferredAcc = orderedAccounts.FirstOrDefault(a => a.IsPreferredAccount) ?? orderedAccounts.First();
+            CreateAllocation(preferredAcc, withdrawalAmount);
+            
             return result;
-
+            
             void CreateAllocation(Account account, decimal amount) {
                  var allocation  = _store.SaveAllocation(new Allocation {
                     AccountId = account.Id,
