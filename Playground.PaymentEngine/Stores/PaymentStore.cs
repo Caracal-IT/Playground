@@ -15,6 +15,7 @@ namespace Playground.PaymentEngine.Stores {
         IEnumerable<Terminal> GetActiveAccountTypeTerminals(long accountTypeId);
         IEnumerable<Terminal> GetTerminals();
         IEnumerable<Withdrawal> GetWithdrawals(IEnumerable<long> withdrawalIds);
+        IEnumerable<Withdrawal> GetWithdrawalGroupWithdrawals(long id);
         IEnumerable<WithdrawalGroup> GetWithdrawalGroups(IEnumerable<long> withdrawalGroupIds);
         WithdrawalGroup GetWithdrawalGroup(long id);
         IEnumerable<RuleHistory> GetRuleHistories(IEnumerable<long> withdrawalIds);

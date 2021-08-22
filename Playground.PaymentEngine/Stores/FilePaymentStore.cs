@@ -57,6 +57,10 @@ namespace Playground.PaymentEngine.Stores {
             _store.Withdrawals
                   .Where(w => withdrawalIds.Contains(w.Id));
         
+        public IEnumerable<Withdrawal> GetWithdrawalGroupWithdrawals(long id) {
+            var group = _store.WithdrawalGroups.FirstOrDefault(g => g.Id == id)??new WithdrawalGroup();
+            return GetWithdrawals(group.WithdrawalIds);
+        }
         public IEnumerable<WithdrawalGroup> GetWithdrawalGroups(IEnumerable<long> withdrawalGroupIds) => 
             _store.WithdrawalGroups
                   .Where(g => withdrawalGroupIds.Contains(g.Id));

@@ -35,7 +35,7 @@ namespace Playground.PaymentEngine.UseCases.Payments.AutoAllocate {
             var result = new List<AutoAllocateResult>();
             
             var withdrawalGroup = _store.GetWithdrawalGroup(withdrawalGroupId);
-            var withdrawals = _store.GetWithdrawals(withdrawalGroup.WithdrawalIds);
+            var withdrawals = _store.GetWithdrawalGroupWithdrawals(withdrawalGroupId);
             var withdrawalAmount = withdrawals.Sum(w => w.Amount);
 
             if (withdrawalAmount <= 0M)
@@ -44,29 +44,29 @@ namespace Playground.PaymentEngine.UseCases.Payments.AutoAllocate {
             var customer = _store.GetCustomer(withdrawalGroup.CustomerId);
             var accounts = _store.GetCustomerAccounts(customer.Id).ToList();
             var allocationAmount = Math.Floor(withdrawalAmount / accounts.Count);
-            var allocatedAmount = 0M;
 
+            var sum = 0M;
             foreach (var account in accounts) {
-                var amount = account.Equals(accounts.Last()) ? withdrawalAmount - allocatedAmount : allocationAmount;
-
-                if (amount == 0)
-                    break;
+                var amount = Math.Min(allocationAmount, withdrawalAmount - sum);
+                if (amount <= 0) break;
                 
-                var allocation = CreateAllocation(account, amount);
-                allocation = _store.SaveAllocation(allocation);
-                result.Add(MapResult(allocation));
-                allocatedAmount += allocationAmount;
+                CreateAllocation(account, amount);
+                
+                sum += amount;
             }
 
             return result;
 
-            Allocation CreateAllocation(Account account, decimal amount) =>
-                new() {
+            void CreateAllocation(Account account, decimal amount) {
+                 var allocation  = _store.SaveAllocation(new Allocation {
                     AccountId = account.Id,
                     Amount = amount,
                     AllocationStatusId = 1,
                     WithdrawalGroupId = withdrawalGroupId
-                };
+                 });
+                 
+                 result.Add(MapResult(allocation));
+            }
         }
 
         private AutoAllocateResult MapResult(Allocation allocation) =>
