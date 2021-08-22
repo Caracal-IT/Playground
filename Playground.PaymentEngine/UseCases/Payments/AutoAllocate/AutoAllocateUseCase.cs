@@ -42,6 +42,11 @@ namespace Playground.PaymentEngine.UseCases.Payments.AutoAllocate {
                 .First(g => g.Id == withdrawalGroupId);
             
             var withdrawals = _store.GetWithdrawals(withdrawalGroup.WithdrawalIds);
+            var withdrawalAmount = withdrawals.Sum(w => w.Amount);
+
+            if (withdrawalAmount <= 0M)
+                return new List<AutoAllocateResult>();
+            
             var withdrawalId = withdrawalGroup.WithdrawalIds.First();
             
             var customer = store
@@ -58,23 +63,23 @@ namespace Playground.PaymentEngine.UseCases.Payments.AutoAllocate {
                 .First();
 
             var accounts = store.Accounts.AccountList.Where(a => a.CustomerId == customer.Id).ToList();
-            var startId = store.Accounts.AccountList.Max(a => a.Id);
-            var withdrawalAmount = withdrawals.Sum(w => w.Amount);
+            var startId = store.Allocations.AllocationList.Any() ? store.Allocations.AllocationList.Last().Id + 1 : 1;
+
             var allocationAmount = Math.Floor(withdrawalAmount / accounts.Count);
             
             var allocatedAmount = 0M;
 
-            for (int i = 0; i < accounts.Count(); i++) {
+            for (var i = 0; i < accounts.Count; i++) {
                 var account = accounts[i];
 
                 var allocation = new Allocation {
-                    Id = startId + 1, 
+                    Id = startId + i, 
                     AccountId = account.Id,
                     AllocationStatusId = 1,
                     WithdrawalGroupId = withdrawalGroupId
                 };
 
-                if (i == accounts.Count() - 1)
+                if (i == accounts.Count - 1)
                     allocation.Amount = allocatedAmount;
                 else
                     allocation.Amount = withdrawalAmount - allocatedAmount;
