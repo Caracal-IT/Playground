@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,8 +16,9 @@ namespace Playground.PaymentEngine.UseCases.Payments.AutoAllocate {
         public async Task<AutoAllocateResponse> ExecuteAsync(AutoAllocateRequest request, CancellationToken cancellationToken) {
             await Task.Delay(0, cancellationToken);
             request.WithdrawalGroups.ForEach(RemoveAllocations);
+            var results = request.WithdrawalGroups.SelectMany(AllocateFunds).ToList();
 
-            return new AutoAllocateResponse();
+            return new AutoAllocateResponse{AllocationResults = results};
         }
 
         private void RemoveAllocations(long withdrawalGroupId) {
@@ -27,6 +30,68 @@ namespace Playground.PaymentEngine.UseCases.Payments.AutoAllocate {
                 .Where(a => a.WithdrawalGroupId == withdrawalGroupId)
                 .ToList()
                 .ForEach(a => allocations.Remove(a));
+        }
+
+        private List<AutoAllocateResult> AllocateFunds(long withdrawalGroupId) {
+            var result = new List<AutoAllocateResult>();
+            
+            
+            var store = _store.GetStore();
+            var withdrawalGroup = store.WithdrawalGroups
+                .WithdrawalGroupList
+                .First(g => g.Id == withdrawalGroupId);
+            
+            var withdrawals = _store.GetWithdrawals(withdrawalGroup.WithdrawalIds);
+            var withdrawalId = withdrawalGroup.WithdrawalIds.First();
+            
+            var customer = store
+                .Customers
+                .CustomerList
+                .Join(
+                    store.Withdrawals.WithdrawalList,
+                    c => c.Id,
+                    w => w.CustomerId,
+                    (c, w) => new { Customer = c, Withdrawal = w }
+                )
+                .Where(c => c.Withdrawal.Id == withdrawalId)
+                .Select(c => c.Customer)
+                .First();
+
+            var accounts = store.Accounts.AccountList.Where(a => a.CustomerId == customer.Id).ToList();
+            var startId = store.Accounts.AccountList.Max(a => a.Id);
+            var withdrawalAmount = withdrawals.Sum(w => w.Amount);
+            var allocationAmount = Math.Floor(withdrawalAmount / accounts.Count);
+            
+            var allocatedAmount = 0M;
+
+            for (int i = 0; i < accounts.Count(); i++) {
+                var account = accounts[i];
+
+                var allocation = new Allocation {
+                    Id = startId + 1, 
+                    AccountId = account.Id,
+                    AllocationStatusId = 1,
+                    WithdrawalGroupId = withdrawalGroupId
+                };
+
+                if (i == accounts.Count() - 1)
+                    allocation.Amount = allocatedAmount;
+                else
+                    allocation.Amount = withdrawalAmount - allocatedAmount;
+                
+                store.Allocations.AllocationList.Add(allocation);
+
+                result.Add(new AutoAllocateResult {
+                    AllocationId = allocation.Id,
+                    Amount = allocation.Amount,
+                    AccountId = account.Id,
+                    WithdrawalGroupId = withdrawalGroupId
+                });
+                
+                allocatedAmount += allocationAmount;
+            }
+
+            return result;
         }
     }
 }
