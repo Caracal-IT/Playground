@@ -27,6 +27,9 @@ namespace Playground.PaymentEngine.Stores {
 
         public Customer GetCustomer(long id) =>
             _store.Customers.FirstOrDefault(c => c.Id == id);
+
+        public IEnumerable<Account> GetCustomerAccounts(long id) =>
+            _store.Accounts.Where(a => a.CustomerId == id);
         
         public ExportAllocation GetExportAllocation(long allocationId) {
             var allocation = GetAllocation(allocationId);
@@ -57,6 +60,10 @@ namespace Playground.PaymentEngine.Stores {
         public IEnumerable<WithdrawalGroup> GetWithdrawalGroups(IEnumerable<long> withdrawalGroupIds) => 
             _store.WithdrawalGroups
                   .Where(g => withdrawalGroupIds.Contains(g.Id));
+        
+        public WithdrawalGroup GetWithdrawalGroup(long id) =>
+            _store.WithdrawalGroups
+                  .FirstOrDefault(g => g.Id == id);
 
         public void SetAllocationStatus(long id, long statusId, string terminal = null, string reference = null) {
             var allocation = GetAllocation(id);
@@ -91,7 +98,25 @@ namespace Playground.PaymentEngine.Stores {
 
         public void AddRuleHistories(IEnumerable<RuleHistory> histories) =>
             _store.RuleHistories.AddRange(histories);
-        
+
+        private object _allocationLock = new object();
+
+        public Allocation SaveAllocation(Allocation allocation) {
+            var alloc = _store.Allocations.FirstOrDefault(a => a.Id == allocation.Id);
+
+            if (alloc == null) {
+                lock (_allocationLock) {
+                    allocation.Id = _store.Allocations.LastOrDefault()?.Id ?? 0 + 1;
+                }
+            }
+            else
+                _store.Allocations.Remove(alloc);
+
+            _store.Allocations.Add(allocation);
+
+            return allocation;
+        }
+
         private void LoadStore() {
             var path = Path.Join("Resources", "Data", "store.xml");
             using var fileStream = new FileStream(path, FileMode.Open);

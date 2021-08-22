@@ -8,6 +8,7 @@ namespace Playground.PaymentEngine.Stores {
         Account GetAccount(long id);
         Allocation GetAllocation(long id);
         Customer GetCustomer(long id);
+        IEnumerable<Account> GetCustomerAccounts(long id);
         ExportAllocation GetExportAllocation(long allocationId);
         IEnumerable<ExportAllocation> GetExportAllocations(IEnumerable<long> allocationIds);
         IEnumerable<Allocation> GetAllocationsByReference(string reference);
@@ -15,6 +16,7 @@ namespace Playground.PaymentEngine.Stores {
         IEnumerable<Terminal> GetTerminals();
         IEnumerable<Withdrawal> GetWithdrawals(IEnumerable<long> withdrawalIds);
         IEnumerable<WithdrawalGroup> GetWithdrawalGroups(IEnumerable<long> withdrawalGroupIds);
+        WithdrawalGroup GetWithdrawalGroup(long id);
         IEnumerable<RuleHistory> GetRuleHistories(IEnumerable<long> withdrawalIds);
 
         void SetAllocationStatus(long id, long statusId, string terminal = null, string reference = null);
@@ -22,5 +24,7 @@ namespace Playground.PaymentEngine.Stores {
         void LogTerminalResults(IEnumerable<TerminalResult> results);
 
         void AddRuleHistories(IEnumerable<RuleHistory> histories);
+
+        Allocation SaveAllocation(Allocation allocation);
     }
 }

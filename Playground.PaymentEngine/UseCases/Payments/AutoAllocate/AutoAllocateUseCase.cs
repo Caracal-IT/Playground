@@ -34,51 +34,47 @@ namespace Playground.PaymentEngine.UseCases.Payments.AutoAllocate {
         private List<AutoAllocateResult> AllocateFunds(long withdrawalGroupId) {
             var result = new List<AutoAllocateResult>();
             
-            
-            var store = _store.GetStore();
-            var withdrawalGroup = store.WithdrawalGroups.First(g => g.Id == withdrawalGroupId);
+            var withdrawalGroup = _store.GetWithdrawalGroup(withdrawalGroupId);
             var withdrawals = _store.GetWithdrawals(withdrawalGroup.WithdrawalIds);
             var withdrawalAmount = withdrawals.Sum(w => w.Amount);
 
             if (withdrawalAmount <= 0M)
                 return new List<AutoAllocateResult>();
 
-            var customer = store.Customers.First(c => c.Id == withdrawalGroup.CustomerId);
-            var accounts = store.Accounts.Where(a => a.CustomerId == customer.Id).ToList();
-            var startId = store.Allocations.Any() ? store.Allocations.Last().Id + 1 : 1;
-
+            var customer = _store.GetCustomer(withdrawalGroup.CustomerId);
+            var accounts = _store.GetCustomerAccounts(customer.Id).ToList();
             var allocationAmount = Math.Floor(withdrawalAmount / accounts.Count);
-            
             var allocatedAmount = 0M;
 
-            for (var i = 0; i < accounts.Count; i++) {
-                var account = accounts[i];
+            foreach (var account in accounts) {
+                var amount = account.Equals(accounts.Last()) ? withdrawalAmount - allocatedAmount : allocationAmount;
 
-                var allocation = new Allocation {
-                    Id = startId + i, 
-                    AccountId = account.Id,
-                    AllocationStatusId = 1,
-                    WithdrawalGroupId = withdrawalGroupId
-                };
-
-                if (i == accounts.Count - 1)
-                    allocation.Amount = allocatedAmount;
-                else
-                    allocation.Amount = withdrawalAmount - allocatedAmount;
+                if (amount == 0)
+                    break;
                 
-                store.Allocations.Add(allocation);
-
-                result.Add(new AutoAllocateResult {
-                    AllocationId = allocation.Id,
-                    Amount = allocation.Amount,
-                    AccountId = account.Id,
-                    WithdrawalGroupId = withdrawalGroupId
-                });
-                
+                var allocation = CreateAllocation(account, amount);
+                allocation = _store.SaveAllocation(allocation);
+                result.Add(MapResult(allocation));
                 allocatedAmount += allocationAmount;
             }
 
             return result;
+
+            Allocation CreateAllocation(Account account, decimal amount) =>
+                new Allocation {
+                    AccountId = account.Id,
+                    Amount = amount,
+                    AllocationStatusId = 1,
+                    WithdrawalGroupId = withdrawalGroupId
+                };
         }
+
+        private AutoAllocateResult MapResult(Allocation allocation) =>
+            new AutoAllocateResult {
+                AllocationId = allocation.Id,
+                Amount = allocation.Amount,
+                AccountId = allocation.AccountId,
+                WithdrawalGroupId = allocation.WithdrawalGroupId
+            };
     }
 }
