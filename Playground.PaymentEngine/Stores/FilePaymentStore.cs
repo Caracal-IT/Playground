@@ -18,20 +18,15 @@ namespace Playground.PaymentEngine.Stores {
         public Store GetStore() => _store;
 
         public Account GetAccount(long id) =>
-            _store.Accounts
-                  .AccountList
-                  .FirstOrDefault(a => a.Id == id) ?? new Account();
+            _store.Accounts.FirstOrDefault(a => a.Id == id) ?? new Account();
         
         public Allocation GetAllocation(long id) =>
             _store.Allocations
-                  .AllocationList
-                  .FirstOrDefault(a => a.Id == id)
+                .FirstOrDefault(a => a.Id == id)
                   ??new Allocation();
 
         public Customer GetCustomer(long id) =>
-            _store.Customers
-                  .CustomerList
-                  .FirstOrDefault(c => c.Id == id);
+            _store.Customers.FirstOrDefault(c => c.Id == id);
         
         public ExportAllocation GetExportAllocation(long allocationId) {
             var allocation = GetAllocation(allocationId);
@@ -53,17 +48,14 @@ namespace Playground.PaymentEngine.Stores {
 
         public IEnumerable<Allocation> GetAllocationsByReference(string reference) =>
             _store.Allocations
-                .AllocationList
-                .Where(a => !string.IsNullOrWhiteSpace(a.Terminal) && a.Reference.Equals(reference));
+                  .Where(a => !string.IsNullOrWhiteSpace(a.Terminal) && a.Reference.Equals(reference));
 
         public IEnumerable<Withdrawal> GetWithdrawals(IEnumerable<long> withdrawalIds) =>
             _store.Withdrawals
-                .WithdrawalList
-                .Where(w => withdrawalIds.Contains(w.Id));
+                  .Where(w => withdrawalIds.Contains(w.Id));
         
         public IEnumerable<WithdrawalGroup> GetWithdrawalGroups(IEnumerable<long> withdrawalGroupIds) => 
             _store.WithdrawalGroups
-                  .WithdrawalGroupList
                   .Where(g => withdrawalGroupIds.Contains(g.Id));
 
         public void SetAllocationStatus(long id, long statusId, string terminal = null, string reference = null) {
@@ -76,31 +68,29 @@ namespace Playground.PaymentEngine.Stores {
         public IEnumerable<Terminal> GetActiveAccountTypeTerminals(long accountTypeId) =>
             _cacheService.GetValue($"{nameof(GetTerminals)}_{accountTypeId}", () => 
                 _store.TerminalMaps
-                    .TerminalMapList
-                    .Join(_store.Terminals.TerminalList,
-                        tm => tm.TerminalId,
-                        t => t.Id,
-                        (tm, t) => new { Map = tm, Terminal = t }
-                    )
-                    .Where(t => t.Map.Enabled && t.Map.AccountTypeId == accountTypeId)
-                    .OrderBy(t => t.Map.Order)
-                    .Select(t => t.Terminal)
-                    .ToList()
+                      .Join(_store.Terminals,
+                          tm => tm.TerminalId,
+                          t => t.Id,
+                          (tm, t) => new { Map = tm, Terminal = t }
+                      )
+                      .Where(t => t.Map.Enabled && t.Map.AccountTypeId == accountTypeId)
+                      .OrderBy(t => t.Map.Order)
+                      .Select(t => t.Terminal)
+                      .ToList()
             );
 
         public IEnumerable<Terminal> GetTerminals() =>
-            _cacheService.GetValue(nameof(GetTerminals), () => _store.Terminals.TerminalList);
+            _cacheService.GetValue(nameof(GetTerminals), () => _store.Terminals);
 
         public IEnumerable<RuleHistory> GetRuleHistories(IEnumerable<long> withdrawalGroupIds) =>
             _store.RuleHistories
-                .Histories
-                .Where(h => withdrawalGroupIds.Contains(h.WithdrawalGroupId));
+                  .Where(h => withdrawalGroupIds.Contains(h.WithdrawalGroupId));
 
         public void LogTerminalResults(IEnumerable<TerminalResult> results) =>
-            _store.TerminalResults.TerminalResultList.AddRange(results);
+            _store.TerminalResults.AddRange(results);
 
         public void AddRuleHistories(IEnumerable<RuleHistory> histories) =>
-            _store.RuleHistories.Histories.AddRange(histories);
+            _store.RuleHistories.AddRange(histories);
         
         private void LoadStore() {
             var path = Path.Join("Resources", "Data", "store.xml");

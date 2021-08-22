@@ -22,11 +22,10 @@ namespace Playground.PaymentEngine.UseCases.Payments.AutoAllocate {
         }
 
         private void RemoveAllocations(long withdrawalGroupId) {
-            var allocations = _store.GetStore().Allocations.AllocationList;
+            var allocations = _store.GetStore().Allocations;
             
             _store.GetStore()
                 .Allocations
-                .AllocationList
                 .Where(a => a.WithdrawalGroupId == withdrawalGroupId)
                 .ToList()
                 .ForEach(a => allocations.Remove(a));
@@ -37,33 +36,16 @@ namespace Playground.PaymentEngine.UseCases.Payments.AutoAllocate {
             
             
             var store = _store.GetStore();
-            var withdrawalGroup = store.WithdrawalGroups
-                .WithdrawalGroupList
-                .First(g => g.Id == withdrawalGroupId);
-            
+            var withdrawalGroup = store.WithdrawalGroups.First(g => g.Id == withdrawalGroupId);
             var withdrawals = _store.GetWithdrawals(withdrawalGroup.WithdrawalIds);
             var withdrawalAmount = withdrawals.Sum(w => w.Amount);
 
             if (withdrawalAmount <= 0M)
                 return new List<AutoAllocateResult>();
-            
-            var withdrawalId = withdrawalGroup.WithdrawalIds.First();
-            
-            var customer = store
-                .Customers
-                .CustomerList
-                .Join(
-                    store.Withdrawals.WithdrawalList,
-                    c => c.Id,
-                    w => w.CustomerId,
-                    (c, w) => new { Customer = c, Withdrawal = w }
-                )
-                .Where(c => c.Withdrawal.Id == withdrawalId)
-                .Select(c => c.Customer)
-                .First();
 
-            var accounts = store.Accounts.AccountList.Where(a => a.CustomerId == customer.Id).ToList();
-            var startId = store.Allocations.AllocationList.Any() ? store.Allocations.AllocationList.Last().Id + 1 : 1;
+            var customer = store.Customers.First(c => c.Id == withdrawalGroup.CustomerId);
+            var accounts = store.Accounts.Where(a => a.CustomerId == customer.Id).ToList();
+            var startId = store.Allocations.Any() ? store.Allocations.Last().Id + 1 : 1;
 
             var allocationAmount = Math.Floor(withdrawalAmount / accounts.Count);
             
@@ -84,7 +66,7 @@ namespace Playground.PaymentEngine.UseCases.Payments.AutoAllocate {
                 else
                     allocation.Amount = withdrawalAmount - allocatedAmount;
                 
-                store.Allocations.AllocationList.Add(allocation);
+                store.Allocations.Add(allocation);
 
                 result.Add(new AutoAllocateResult {
                     AllocationId = allocation.Id,

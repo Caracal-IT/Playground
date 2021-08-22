@@ -26,7 +26,7 @@ namespace Playground.PaymentEngine.Controllers {
         public Store Get() => _paymentStore.GetStore();
         
         [HttpGet("allocations")]
-        public List<Allocation> GetAllocations() => _paymentStore.GetStore().Allocations.AllocationList;
+        public List<Allocation> GetAllocations() => _paymentStore.GetStore().Allocations;
 
         [HttpPost("approval-rules/run")]
         public Task<RunApprovalRulesResponse> RunApprovalRules([FromServices] RunApprovalRulesUseCase useCase, RunApprovalRulesRequest request, CancellationToken cancellationToken) => 

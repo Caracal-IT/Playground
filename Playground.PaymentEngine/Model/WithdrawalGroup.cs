@@ -8,6 +8,9 @@ namespace Playground.PaymentEngine.Model {
     public class WithdrawalGroup {
         [XmlAttribute(AttributeName="id")]
         public long Id { get; set; }
+        
+        [XmlAttribute(AttributeName="customer-id")]
+        public long CustomerId { get; set; }
 
         [XmlAttribute(AttributeName = "withdrawal-ids")]
         public string WithdrawalIdsString {
