@@ -17,10 +17,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="Stores\AllocationStores\File\repository.xml">
+      <Content Include="Stores\Allocations\File\repository.xml">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
-      <Content Include="Stores\TerminalStores\File\repository.xml">
+      <Content Include="Stores\ApprovalRules\File\repository.xml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Stores\Terminals\File\repository.xml">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
       <Content Include="Terminals\Templates\Rebilly.xslt">
@@ -44,11 +47,11 @@
       <None Remove="Resources\Templates\Terminals\Terminal1.xslt" />
       <None Remove="Resources\Data\terminal.store.xml" />
       <None Remove="Stores\CustomerStores\File\repository.xml" />
-      <Content Include="Stores\CustomerStores\File\repository.xml">
+      <Content Include="Stores\Customers\File\repository.xml">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
       <None Remove="Stores\AccountStores\File\repository.xml" />
-      <Content Include="Stores\AccountStores\File\repository.xml">
+      <Content Include="Stores\Accounts\File\repository.xml">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
     </ItemGroup>

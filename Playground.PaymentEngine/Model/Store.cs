@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using Playground.PaymentEngine.Stores.ApprovalRules.Model;
 
 namespace Playground.PaymentEngine.Model {
 	[XmlRoot(ElementName="store")]
@@ -15,9 +16,5 @@ namespace Playground.PaymentEngine.Model {
 		[XmlArray("withdrawal-groups")]
 		[XmlArrayItem("withdrawal-group")]
 		public List<WithdrawalGroup> WithdrawalGroups { get; set; }
-		
-		[XmlArray("rule-histories")]
-		[XmlArrayItem("rule-history")]
-		public List<RuleHistory> RuleHistories { get; set; } = new();
 	}
 }

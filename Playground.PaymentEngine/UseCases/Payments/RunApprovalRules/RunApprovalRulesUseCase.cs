@@ -5,22 +5,24 @@ using System.Threading;
 using System.Threading.Tasks;
 using Playground.PaymentEngine.Helpers;
 using Playground.PaymentEngine.Model;
-using Playground.PaymentEngine.Stores;
-using Playground.PaymentEngine.Stores.CustomerStores;
-using Playground.PaymentEngine.Stores.PaymentStores;
+using Playground.PaymentEngine.Stores.ApprovalRules;
+using Playground.PaymentEngine.Stores.ApprovalRules.Model;
+using Playground.PaymentEngine.Stores.Customers;
+using Playground.PaymentEngine.Stores.Payments;
 using Playground.Rules;
 using RulesEngine.Models;
-using Rule = Playground.PaymentEngine.Model.Rule;
 
 namespace Playground.PaymentEngine.UseCases.Payments.RunApprovalRules {
     public class RunApprovalRulesUseCase {
         private readonly Engine _engine;
         private readonly PaymentStore _paymentStore;
         private readonly CustomerStore _customerStore;
+        private readonly ApprovalRuleStore _approvalRuleStore;
 
-        public RunApprovalRulesUseCase(PaymentStore paymentStore, CustomerStore customerStore, Engine engine) {
+        public RunApprovalRulesUseCase(PaymentStore paymentStore, CustomerStore customerStore, ApprovalRuleStore approvalRuleStore, Engine engine) {
             _paymentStore = paymentStore;
             _customerStore = customerStore;
+            _approvalRuleStore = approvalRuleStore;
             _engine = engine;
         }
 
@@ -68,10 +70,10 @@ namespace Playground.PaymentEngine.UseCases.Payments.RunApprovalRules {
 
         private void AddRules(IEnumerable<ApprovalRuleOutcome> outcomes) {
             var rules = outcomes.GroupBy(outcome => outcome.WithdrawalGroupId, GetRuleHistory);
-            _paymentStore.AddRuleHistories(rules);
+            _approvalRuleStore.AddRuleHistories(rules);
         }
 
-        private static RuleHistory GetRuleHistory(long withdrawalGroupId, IEnumerable<ApprovalRuleOutcome> outcomes) =>
+        private static ApprovalRuleHistory GetRuleHistory(long withdrawalGroupId, IEnumerable<ApprovalRuleOutcome> outcomes) =>
             new() {
                 WithdrawalGroupId = withdrawalGroupId,
                 TransactionId =  Guid.NewGuid(),
@@ -80,8 +82,8 @@ namespace Playground.PaymentEngine.UseCases.Payments.RunApprovalRules {
                 Metadata = new List<MetaData>{ new(){ Name = "withdrawal-id", Value = $"{withdrawalGroupId}"}}
             };
 
-        private static Rule MapRule(ApprovalRuleOutcome outcome) =>
-            new Rule {
+        private static ApprovalRule MapRule(ApprovalRuleOutcome outcome) =>
+            new() {
                 RuleName = outcome.RuleName,
                 Message = outcome.Message,
                 IsSuccessful = outcome.IsSuccessful

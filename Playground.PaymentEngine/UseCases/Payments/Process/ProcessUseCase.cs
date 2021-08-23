@@ -5,10 +5,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Playground.PaymentEngine.Helpers;
 using Playground.PaymentEngine.Model;
-using Playground.PaymentEngine.Stores.AllocationStores;
-using Playground.PaymentEngine.Stores.PaymentStores;
-using Playground.PaymentEngine.Stores.TerminalStores;
-using Playground.PaymentEngine.Stores.TerminalStores.Model;
+using Playground.PaymentEngine.Stores.Allocations;
+using Playground.PaymentEngine.Stores.Payments;
+using Playground.PaymentEngine.Stores.Terminals;
+using Playground.PaymentEngine.Stores.Terminals.Model;
 using Playground.Router;
 using Playground.Xml;
 

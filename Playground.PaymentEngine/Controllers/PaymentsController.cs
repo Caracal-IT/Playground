@@ -9,8 +9,9 @@ using System.Xml.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Playground.PaymentEngine.Model;
 using Playground.PaymentEngine.Stores;
-using Playground.PaymentEngine.Stores.AllocationStores.Model;
-using Playground.PaymentEngine.Stores.PaymentStores;
+using Playground.PaymentEngine.Stores.ApprovalRules;
+using Playground.PaymentEngine.Stores.ApprovalRules.Model;
+using Playground.PaymentEngine.Stores.Payments;
 using Playground.PaymentEngine.UseCases.Payments.AutoAllocate;
 using Playground.PaymentEngine.UseCases.Payments.Callback;
 using Playground.PaymentEngine.UseCases.Payments.Process;
@@ -21,24 +22,23 @@ namespace Playground.PaymentEngine.Controllers {
     [ApiController]
     [Route("[controller]")]
     public class PaymentsController: ControllerBase {
-        private readonly PaymentStore _paymentStore;
-        public PaymentsController(PaymentStore paymentStore) => _paymentStore = paymentStore;
-
-        [HttpGet]
-        public Store Get() => _paymentStore.GetStore();
+        private readonly ApprovalRuleStore _approvalRuleStore;
+            
+        public PaymentsController(ApprovalRuleStore approvalRuleStore) => 
+            _approvalRuleStore = approvalRuleStore;
 
         [HttpPost("approval-rules/run")]
         public Task<RunApprovalRulesResponse> RunApprovalRules([FromServices] RunApprovalRulesUseCase useCase, RunApprovalRulesRequest request, CancellationToken cancellationToken) => 
             useCase.ExecuteAsync(request, cancellationToken);
 
         [HttpPost("approval-rules")]
-        public IEnumerable<RuleHistory> GetApprovalRules(List<long> request, CancellationToken cancellationToken) =>
-            _paymentStore.GetRuleHistories(request);
+        public IEnumerable<ApprovalRuleHistory> GetApprovalRules(List<long> request, CancellationToken cancellationToken) =>
+            _approvalRuleStore.GetRuleHistories(request);
         
         [HttpPost("approval-rules/last")]
-        public IEnumerable<RuleHistory> GetLatestApprovalRules(List<long> request, CancellationToken cancellationToken) =>
-            _paymentStore.GetRuleHistories(request)
-                         .GroupBy(r =>r.WithdrawalGroupId, (_, h) => h.Last());
+        public IEnumerable<ApprovalRuleHistory> GetLatestApprovalRules(List<long> request, CancellationToken cancellationToken) =>
+            _approvalRuleStore.GetRuleHistories(request)
+                              .GroupBy(r =>r.WithdrawalGroupId, (_, h) => h.Last());
 
         [HttpPost("auto-allocate")]
         public Task<AutoAllocateResponse> AutoAllocate([FromServices]  AutoAllocateUseCase useCase, AutoAllocateRequest request, CancellationToken cancellationToken) => 
@@ -61,7 +61,7 @@ namespace Playground.PaymentEngine.Controllers {
             };
             
             var response = await useCase.ExecuteAsync(request, cancellationToken);
-            return XDocument.Parse(response.Response).Root;
+            return string.IsNullOrWhiteSpace(response.Response) ? null : XDocument.Parse(response.Response).Root;
         }
         
         [HttpPost("process/json/{method}/{reference}")]

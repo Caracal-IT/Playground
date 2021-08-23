@@ -2,12 +2,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Playground.PaymentEngine.Stores.AccountStores;
-using Playground.PaymentEngine.Stores.AccountStores.Model;
-using Playground.PaymentEngine.Stores.AllocationStores;
-using Playground.PaymentEngine.Stores.AllocationStores.Model;
-using Playground.PaymentEngine.Stores.CustomerStores;
-using Playground.PaymentEngine.Stores.PaymentStores;
+using Playground.PaymentEngine.Stores.Accounts;
+using Playground.PaymentEngine.Stores.Accounts.Model;
+using Playground.PaymentEngine.Stores.Allocations;
+using Playground.PaymentEngine.Stores.Allocations.Model;
+using Playground.PaymentEngine.Stores.Customers;
+using Playground.PaymentEngine.Stores.Payments;
 
 namespace Playground.PaymentEngine.UseCases.Payments.AutoAllocate {
     public class AutoAllocateUseCase {
