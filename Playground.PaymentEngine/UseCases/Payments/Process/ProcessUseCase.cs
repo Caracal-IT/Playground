@@ -33,27 +33,27 @@ namespace Playground.PaymentEngine.UseCases.Payments.Process {
             var allocations = await GetExportAllocationsAsync(request.Allocations, cancellationToken);
             var items = (request.Consolidate ? GetConsolidated() : GetExportData()).ToList();
 
-            await items.Select(Export).WhenAll(maxConcurrentRequests: 50);
+            await items.Select(ExportAsync).WhenAll(maxConcurrentRequests: 50);
             
             await UpdateStatusesAsync();
-            SaveResults();
+            await SaveResultsAsync();
                 
             return new ProcessResponse(items.Select(i => i.Response.Last()));
 
-            async Task Export(ExportData data) {
-                var terminals = _terminalStore.GetActiveAccountTypeTerminals(data.AccountTypeId)
-                                              .Select(t => t.Name);
+            async Task ExportAsync(ExportData data) {
+                var terminalEnum = await _terminalStore.GetActiveAccountTypeTerminalsAsync(data.AccountTypeId, cancellationToken);
+                var terminals = terminalEnum.Select(t => t.Name);
                 
                 var req = new RoutingRequest(transactionId, nameof(ProcessUseCase), data.ToXml(), terminals);
-                var response = await _routingService.Send(req, cancellationToken);
+                var response = await _routingService.SendAsync(req, cancellationToken);
 
                 var result = response.Select(r => r.Result).Select(DeSerialize<ExportResponse>);
                 data.Response.AddRange(result);
             }
 
-            void SaveResults() {
+            async Task SaveResultsAsync() {
                 var results = items.SelectMany(i => i.Response).Select(MapResults);
-                _terminalStore.LogTerminalResults(results);
+                await _terminalStore.LogTerminalResultsAsync(results, cancellationToken);
             }
 
             TerminalResult MapResults(ExportResponse response) {

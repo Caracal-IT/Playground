@@ -23,7 +23,7 @@ namespace Playground.Rules.CustomActions.Terminal {
             var customInput = ruleParameters.First().Value;
             var routeReq = new RoutingRequest(Guid.NewGuid(), action, customInput.ToXml(), new []{ terminal });
 
-            var routeResponse = await _routingService.Send(routeReq, CancellationToken.None);
+            var routeResponse = await _routingService.SendAsync(routeReq, CancellationToken.None);
             var lastResponse = routeResponse.LastOrDefault();
             
             if(!(lastResponse?.TerminalResponse.Success??false) || string.IsNullOrWhiteSpace(lastResponse?.Result))

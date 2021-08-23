@@ -16,21 +16,21 @@ using RulesEngine.Models;
 namespace Playground.PaymentEngine.UseCases.Payments.RunApprovalRules {
     public class RunApprovalRulesUseCase {
         private readonly Engine _engine;
-        private readonly WithdrawalStore _paymentStore;
+        private readonly WithdrawalStore _withdrawalStore;
         private readonly CustomerStore _customerStore;
         private readonly ApprovalRuleStore _approvalRuleStore;
 
-        public RunApprovalRulesUseCase(WithdrawalStore paymentStore, CustomerStore customerStore, ApprovalRuleStore approvalRuleStore, Engine engine) {
-            _paymentStore = paymentStore;
+        public RunApprovalRulesUseCase(WithdrawalStore withdrawalStore, CustomerStore customerStore, ApprovalRuleStore approvalRuleStore, Engine engine) {
+            _withdrawalStore = withdrawalStore;
             _customerStore = customerStore;
             _approvalRuleStore = approvalRuleStore;
             _engine = engine;
         }
 
         public async Task<RunApprovalRulesResponse> ExecuteAsync(RunApprovalRulesRequest request, CancellationToken cancellationToken) {
-            var inputs = await _paymentStore.GetWithdrawalGroups(request.WithdrawalGroups)
-                                            .Select(g => MapInputAsync(g, cancellationToken))
-                                            .WhenAll(50);
+            var inputEnum = await _withdrawalStore.GetWithdrawalGroupsAsync(request.WithdrawalGroups, cancellationToken);
+            var inputs = await inputEnum.Select(g => MapInputAsync(g, cancellationToken))
+                                        .WhenAll(50);
                                              
             var results = await inputs.Select(RunRules).WhenAll(50);
 
@@ -47,7 +47,8 @@ namespace Playground.PaymentEngine.UseCases.Payments.RunApprovalRules {
         }
 
         private async Task<RuleInput> MapInputAsync(WithdrawalGroup withdrawalGroup, CancellationToken cancellationToken) {
-            var withdrawals = _paymentStore.GetWithdrawals(withdrawalGroup.WithdrawalIds).ToList();
+            var withdrawalEnum = await _withdrawalStore.GetWithdrawalsAsync(withdrawalGroup.WithdrawalIds, cancellationToken);
+            var withdrawals = withdrawalEnum.ToList();
             var customer = await _customerStore.GetCustomerAsync(withdrawals.First().CustomerId, cancellationToken);
 
             return new RuleInput {

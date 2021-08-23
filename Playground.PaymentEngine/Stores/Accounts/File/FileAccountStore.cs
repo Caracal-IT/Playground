@@ -9,7 +9,7 @@ using Playground.PaymentEngine.Stores.Accounts.Model;
 
 namespace Playground.PaymentEngine.Stores.Accounts.File {
     public class FileAccountStore: AccountStore {
-        private AccountRepository _repository;
+        private readonly AccountRepository _repository;
         private readonly ICacheService _cacheService;
         
         public FileAccountStore(ICacheService cacheService) {

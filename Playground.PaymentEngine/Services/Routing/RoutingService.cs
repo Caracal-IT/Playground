@@ -23,7 +23,7 @@ namespace Playground.PaymentEngine.Services.Routing {
             _extensions = extensions.GetExtensions();
         }
 
-        public async Task<IEnumerable<Response>> Send(RoutingRequest request, CancellationToken cancellationToken) {
+        public async Task<IEnumerable<Response>> SendAsync(RoutingRequest request, CancellationToken cancellationToken) {
             await InitTerminals(cancellationToken);
             
             var req = new Request { 
@@ -41,7 +41,8 @@ namespace Playground.PaymentEngine.Services.Routing {
             if (_terminals != null)
                 return;
             
-            var terminals = _terminalStore.GetTerminals().Select(async t => new Terminal {
+            var terminalEnum = await _terminalStore.GetTerminalsAsync(cancellationToken);
+            var terminals = terminalEnum.Select(async t => new Terminal {
                 Name = t.Name,
                 Settings = t.Settings.Select(s => new Setting(s.Name, s.Value)),
                 Type = t.Type,

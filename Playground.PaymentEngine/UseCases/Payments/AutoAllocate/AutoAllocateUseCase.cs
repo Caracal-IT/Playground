@@ -13,13 +13,13 @@ using Playground.PaymentEngine.Stores.Withdrawals;
 namespace Playground.PaymentEngine.UseCases.Payments.AutoAllocate {
     public class AutoAllocateUseCase {
         private readonly AccountStore _accountStore;
-        private readonly WithdrawalStore _paymentStore;
+        private readonly WithdrawalStore _withdrawalStore;
         private readonly CustomerStore _customerStore;
         private readonly AllocationStore _allocationStore;
 
-        public AutoAllocateUseCase(AccountStore accountStore, WithdrawalStore paymentStore, AllocationStore allocationStore, CustomerStore customerStore) {
+        public AutoAllocateUseCase(AccountStore accountStore, WithdrawalStore withdrawalStore, AllocationStore allocationStore, CustomerStore customerStore) {
             _accountStore = accountStore;
-            _paymentStore = paymentStore;
+            _withdrawalStore = withdrawalStore;
             _customerStore = customerStore;
             _allocationStore = allocationStore;
         }
@@ -37,8 +37,8 @@ namespace Playground.PaymentEngine.UseCases.Payments.AutoAllocate {
         private async Task<List<AutoAllocateResult>> AllocateFundsAsync(long withdrawalGroupId, CancellationToken cancellationToken) {
             var result = new List<AutoAllocateResult>();
             
-            var withdrawalGroup = _paymentStore.GetWithdrawalGroup(withdrawalGroupId);
-            var withdrawals = _paymentStore.GetWithdrawalGroupWithdrawals(withdrawalGroupId);
+            var withdrawalGroup = await _withdrawalStore.GetWithdrawalGroupAsync(withdrawalGroupId, cancellationToken);
+            var withdrawals = await _withdrawalStore.GetWithdrawalGroupWithdrawalsAsync(withdrawalGroupId, cancellationToken);
             var withdrawalAmount = withdrawals.Sum(w => w.Amount);
 
             if (withdrawalAmount <= 0M)

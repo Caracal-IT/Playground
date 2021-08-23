@@ -26,7 +26,7 @@ namespace Playground.PaymentEngine.UseCases.Payments.Callback {
 
             var req = new RoutingRequest(transactionId, request.Action, request.Data, terminals);
 
-            var responses =  await _routingService.Send(req, cancellationToken);
+            var responses =  await _routingService.SendAsync(req, cancellationToken);
             var response = responses.FirstOrDefault();
             
             if (response?.Result == null) return new CallbackResponse();
