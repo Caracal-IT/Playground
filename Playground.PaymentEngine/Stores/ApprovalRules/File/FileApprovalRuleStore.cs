@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Playground.PaymentEngine.Stores.ApprovalRules.Model;
 
@@ -11,13 +13,19 @@ namespace Playground.PaymentEngine.Stores.ApprovalRules.File {
         public FileApprovalRuleStore() =>
             _repository = GetRepository();
         
-        public IEnumerable<ApprovalRuleHistory> GetRuleHistories(IEnumerable<long> withdrawalGroupIds) =>
-            _repository.ApprovalRuleRuleHistories
-                .Where(h => withdrawalGroupIds.Contains(h.WithdrawalGroupId));
+        public Task<IEnumerable<ApprovalRuleHistory>> GetRuleHistoriesAsync(IEnumerable<long> withdrawalGroupIds, CancellationToken cancellationToken) {
+            var result = _repository.ApprovalRuleRuleHistories
+                                    .Where(h => withdrawalGroupIds.Contains(h.WithdrawalGroupId));
 
-        public void AddRuleHistories(IEnumerable<ApprovalRuleHistory> histories) =>
+            return Task.FromResult(result);
+        }
+
+        public Task AddRuleHistoriesAsync(IEnumerable<ApprovalRuleHistory> histories, CancellationToken cancellationToken) {
             _repository.ApprovalRuleRuleHistories.AddRange(histories);
-        
+
+            return Task.CompletedTask;
+        }
+
         private static ApprovalRuleRepository GetRepository() {
             var path = Path.Join("Stores", "ApprovalRules", "File", "repository.xml");
             using var fileStream = new FileStream(path, FileMode.Open);

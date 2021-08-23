@@ -30,16 +30,17 @@ namespace Playground.PaymentEngine.Controllers {
             useCase.ExecuteAsync(request, cancellationToken);
 
         [HttpPost("approval-rules")]
-        public IEnumerable<ApprovalRuleHistory> GetApprovalRules(List<long> request, CancellationToken cancellationToken) =>
-            _approvalRuleStore.GetRuleHistories(request);
+        public Task<IEnumerable<ApprovalRuleHistory>> GetApprovalRulesAsync(List<long> request, CancellationToken cancellationToken) =>
+            _approvalRuleStore.GetRuleHistoriesAsync(request, cancellationToken);
         
         [HttpPost("approval-rules/last")]
-        public IEnumerable<ApprovalRuleHistory> GetLatestApprovalRules(List<long> request, CancellationToken cancellationToken) =>
-            _approvalRuleStore.GetRuleHistories(request)
-                              .GroupBy(r =>r.WithdrawalGroupId, (_, h) => h.Last());
+        public async Task<IEnumerable<ApprovalRuleHistory>> GetLatestApprovalRulesAsync(List<long> request, CancellationToken cancellationToken) {
+            var rules = await _approvalRuleStore.GetRuleHistoriesAsync(request, cancellationToken);
+            return rules.GroupBy(r => r.WithdrawalGroupId, (_, h) => h.Last());
+        }
 
         [HttpPost("auto-allocate")]
-        public Task<AutoAllocateResponse> AutoAllocate([FromServices]  AutoAllocateUseCase useCase, AutoAllocateRequest request, CancellationToken cancellationToken) => 
+        public Task<AutoAllocateResponse> AutoAllocateAsync([FromServices]  AutoAllocateUseCase useCase, AutoAllocateRequest request, CancellationToken cancellationToken) => 
             useCase.ExecuteAsync(request, cancellationToken);
 
         [HttpPost("process")]

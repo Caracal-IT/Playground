@@ -37,7 +37,8 @@ namespace Playground.PaymentEngine.UseCases.Payments.RunApprovalRules {
                                   .Select(MapToOutcome)
                                   .ToList();
 
-            AddRules(outcomes);
+            await AddRulesAsync(outcomes, cancellationToken);
+            
             return new RunApprovalRulesResponse { Outcomes = outcomes };
             
             Task<IEnumerable<Result>> RunRules(RuleInput input) 
@@ -69,9 +70,9 @@ namespace Playground.PaymentEngine.UseCases.Payments.RunApprovalRules {
             return result.IsSuccessful && (bool) isOutputSuccessful.Output;
         }
 
-        private void AddRules(IEnumerable<ApprovalRuleOutcome> outcomes) {
+        private async Task AddRulesAsync(IEnumerable<ApprovalRuleOutcome> outcomes, CancellationToken cancellationToken) {
             var rules = outcomes.GroupBy(outcome => outcome.WithdrawalGroupId, GetRuleHistory);
-            _approvalRuleStore.AddRuleHistories(rules);
+            await _approvalRuleStore.AddRuleHistoriesAsync(rules, cancellationToken);
         }
 
         private static ApprovalRuleHistory GetRuleHistory(long withdrawalGroupId, IEnumerable<ApprovalRuleOutcome> outcomes) =>

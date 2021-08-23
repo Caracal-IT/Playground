@@ -1,10 +1,12 @@
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Playground.PaymentEngine.Stores.ApprovalRules.Model;
 
 namespace Playground.PaymentEngine.Stores.ApprovalRules {
     public interface ApprovalRuleStore {
-        IEnumerable<ApprovalRuleHistory> GetRuleHistories(IEnumerable<long> withdrawalIds);
+        Task<IEnumerable<ApprovalRuleHistory>> GetRuleHistoriesAsync(IEnumerable<long> withdrawalIds, CancellationToken cancellationToken);
 
-        void AddRuleHistories(IEnumerable<ApprovalRuleHistory> histories);
+        Task AddRuleHistoriesAsync(IEnumerable<ApprovalRuleHistory> histories, CancellationToken cancellationToken);
     }
 }
