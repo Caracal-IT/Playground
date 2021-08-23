@@ -7,7 +7,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Microsoft.AspNetCore.Mvc;
-using Playground.PaymentEngine.Stores;
 using Playground.PaymentEngine.Stores.ApprovalRules;
 using Playground.PaymentEngine.Stores.ApprovalRules.Model;
 using Playground.PaymentEngine.UseCases.Payments.AutoAllocate;

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Playground.Rules.CustomActions.Terminal;
 using RulesEngine.Actions;
 using Xunit;
 

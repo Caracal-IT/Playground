@@ -4,8 +4,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
-using Playground.PaymentEngine.Stores.Accounts;
-using Playground.PaymentEngine.Stores.Allocations;
 using Playground.PaymentEngine.Stores.Withdrawals.Model;
 
 namespace Playground.PaymentEngine.Stores.Withdrawals.File {

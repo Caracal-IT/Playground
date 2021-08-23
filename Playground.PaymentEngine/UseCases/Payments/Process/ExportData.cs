@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
-using Playground.PaymentEngine.Stores.Allocations.Model;
 using Playground.PaymentEngine.Stores.Model;
-using Playground.PaymentEngine.UseCases.Payments.AutoAllocate;
 
 namespace Playground.PaymentEngine.UseCases.Payments.Process {
     [XmlRoot(ElementName = "export-data")]
