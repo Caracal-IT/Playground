@@ -44,7 +44,7 @@ namespace Playground.PaymentEngine.UseCases.Payments.AutoAllocate {
             if (withdrawalAmount <= 0M)
                 return new List<AutoAllocateResult>();
 
-            var customer = _customerStore.GetCustomer(withdrawalGroup.CustomerId);
+            var customer = await _customerStore.GetCustomerAsync(withdrawalGroup.CustomerId, cancellationToken);
             var accountEnum = await _accountStore.GetCustomerAccountsAsync(customer.Id, cancellationToken);
             var accounts = accountEnum.ToList();
             var accountTypes = await _accountStore.GetAccountTypesAsync(accounts.Select(a => a.AccountTypeId), cancellationToken);

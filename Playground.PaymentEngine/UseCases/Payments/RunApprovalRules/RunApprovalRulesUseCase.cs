@@ -28,10 +28,11 @@ namespace Playground.PaymentEngine.UseCases.Payments.RunApprovalRules {
         }
 
         public async Task<RunApprovalRulesResponse> ExecuteAsync(RunApprovalRulesRequest request, CancellationToken cancellationToken) {
-            var results = await _paymentStore.GetWithdrawalGroups(request.WithdrawalGroups)
-                                             .Select(MapInput)
-                                             .Select(RunRules)
-                                             .WhenAll(50);
+            var inputs = await _paymentStore.GetWithdrawalGroups(request.WithdrawalGroups)
+                                            .Select(g => MapInputAsync(g, cancellationToken))
+                                            .WhenAll(50);
+                                             
+            var results = await inputs.Select(RunRules).WhenAll(50);
 
             var outcomes = results.SelectMany(i => i)
                                   .Select(MapToOutcome)
@@ -45,11 +46,11 @@ namespace Playground.PaymentEngine.UseCases.Payments.RunApprovalRules {
                 =>_engine.ExecuteAsync("approval", input, cancellationToken);
         }
 
-        private RuleInput MapInput(WithdrawalGroup withdrawalGroup) {
+        private async Task<RuleInput> MapInputAsync(WithdrawalGroup withdrawalGroup, CancellationToken cancellationToken) {
             var withdrawals = _paymentStore.GetWithdrawals(withdrawalGroup.WithdrawalIds).ToList();
-            var customer = _customerStore.GetCustomer(withdrawals.First().CustomerId);
+            var customer = await _customerStore.GetCustomerAsync(withdrawals.First().CustomerId, cancellationToken);
 
-            return new() {
+            return new RuleInput {
                 WithdrawalGroupId = withdrawalGroup.Id,
                 CustomerId = customer.Id,
                 Balance = customer.Balance,
