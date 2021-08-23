@@ -1,20 +1,19 @@
 using System.Collections.Generic;
 using Playground.PaymentEngine.Model;
+using Playground.PaymentEngine.Stores.CustomerStores.Model;
 
-namespace Playground.PaymentEngine.Stores {
+namespace Playground.PaymentEngine.Stores.PaymentStores {
     public interface PaymentStore {
         Store GetStore();
 
-        Account GetAccount(long id);
+        
         Allocation GetAllocation(long id);
-        Customer GetCustomer(long id);
-        IEnumerable<Account> GetCustomerAccounts(long id);
-        IEnumerable<AccountType> GetAccountTypes(IEnumerable<long> accountTypeIds);
+        
         ExportAllocation GetExportAllocation(long allocationId);
         IEnumerable<ExportAllocation> GetExportAllocations(IEnumerable<long> allocationIds);
         IEnumerable<Allocation> GetAllocationsByReference(string reference);
-        IEnumerable<Terminal> GetActiveAccountTypeTerminals(long accountTypeId);
-        IEnumerable<Terminal> GetTerminals();
+       // IEnumerable<Terminal> GetActiveAccountTypeTerminals(long accountTypeId);
+       // IEnumerable<Terminal> GetTerminals();
         IEnumerable<Withdrawal> GetWithdrawals(IEnumerable<long> withdrawalIds);
         IEnumerable<Withdrawal> GetWithdrawalGroupWithdrawals(long id);
         IEnumerable<WithdrawalGroup> GetWithdrawalGroups(IEnumerable<long> withdrawalGroupIds);
@@ -22,8 +21,6 @@ namespace Playground.PaymentEngine.Stores {
         IEnumerable<RuleHistory> GetRuleHistories(IEnumerable<long> withdrawalIds);
 
         void SetAllocationStatus(long id, long statusId, string terminal = null, string reference = null);
-
-        void LogTerminalResults(IEnumerable<TerminalResult> results);
 
         void AddRuleHistories(IEnumerable<RuleHistory> histories);
 

@@ -1,25 +1,25 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Playground.PaymentEngine.Extensions;
-using Playground.PaymentEngine.Stores;
+using Playground.PaymentEngine.Stores.TerminalStores;
 using Playground.PaymentEngine.Terminals.Functions;
 using Playground.Router;
 
 namespace Playground.PaymentEngine.Services.Routing {
     public class RoutingService: IRoutingService {
-        private readonly PaymentStore _paymentStore;
+        private readonly TerminalStore _terminalStore;
+        
         private readonly Engine _engine;
         private readonly Dictionary<string, object> _extensions;
 
         private IEnumerable<Terminal> _terminals;
 
-        public RoutingService(PaymentStore paymentStore, Engine engine, XsltExtensions extensions) {
+        public RoutingService(TerminalStore terminalStore, Engine engine, XsltExtensions extensions) {
             _engine = engine;
-            _paymentStore = paymentStore;
+            _terminalStore = terminalStore;
             _extensions = extensions.GetExtensions();
         }
 
@@ -41,7 +41,7 @@ namespace Playground.PaymentEngine.Services.Routing {
             if (_terminals != null)
                 return;
             
-            var terminals = _paymentStore.GetTerminals().Select(async t => new Terminal {
+            var terminals = _terminalStore.GetTerminals().Select(async t => new Terminal {
                 Name = t.Name,
                 Settings = t.Settings.Select(s => new Setting(s.Name, s.Value)),
                 Type = t.Type,

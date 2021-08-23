@@ -17,6 +17,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Content Include="Stores\TerminalStores\File\repository.xml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
       <Content Include="Terminals\Templates\Rebilly.xslt">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
@@ -36,11 +39,21 @@
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
       <None Remove="Resources\Templates\Terminals\Terminal1.xslt" />
+      <None Remove="Resources\Data\terminal.store.xml" />
+      <None Remove="Stores\CustomerStores\File\repository.xml" />
+      <Content Include="Stores\CustomerStores\File\repository.xml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Stores\AccountStores\File\repository.xml" />
+      <Content Include="Stores\AccountStores\File\repository.xml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Config" />
       <Folder Include="Exports" />
+      <Folder Include="Stores\AccountStores\Model" />
     </ItemGroup>
 
 </Project>

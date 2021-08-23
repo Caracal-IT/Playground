@@ -4,39 +4,32 @@ using System.Linq;
 using System.Xml.Serialization;
 using Playground.PaymentEngine.Model;
 using Playground.PaymentEngine.Services.CacheService;
+using Playground.PaymentEngine.Stores.AccountStores;
+using Playground.PaymentEngine.Stores.CustomerStores.Model;
 
-namespace Playground.PaymentEngine.Stores {
+namespace Playground.PaymentEngine.Stores.PaymentStores {
     public class FilePaymentStore: PaymentStore {
         private Store _store;
         private readonly ICacheService _cacheService;
+        private readonly AccountStore _accountStore;
 
-        public FilePaymentStore(ICacheService cacheService) {
+        public FilePaymentStore(ICacheService cacheService, AccountStore accountStore) {
             _cacheService = cacheService;
+            _accountStore = accountStore;
             LoadStore();
         }
 
         public Store GetStore() => _store;
 
-        public Account GetAccount(long id) =>
-            _store.Accounts.FirstOrDefault(a => a.Id == id) ?? new Account();
-        
         public Allocation GetAllocation(long id) =>
             _store.Allocations
                 .FirstOrDefault(a => a.Id == id)
                   ??new Allocation();
-
-        public Customer GetCustomer(long id) =>
-            _store.Customers.FirstOrDefault(c => c.Id == id);
-
-        public IEnumerable<Account> GetCustomerAccounts(long id) =>
-            _store.Accounts.Where(a => a.CustomerId == id);
-
-        public IEnumerable<AccountType> GetAccountTypes(IEnumerable<long> accountTypeIds) =>
-            _store.AccountTypes.Where(t => accountTypeIds.Contains(t.Id));
+        
         
         public ExportAllocation GetExportAllocation(long allocationId) {
             var allocation = GetAllocation(allocationId);
-            var account = GetAccount(allocation.AccountId);
+            var account = _accountStore.GetAccount(allocation.AccountId);
 
             return new ExportAllocation {
                 AllocationId = allocation.Id,
@@ -79,29 +72,9 @@ namespace Playground.PaymentEngine.Stores {
             allocation.Reference = reference;
         }
 
-        public IEnumerable<Terminal> GetActiveAccountTypeTerminals(long accountTypeId) =>
-            _cacheService.GetValue($"{nameof(GetTerminals)}_{accountTypeId}", () => 
-                _store.TerminalMaps
-                      .Join(_store.Terminals,
-                          tm => tm.TerminalId,
-                          t => t.Id,
-                          (tm, t) => new { Map = tm, Terminal = t }
-                      )
-                      .Where(t => t.Map.Enabled && t.Map.AccountTypeId == accountTypeId)
-                      .OrderBy(t => t.Map.Order)
-                      .Select(t => t.Terminal)
-                      .ToList()
-            );
-
-        public IEnumerable<Terminal> GetTerminals() =>
-            _cacheService.GetValue(nameof(GetTerminals), () => _store.Terminals);
-
         public IEnumerable<RuleHistory> GetRuleHistories(IEnumerable<long> withdrawalGroupIds) =>
             _store.RuleHistories
                   .Where(h => withdrawalGroupIds.Contains(h.WithdrawalGroupId));
-
-        public void LogTerminalResults(IEnumerable<TerminalResult> results) =>
-            _store.TerminalResults.AddRange(results);
 
         public void AddRuleHistories(IEnumerable<RuleHistory> histories) =>
             _store.RuleHistories.AddRange(histories);

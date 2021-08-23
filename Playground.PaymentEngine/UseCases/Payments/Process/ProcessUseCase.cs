@@ -5,8 +5,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Playground.PaymentEngine.Helpers;
 using Playground.PaymentEngine.Model;
-using Playground.PaymentEngine.Services.Routing;
-using Playground.PaymentEngine.Stores;
+using Playground.PaymentEngine.Stores.PaymentStores;
+using Playground.PaymentEngine.Stores.TerminalStores;
+using Playground.PaymentEngine.Stores.TerminalStores.Model;
 using Playground.Router;
 using Playground.Xml;
 
@@ -16,10 +17,12 @@ using static Playground.Xml.Serialization.Serializer;
 namespace Playground.PaymentEngine.UseCases.Payments.Process {
     public class ProcessUseCase {
         private readonly PaymentStore _paymentStore;
+        private readonly TerminalStore _terminalStore;
         private readonly IRoutingService _routingService;
         
-        public ProcessUseCase(PaymentStore paymentStore, IRoutingService routingService) {
+        public ProcessUseCase(PaymentStore paymentStore, TerminalStore terminalStore, IRoutingService routingService) {
             _paymentStore = paymentStore;
+            _terminalStore = terminalStore;
             _routingService = routingService;
         }
 
@@ -36,8 +39,8 @@ namespace Playground.PaymentEngine.UseCases.Payments.Process {
             return new ProcessResponse(items.Select(i => i.Response.Last()));
 
             async Task Export(ExportData data) {
-                var terminals = _paymentStore.GetActiveAccountTypeTerminals(data.AccountTypeId)
-                                             .Select(t => t.Name);
+                var terminals = _terminalStore.GetActiveAccountTypeTerminals(data.AccountTypeId)
+                                              .Select(t => t.Name);
                 
                 var req = new RoutingRequest(transactionId, nameof(ProcessUseCase), data.ToXml(), terminals);
                 var response = await _routingService.Send(req, cancellationToken);
@@ -48,7 +51,7 @@ namespace Playground.PaymentEngine.UseCases.Payments.Process {
 
             void SaveResults() {
                 var results = items.SelectMany(i => i.Response).Select(MapResults);
-                _paymentStore.LogTerminalResults(results);
+                _terminalStore.LogTerminalResults(results);
             }
 
             TerminalResult MapResults(ExportResponse response) {

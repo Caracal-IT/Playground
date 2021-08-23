@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Playground.PaymentEngine.Helpers;
 using Playground.PaymentEngine.Model;
 using Playground.PaymentEngine.Stores;
+using Playground.PaymentEngine.Stores.CustomerStores;
+using Playground.PaymentEngine.Stores.PaymentStores;
 using Playground.Rules;
 using RulesEngine.Models;
 using Rule = Playground.PaymentEngine.Model.Rule;
@@ -13,18 +15,20 @@ using Rule = Playground.PaymentEngine.Model.Rule;
 namespace Playground.PaymentEngine.UseCases.Payments.RunApprovalRules {
     public class RunApprovalRulesUseCase {
         private readonly Engine _engine;
-        private readonly PaymentStore _store;
+        private readonly PaymentStore _paymentStore;
+        private readonly CustomerStore _customerStore;
 
-        public RunApprovalRulesUseCase(PaymentStore store, Engine engine) {
-            _store = store;
+        public RunApprovalRulesUseCase(PaymentStore paymentStore, CustomerStore customerStore, Engine engine) {
+            _paymentStore = paymentStore;
+            _customerStore = customerStore;
             _engine = engine;
         }
 
         public async Task<RunApprovalRulesResponse> ExecuteAsync(RunApprovalRulesRequest request, CancellationToken cancellationToken) {
-            var results = await _store.GetWithdrawalGroups(request.WithdrawalGroups)
-                                      .Select(MapInput)
-                                      .Select(RunRules)
-                                      .WhenAll(50);
+            var results = await _paymentStore.GetWithdrawalGroups(request.WithdrawalGroups)
+                                             .Select(MapInput)
+                                             .Select(RunRules)
+                                             .WhenAll(50);
 
             var outcomes = results.SelectMany(i => i)
                                   .Select(MapToOutcome)
@@ -38,8 +42,8 @@ namespace Playground.PaymentEngine.UseCases.Payments.RunApprovalRules {
         }
 
         private RuleInput MapInput(WithdrawalGroup withdrawalGroup) {
-            var withdrawals = _store.GetWithdrawals(withdrawalGroup.WithdrawalIds).ToList();
-            var customer = _store.GetCustomer(withdrawals.First().CustomerId);
+            var withdrawals = _paymentStore.GetWithdrawals(withdrawalGroup.WithdrawalIds).ToList();
+            var customer = _customerStore.GetCustomer(withdrawals.First().CustomerId);
 
             return new() {
                 WithdrawalGroupId = withdrawalGroup.Id,
@@ -64,7 +68,7 @@ namespace Playground.PaymentEngine.UseCases.Payments.RunApprovalRules {
 
         private void AddRules(IEnumerable<ApprovalRuleOutcome> outcomes) {
             var rules = outcomes.GroupBy(outcome => outcome.WithdrawalGroupId, GetRuleHistory);
-            _store.AddRuleHistories(rules);
+            _paymentStore.AddRuleHistories(rules);
         }
 
         private static RuleHistory GetRuleHistory(long withdrawalGroupId, IEnumerable<ApprovalRuleOutcome> outcomes) =>

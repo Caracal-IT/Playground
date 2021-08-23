@@ -1,16 +1,20 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using Playground.PaymentEngine.Model;
 
-namespace Playground.PaymentEngine.Model {
+namespace Playground.PaymentEngine.Stores.TerminalStores.Model {
     [XmlRoot(ElementName="terminal")]
     public class Terminal {
-        [XmlAttribute(AttributeName="id")]
+        [XmlAttribute("id")]
         public long Id { get; set; }
-        [XmlAttribute(AttributeName="name")]
+        
+        [XmlAttribute("name")]
         public string Name { get; set; }
-        [XmlAttribute(AttributeName="type")]
+        
+        [XmlAttribute("type")]
         public string Type { get; set; }
-        [XmlAttribute(AttributeName="retry-count")]
+        
+        [XmlAttribute("retry-count")]
         public int RetryCount { get; set; }
         
         [XmlArray("settings")]

@@ -12,6 +12,13 @@ using Playground.PaymentEngine.Helpers;
 using Playground.PaymentEngine.Services.CacheService;
 using Playground.PaymentEngine.Services.Routing;
 using Playground.PaymentEngine.Stores;
+using Playground.PaymentEngine.Stores.AccountStores;
+using Playground.PaymentEngine.Stores.AccountStores.File;
+using Playground.PaymentEngine.Stores.CustomerStores;
+using Playground.PaymentEngine.Stores.CustomerStores.File;
+using Playground.PaymentEngine.Stores.PaymentStores;
+using Playground.PaymentEngine.Stores.TerminalStores;
+using Playground.PaymentEngine.Stores.TerminalStores.File;
 using Playground.PaymentEngine.Terminals.Functions;
 using Playground.PaymentEngine.UseCases.Payments.AutoAllocate;
 using Playground.PaymentEngine.UseCases.Payments.Callback;
@@ -42,7 +49,16 @@ namespace Playground.PaymentEngine {
             
             
             services.AddSingleton<XsltExtensions, CustomExtensions>();
+            
+            
             services.AddSingleton<PaymentStore, FilePaymentStore>();
+            services.AddSingleton<AccountStore, FileAccountStore>();
+            services.AddSingleton<CustomerStore, FileCustomerStore>();
+            services.AddSingleton<TerminalStore, FileTerminalStore>();
+            
+            
+            
+            
             services.AddSingleton<Engine, RouterEngine>();
             
             services.AddSingleton<ClientFactory, DefaultClientFactory>();
