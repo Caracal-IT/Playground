@@ -7,16 +7,16 @@ using Playground.PaymentEngine.Stores.Accounts.Model;
 using Playground.PaymentEngine.Stores.Allocations;
 using Playground.PaymentEngine.Stores.Allocations.Model;
 using Playground.PaymentEngine.Stores.Customers;
-using Playground.PaymentEngine.Stores.Payments;
+using Playground.PaymentEngine.Stores.Withdrawals;
 
 namespace Playground.PaymentEngine.UseCases.Payments.AutoAllocate {
     public class AutoAllocateUseCase {
         private readonly AccountStore _accountStore;
-        private readonly PaymentStore _paymentStore;
+        private readonly WithdrawalStore _paymentStore;
         private readonly CustomerStore _customerStore;
         private readonly AllocationStore _allocationStore;
 
-        public AutoAllocateUseCase(AccountStore accountStore, PaymentStore paymentStore, AllocationStore allocationStore, CustomerStore customerStore) {
+        public AutoAllocateUseCase(AccountStore accountStore, WithdrawalStore paymentStore, AllocationStore allocationStore, CustomerStore customerStore) {
             _accountStore = accountStore;
             _paymentStore = paymentStore;
             _customerStore = customerStore;

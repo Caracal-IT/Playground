@@ -1,7 +1,7 @@
 using System;
 using System.Xml.Serialization;
 
-namespace Playground.PaymentEngine.Model {
+namespace Playground.PaymentEngine.Stores.Withdrawals.Model {
     [XmlRoot(ElementName="withdrawal")]
     public class Withdrawal {
         [XmlAttribute(AttributeName="id")]

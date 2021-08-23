@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 
-namespace Playground.PaymentEngine.Model {
+namespace Playground.PaymentEngine.Stores.Withdrawals.Model {
     [XmlRoot(ElementName="withdrawal-group")]
     public class WithdrawalGroup {
         [XmlAttribute(AttributeName="id")]

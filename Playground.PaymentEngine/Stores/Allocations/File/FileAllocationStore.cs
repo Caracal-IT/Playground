@@ -2,16 +2,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
-using Playground.PaymentEngine.Services.CacheService;
+using Playground.PaymentEngine.Stores.Accounts;
 using Playground.PaymentEngine.Stores.Allocations.Model;
 
 namespace Playground.PaymentEngine.Stores.Allocations.File {
     public class FileAllocationStore: AllocationStore {
         private AllocationRepository _repository;
-        private readonly ICacheService _cacheService;
+        private AccountStore _accountStore;
         
-        public FileAllocationStore(ICacheService cacheService) {
-            _cacheService = cacheService;
+        public FileAllocationStore(AccountStore accountStore) {
+            _accountStore = accountStore;
             _repository = GetRepository();
         }
         
@@ -58,6 +58,24 @@ namespace Playground.PaymentEngine.Stores.Allocations.File {
                 .ToList()
                 .ForEach(a => allocations.Remove(a));
         }
+        
+        public ExportAllocation GetExportAllocation(long allocationId) {
+            var allocation = GetAllocation(allocationId);
+            var account = _accountStore.GetAccount(allocation.AccountId);
+
+            return new ExportAllocation {
+                AllocationId = allocation.Id,
+                Amount = allocation.Amount + allocation.Charge,
+                AccountId = account.Id,
+                AccountTypeId = account.AccountTypeId,
+                CustomerId = account.CustomerId,
+                MetaData = account.MetaData
+            };
+        }
+
+        public IEnumerable<ExportAllocation> GetExportAllocations(IEnumerable<long> allocationIds) =>
+            allocationIds.Select(GetExportAllocation)
+                .Where(a => a.AccountId > 0);
         
         private static AllocationRepository GetRepository() {
             var path = Path.Join("Stores", "Allocations", "File", "repository.xml");

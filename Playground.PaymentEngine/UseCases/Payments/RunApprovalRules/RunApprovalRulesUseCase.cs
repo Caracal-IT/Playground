@@ -4,22 +4,23 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Playground.PaymentEngine.Helpers;
-using Playground.PaymentEngine.Model;
 using Playground.PaymentEngine.Stores.ApprovalRules;
 using Playground.PaymentEngine.Stores.ApprovalRules.Model;
 using Playground.PaymentEngine.Stores.Customers;
-using Playground.PaymentEngine.Stores.Payments;
+using Playground.PaymentEngine.Stores.Model;
+using Playground.PaymentEngine.Stores.Withdrawals;
+using Playground.PaymentEngine.Stores.Withdrawals.Model;
 using Playground.Rules;
 using RulesEngine.Models;
 
 namespace Playground.PaymentEngine.UseCases.Payments.RunApprovalRules {
     public class RunApprovalRulesUseCase {
         private readonly Engine _engine;
-        private readonly PaymentStore _paymentStore;
+        private readonly WithdrawalStore _paymentStore;
         private readonly CustomerStore _customerStore;
         private readonly ApprovalRuleStore _approvalRuleStore;
 
-        public RunApprovalRulesUseCase(PaymentStore paymentStore, CustomerStore customerStore, ApprovalRuleStore approvalRuleStore, Engine engine) {
+        public RunApprovalRulesUseCase(WithdrawalStore paymentStore, CustomerStore customerStore, ApprovalRuleStore approvalRuleStore, Engine engine) {
             _paymentStore = paymentStore;
             _customerStore = customerStore;
             _approvalRuleStore = approvalRuleStore;

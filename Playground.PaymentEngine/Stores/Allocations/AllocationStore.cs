@@ -10,5 +10,9 @@ namespace Playground.PaymentEngine.Stores.Allocations {
         Allocation SaveAllocation(Allocation allocation);
 
         void RemoveAllocations(long withdrawalGroupId);
+        
+        ExportAllocation GetExportAllocation(long allocationId);
+        IEnumerable<ExportAllocation> GetExportAllocations(IEnumerable<long> allocationIds);
+
     }
 }

@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
-using Playground.PaymentEngine.Stores.ApprovalRules.Model;
+using Playground.PaymentEngine.Stores.Withdrawals.Model;
 
-namespace Playground.PaymentEngine.Model {
-	[XmlRoot(ElementName="store")]
-	public class Store {
+namespace Playground.PaymentEngine.Stores.Withdrawals.File {
+	[XmlRoot(ElementName="repository")]
+	public class WithdrawalRepository {
 		[XmlArray("withdrawals")]
 		[XmlArrayItem("withdrawal")]
 		public List<Withdrawal> Withdrawals { get; set; }

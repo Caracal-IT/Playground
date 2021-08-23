@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
-using Playground.PaymentEngine.Model;
+using Playground.PaymentEngine.Stores.Model;
 
 namespace Playground.PaymentEngine.Stores.Terminals.Model {
     [XmlRoot(ElementName="terminal-result")]

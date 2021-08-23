@@ -1,6 +1,6 @@
 using System.Xml.Serialization;
 
-namespace Playground.PaymentEngine.Model {
+namespace Playground.PaymentEngine.Stores.Withdrawals.Model {
     [XmlRoot(ElementName="withdrawal-status")]
     public class WithdrawalStatus {
         [XmlAttribute(AttributeName="id")]

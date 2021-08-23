@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using Playground.PaymentEngine.Stores.Model;
 
-namespace Playground.PaymentEngine.Model {
+namespace Playground.PaymentEngine.Stores.Allocations.Model {
     public class ExportAllocation {
         public long CustomerId { get; set; }
         public long AccountId { get; set; }

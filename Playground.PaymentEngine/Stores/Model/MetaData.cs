@@ -1,6 +1,6 @@
 using System.Xml.Serialization;
 
-namespace Playground.PaymentEngine.Model {
+namespace Playground.PaymentEngine.Stores.Model {
     [XmlRoot(ElementName="meta-data")]
     public class MetaData {
         [XmlAttribute(AttributeName="name")]

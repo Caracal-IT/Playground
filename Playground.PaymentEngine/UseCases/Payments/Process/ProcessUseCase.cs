@@ -4,11 +4,11 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Playground.PaymentEngine.Helpers;
-using Playground.PaymentEngine.Model;
 using Playground.PaymentEngine.Stores.Allocations;
-using Playground.PaymentEngine.Stores.Payments;
+using Playground.PaymentEngine.Stores.Allocations.Model;
 using Playground.PaymentEngine.Stores.Terminals;
 using Playground.PaymentEngine.Stores.Terminals.Model;
+using Playground.PaymentEngine.Stores.Withdrawals;
 using Playground.Router;
 using Playground.Xml;
 
@@ -17,12 +17,12 @@ using static Playground.Xml.Serialization.Serializer;
 
 namespace Playground.PaymentEngine.UseCases.Payments.Process {
     public class ProcessUseCase {
-        private readonly PaymentStore _paymentStore;
+        private readonly WithdrawalStore _paymentStore;
         private readonly TerminalStore _terminalStore;
         private readonly IRoutingService _routingService;
         private readonly AllocationStore _allocationStore;
         
-        public ProcessUseCase(AllocationStore allocationStore, PaymentStore paymentStore, TerminalStore terminalStore, IRoutingService routingService) {
+        public ProcessUseCase(AllocationStore allocationStore, WithdrawalStore paymentStore, TerminalStore terminalStore, IRoutingService routingService) {
             _paymentStore = paymentStore;
             _terminalStore = terminalStore;
             _routingService = routingService;
@@ -31,7 +31,7 @@ namespace Playground.PaymentEngine.UseCases.Payments.Process {
 
         public async Task<ProcessResponse> ExecuteAsync(ProcessRequest request, CancellationToken cancellationToken) {
             var transactionId = Guid.NewGuid();
-            var allocations = _paymentStore.GetExportAllocations(request.Allocations).ToList();
+            var allocations = _allocationStore.GetExportAllocations(request.Allocations).ToList();
             var items = (request.Consolidate ? GetConsolidated() : GetExportData()).ToList();
 
             await items.Select(Export).WhenAll(maxConcurrentRequests: 50);

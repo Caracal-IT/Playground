@@ -19,9 +19,10 @@ using Playground.PaymentEngine.Stores.ApprovalRules;
 using Playground.PaymentEngine.Stores.ApprovalRules.File;
 using Playground.PaymentEngine.Stores.Customers;
 using Playground.PaymentEngine.Stores.Customers.File;
-using Playground.PaymentEngine.Stores.Payments;
 using Playground.PaymentEngine.Stores.Terminals;
 using Playground.PaymentEngine.Stores.Terminals.File;
+using Playground.PaymentEngine.Stores.Withdrawals;
+using Playground.PaymentEngine.Stores.Withdrawals.File;
 using Playground.PaymentEngine.Terminals.Functions;
 using Playground.PaymentEngine.UseCases.Payments.AutoAllocate;
 using Playground.PaymentEngine.UseCases.Payments.Callback;
@@ -54,7 +55,7 @@ namespace Playground.PaymentEngine {
             services.AddSingleton<XsltExtensions, CustomExtensions>();
             
             
-            services.AddSingleton<PaymentStore, FilePaymentStore>();
+            services.AddSingleton<WithdrawalStore, FileWithdrawalStore>();
             services.AddSingleton<AccountStore, FileAccountStore>();
             services.AddSingleton<AllocationStore, FileAllocationStore>();
             services.AddSingleton<ApprovalRuleStore, FileApprovalRuleStore>();

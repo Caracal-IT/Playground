@@ -1,6 +1,6 @@
 using System.Xml.Serialization;
 
-namespace Playground.PaymentEngine.Model {
+namespace Playground.PaymentEngine.Stores.Model {
     [XmlRoot("setting")]
     public class Setting {
         [XmlAttribute("name")]

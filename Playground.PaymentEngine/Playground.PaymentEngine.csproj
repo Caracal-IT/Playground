@@ -26,6 +26,9 @@
       <Content Include="Stores\Terminals\File\repository.xml">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+      <Content Include="Stores\Withdrawals\File\repository.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
       <Content Include="Terminals\Templates\Rebilly.xslt">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
@@ -41,9 +44,6 @@
       <None Remove="Resources\Templates\Terminals\Terminal1\InBound.xslt" />
       <None Remove="Resources\Templates\Terminals\Terminal1\OutBound.xslt" />
       <None Remove="Resources\Data\store.xml" />
-      <Content Include="Resources\Data\store.xml">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
       <None Remove="Resources\Templates\Terminals\Terminal1.xslt" />
       <None Remove="Resources\Data\terminal.store.xml" />
       <None Remove="Stores\CustomerStores\File\repository.xml" />
