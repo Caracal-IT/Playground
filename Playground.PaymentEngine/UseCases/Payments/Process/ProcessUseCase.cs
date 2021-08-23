@@ -4,11 +4,10 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Playground.PaymentEngine.Helpers;
+using Playground.PaymentEngine.Stores.Accounts;
 using Playground.PaymentEngine.Stores.Allocations;
-using Playground.PaymentEngine.Stores.Allocations.Model;
 using Playground.PaymentEngine.Stores.Terminals;
 using Playground.PaymentEngine.Stores.Terminals.Model;
-using Playground.PaymentEngine.Stores.Withdrawals;
 using Playground.Router;
 using Playground.Xml;
 
@@ -17,21 +16,21 @@ using static Playground.Xml.Serialization.Serializer;
 
 namespace Playground.PaymentEngine.UseCases.Payments.Process {
     public class ProcessUseCase {
-        private readonly WithdrawalStore _paymentStore;
         private readonly TerminalStore _terminalStore;
         private readonly IRoutingService _routingService;
         private readonly AllocationStore _allocationStore;
+        private readonly AccountStore _accountStore;
         
-        public ProcessUseCase(AllocationStore allocationStore, WithdrawalStore paymentStore, TerminalStore terminalStore, IRoutingService routingService) {
-            _paymentStore = paymentStore;
+        public ProcessUseCase(AllocationStore allocationStore, AccountStore accountStore, TerminalStore terminalStore, IRoutingService routingService) {
+            _accountStore = accountStore;
+            _allocationStore = allocationStore;
             _terminalStore = terminalStore;
             _routingService = routingService;
-            _allocationStore = allocationStore;
         }
 
         public async Task<ProcessResponse> ExecuteAsync(ProcessRequest request, CancellationToken cancellationToken) {
             var transactionId = Guid.NewGuid();
-            var allocations = _allocationStore.GetExportAllocations(request.Allocations).ToList();
+            var allocations = await GetExportAllocationsAsync(request.Allocations, cancellationToken);
             var items = (request.Consolidate ? GetConsolidated() : GetExportData()).ToList();
 
             await items.Select(Export).WhenAll(maxConcurrentRequests: 50);
@@ -103,6 +102,25 @@ namespace Playground.PaymentEngine.UseCases.Payments.Process {
                     Reference = hash5($"{a.AllocationId}"),
                     MetaData = a.MetaData
                 });
+        }
+
+        private async Task<IEnumerable<ExportAllocation>> GetExportAllocationsAsync(IEnumerable<long> allocationIds, CancellationToken cancellationToken) {
+            var allocations = await allocationIds.Select(GetExportAllocationAsync).WhenAll(50);
+            return allocations.Where(a => a.AccountId > 0);
+
+            async Task<ExportAllocation> GetExportAllocationAsync(long allocationId) {
+                var allocation = _allocationStore.GetAllocation(allocationId);
+                var account = await _accountStore.GetAccountAsync(allocation.AccountId, cancellationToken);
+
+                return new ExportAllocation {
+                    AllocationId = allocation.Id,
+                    Amount = allocation.Amount + allocation.Charge,
+                    AccountId = account.Id,
+                    AccountTypeId = account.AccountTypeId,
+                    CustomerId = account.CustomerId,
+                    MetaData = account.MetaData
+                };
+            }
         }
     }
 }

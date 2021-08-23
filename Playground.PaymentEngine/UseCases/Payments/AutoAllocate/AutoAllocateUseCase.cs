@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Playground.PaymentEngine.Helpers;
 using Playground.PaymentEngine.Stores.Accounts;
 using Playground.PaymentEngine.Stores.Accounts.Model;
 using Playground.PaymentEngine.Stores.Allocations;
@@ -24,17 +25,15 @@ namespace Playground.PaymentEngine.UseCases.Payments.AutoAllocate {
         }
 
         public async Task<AutoAllocateResponse> ExecuteAsync(AutoAllocateRequest request, CancellationToken cancellationToken) {
-            await Task.Delay(0, cancellationToken);
             request.WithdrawalGroups.ForEach(RemoveAllocations);
-            var results = request.WithdrawalGroups.SelectMany(AllocateFunds).ToList();
-
-            return new AutoAllocateResponse{AllocationResults = results};
+            var results = await request.WithdrawalGroups.Select(w => AllocateFundsAsync(w, cancellationToken)).WhenAll(50);
+            return new AutoAllocateResponse{AllocationResults = results.SelectMany(a => a).ToList()};
         }
 
         private void RemoveAllocations(long withdrawalGroupId) => 
             _allocationStore.RemoveAllocations(withdrawalGroupId);
 
-        private List<AutoAllocateResult> AllocateFunds(long withdrawalGroupId) {
+        private async Task<List<AutoAllocateResult>> AllocateFundsAsync(long withdrawalGroupId, CancellationToken cancellationToken) {
             var result = new List<AutoAllocateResult>();
             
             var withdrawalGroup = _paymentStore.GetWithdrawalGroup(withdrawalGroupId);
@@ -45,8 +44,9 @@ namespace Playground.PaymentEngine.UseCases.Payments.AutoAllocate {
                 return new List<AutoAllocateResult>();
 
             var customer = _customerStore.GetCustomer(withdrawalGroup.CustomerId);
-            var accounts = _accountStore.GetCustomerAccounts(customer.Id).ToList();
-            var accountTypes = _accountStore.GetAccountTypes(accounts.Select(a => a.AccountTypeId));
+            var accountEnum = await _accountStore.GetCustomerAccountsAsync(customer.Id, cancellationToken);
+            var accounts = accountEnum.ToList();
+            var accountTypes = await _accountStore.GetAccountTypesAsync(accounts.Select(a => a.AccountTypeId), cancellationToken);
 
             var orderedAccounts = accounts.Join(
                     accountTypes, 
@@ -87,7 +87,7 @@ namespace Playground.PaymentEngine.UseCases.Payments.AutoAllocate {
             }
         }
 
-        private AutoAllocateResult MapResult(Allocation allocation) =>
+        private static AutoAllocateResult MapResult(Allocation allocation) =>
             new AutoAllocateResult {
                 AllocationId = allocation.Id,
                 Amount = allocation.Amount,
