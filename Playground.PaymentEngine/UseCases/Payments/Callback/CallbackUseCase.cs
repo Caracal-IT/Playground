@@ -18,8 +18,9 @@ namespace Playground.PaymentEngine.UseCases.Payments.Callback {
         public async Task<CallbackResponse> ExecuteAsync(CallbackRequest request, CancellationToken cancellationToken) {
             var transactionId = Guid.NewGuid();
             
-            var allocations = _allocationStore.GetAllocationsByReference(request.Reference).ToList();
-           
+            var allocationEnum = await _allocationStore.GetAllocationsByReferenceAsync(request.Reference, cancellationToken);
+            var allocations = allocationEnum.ToList();
+            
             if (!allocations.Any()) return new CallbackResponse();
             var terminals = new[] { allocations.First().Terminal };
 

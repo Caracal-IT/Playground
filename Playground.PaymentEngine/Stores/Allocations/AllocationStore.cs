@@ -1,14 +1,19 @@
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Playground.PaymentEngine.Stores.Allocations.Model;
 
 namespace Playground.PaymentEngine.Stores.Allocations {
     public interface AllocationStore {
-        Allocation GetAllocation(long id);
-        IEnumerable<Allocation> GetAllocationsByReference(string reference);
+        Task<Allocation> GetAllocationAsync(long id, CancellationToken cancellationToken);
+        Task<IEnumerable<Allocation>> GetAllocationsByReferenceAsync(string reference, CancellationToken cancellationToken);
         
-        void SetAllocationStatus(long id, long statusId, string terminal = null, string reference = null);
-        Allocation SaveAllocation(Allocation allocation);
+        Task SetAllocationStatusAsync(long id, long statusId, CancellationToken cancellationToken);
+        Task SetAllocationStatusAsync(long id, long statusId, string terminal, CancellationToken cancellationToken);
+        Task SetAllocationStatusAsync(long id, long statusId, string terminal, string reference, CancellationToken cancellationToken);
+            
+        Task<Allocation> SaveAllocationAsync(Allocation allocation, CancellationToken cancellationToken);
 
-        void RemoveAllocations(long withdrawalGroupId);
+        Task RemoveAllocationsAsync(long withdrawalGroupId, CancellationToken cancellationToken);
     }
 }

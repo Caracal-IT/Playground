@@ -1,41 +1,50 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
-using Playground.PaymentEngine.Stores.Accounts;
-using Playground.PaymentEngine.Stores.Accounts.Model;
 using Playground.PaymentEngine.Stores.Allocations.Model;
 
 namespace Playground.PaymentEngine.Stores.Allocations.File {
     public class FileAllocationStore: AllocationStore {
-        private AllocationRepository _repository;
-        private AccountStore _accountStore;
+        private readonly AllocationRepository _repository;
+
+        private readonly object _allocationLock = new();
         
-        public FileAllocationStore(AccountStore accountStore) {
-            _accountStore = accountStore;
+        public FileAllocationStore() => 
             _repository = GetRepository();
+
+        public Task<Allocation> GetAllocationAsync(long id, CancellationToken cancellationToken) {
+            var result = _repository.Allocations
+                                    .FirstOrDefault(a => a.Id == id)
+                                    ??new Allocation();
+            
+            return Task.FromResult(result);
         }
+
+        public Task<IEnumerable<Allocation>> GetAllocationsByReferenceAsync(string reference, CancellationToken cancellationToken) {
+            var result = _repository.Allocations
+                                    .Where(a => !string.IsNullOrWhiteSpace(a.Terminal) && a.Reference.Equals(reference));
+
+            return Task.FromResult(result);
+        }
+
+        public Task SetAllocationStatusAsync(long id, long statusId, CancellationToken cancellationToken) =>
+            SetAllocationStatusAsync(id, statusId, null, cancellationToken);
         
-        public Allocation GetAllocation(long id) =>
-            _repository.Allocations
-                       .FirstOrDefault(a => a.Id == id)
-                       ??new Allocation();
-        
-        public IEnumerable<Allocation> GetAllocationsByReference(string reference) =>
-            _repository.Allocations
-                       .Where(a => !string.IsNullOrWhiteSpace(a.Terminal) && a.Reference.Equals(reference));
-        
-        public void SetAllocationStatus(long id, long statusId, string terminal = null, string reference = null) {
-            var allocation = GetAllocation(id);
+        public Task SetAllocationStatusAsync(long id, long statusId, string terminal, CancellationToken cancellationToken) =>
+            SetAllocationStatusAsync(id, statusId, terminal, null, cancellationToken);
+
+        public async Task SetAllocationStatusAsync(long id, long statusId, string terminal, string reference, CancellationToken cancellationToken) {
+            var allocation = await GetAllocationAsync(id, cancellationToken);
             allocation.AllocationStatusId = statusId;
             allocation.Terminal = terminal;
             allocation.Reference = reference;
         }
-        
-        private object _allocationLock = new object();
 
-        public Allocation SaveAllocation(Allocation allocation) {
-            var alloc = _repository.Allocations.FirstOrDefault(a => a.Id == allocation.Id);
+        public async Task<Allocation> SaveAllocationAsync(Allocation allocation, CancellationToken cancellationToken) {
+            var alloc = await GetAllocationAsync(allocation.Id, cancellationToken);
 
             if (alloc == null) {
                 lock (_allocationLock) {
@@ -49,8 +58,8 @@ namespace Playground.PaymentEngine.Stores.Allocations.File {
 
             return allocation;
         }
-        
-        public void RemoveAllocations(long withdrawalGroupId) {
+
+        public Task RemoveAllocationsAsync(long withdrawalGroupId, CancellationToken cancellationToken) {
             var allocations = _repository.Allocations;
             
             _repository
@@ -58,8 +67,10 @@ namespace Playground.PaymentEngine.Stores.Allocations.File {
                 .Where(a => a.WithdrawalGroupId == withdrawalGroupId)
                 .ToList()
                 .ForEach(a => allocations.Remove(a));
-        }
 
+            return Task.CompletedTask;
+        }
+        
         private static AllocationRepository GetRepository() {
             var path = Path.Join("Stores", "Allocations", "File", "repository.xml");
             using var fileStream = new FileStream(path, FileMode.Open);

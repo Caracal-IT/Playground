@@ -35,7 +35,7 @@ namespace Playground.PaymentEngine.UseCases.Payments.Process {
 
             await items.Select(Export).WhenAll(maxConcurrentRequests: 50);
             
-            UpdateStatuses();
+            await UpdateStatusesAsync();
             SaveResults();
                 
             return new ProcessResponse(items.Select(i => i.Response.Last()));
@@ -67,19 +67,19 @@ namespace Playground.PaymentEngine.UseCases.Payments.Process {
                     MetaData = response.MetaData
                 };
             }
-            
-            void UpdateStatuses() {
-                items.ForEach(SetStatus);
-                
-                void SetStatus(ExportData data) {
+
+            async Task UpdateStatusesAsync() {
+                await items.Select(SetStatusAsync).WhenAll(50);
+
+                async Task SetStatusAsync(ExportData data) {
                     var response = data.Response.FirstOrDefault(i => i.Code == "00") ?? new ExportResponse();
                     var statusId = response.Code == "00" ? 4 : 5;
                     var terminal = response.Terminal;
                     
-                    data.Allocations.ForEach(SetAllocationStatus);
+                    await data.Allocations.Select(SetAllocationStatusAsync).WhenAll(50);
 
-                    void SetAllocationStatus(ExportAllocation ea) => 
-                        _allocationStore.SetAllocationStatus(ea.AllocationId, statusId, terminal, data.Reference);
+                    async Task SetAllocationStatusAsync(ExportAllocation ea) => 
+                        await _allocationStore.SetAllocationStatusAsync(ea.AllocationId, statusId, terminal, data.Reference, cancellationToken);
                 }
             }
 
@@ -109,7 +109,7 @@ namespace Playground.PaymentEngine.UseCases.Payments.Process {
             return allocations.Where(a => a.AccountId > 0);
 
             async Task<ExportAllocation> GetExportAllocationAsync(long allocationId) {
-                var allocation = _allocationStore.GetAllocation(allocationId);
+                var allocation = await _allocationStore.GetAllocationAsync(allocationId, cancellationToken);
                 var account = await _accountStore.GetAccountAsync(allocation.AccountId, cancellationToken);
 
                 return new ExportAllocation {

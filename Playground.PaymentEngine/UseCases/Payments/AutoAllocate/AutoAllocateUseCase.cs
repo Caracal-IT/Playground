@@ -25,13 +25,14 @@ namespace Playground.PaymentEngine.UseCases.Payments.AutoAllocate {
         }
 
         public async Task<AutoAllocateResponse> ExecuteAsync(AutoAllocateRequest request, CancellationToken cancellationToken) {
-            request.WithdrawalGroups.ForEach(RemoveAllocations);
+            await request.WithdrawalGroups.Select(RemoveAllocationsAsync).WhenAll(50);
+            
             var results = await request.WithdrawalGroups.Select(w => AllocateFundsAsync(w, cancellationToken)).WhenAll(50);
-            return new AutoAllocateResponse{AllocationResults = results.SelectMany(a => a).ToList()};
-        }
+            return new AutoAllocateResponse { AllocationResults = results.SelectMany(a => a).ToList() };
 
-        private void RemoveAllocations(long withdrawalGroupId) => 
-            _allocationStore.RemoveAllocations(withdrawalGroupId);
+            async Task RemoveAllocationsAsync(long withdrawalGroupId) =>
+                await _allocationStore.RemoveAllocationsAsync(withdrawalGroupId, cancellationToken);
+        }
 
         private async Task<List<AutoAllocateResult>> AllocateFundsAsync(long withdrawalGroupId, CancellationToken cancellationToken) {
             var result = new List<AutoAllocateResult>();
@@ -61,7 +62,7 @@ namespace Playground.PaymentEngine.UseCases.Payments.AutoAllocate {
             
             foreach (var account in orderedAccounts.Where(a => a.Exposure > 0)) {
                 var amount = withdrawalAmount - account.Exposure >= 0 ? account.Exposure : withdrawalAmount;
-                CreateAllocation(account, amount);
+                await AddNewAllocationAsync(account, amount);
                 withdrawalAmount -= amount;
                 
                 if(withdrawalAmount <= 0)
@@ -71,17 +72,17 @@ namespace Playground.PaymentEngine.UseCases.Payments.AutoAllocate {
             if (withdrawalAmount <= 0) return result;
             
             var preferredAcc = orderedAccounts.FirstOrDefault(a => a.IsPreferredAccount) ?? orderedAccounts.First();
-            CreateAllocation(preferredAcc, withdrawalAmount);
+            await AddNewAllocationAsync(preferredAcc, withdrawalAmount);
             
             return result;
             
-            void CreateAllocation(Account account, decimal amount) {
-                 var allocation  = _allocationStore.SaveAllocation(new Allocation {
+            async Task AddNewAllocationAsync(Account account, decimal amount) {
+                 var allocation  = await _allocationStore.SaveAllocationAsync(new Allocation {
                     AccountId = account.Id,
                     Amount = amount,
                     AllocationStatusId = 1,
                     WithdrawalGroupId = withdrawalGroupId
-                 });
+                 }, cancellationToken);
                  
                  result.Add(MapResult(allocation));
             }
