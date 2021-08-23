@@ -1,20 +1,18 @@
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 using Playground.PaymentEngine.Services.CacheService;
 using Playground.PaymentEngine.Stores.Accounts.Model;
 
 namespace Playground.PaymentEngine.Stores.Accounts.File {
-    public class FileAccountStore: AccountStore {
+    public class FileAccountStore: FileStore, AccountStore {
         private readonly AccountRepository _repository;
         private readonly ICacheService _cacheService;
         
         public FileAccountStore(ICacheService cacheService) {
             _cacheService = cacheService;
-            _repository = GetRepository();
+            _repository = GetRepository<AccountRepository>();
         }
         
         public Task<Account> GetAccountAsync(long id, CancellationToken cancellationToken) {
@@ -39,12 +37,6 @@ namespace Playground.PaymentEngine.Stores.Accounts.File {
                 () => _repository.AccountTypes.Where(t => accountTypeIds.Contains(t.Id)));
 
             return Task.FromResult(result);
-        }
-
-        private static AccountRepository GetRepository() {
-            var path = Path.Join("Stores", "Accounts", "File", "repository.xml");
-            using var fileStream = new FileStream(path, FileMode.Open);
-            return (AccountRepository) new XmlSerializer(typeof(AccountRepository)).Deserialize(fileStream);
         }
     }
 }

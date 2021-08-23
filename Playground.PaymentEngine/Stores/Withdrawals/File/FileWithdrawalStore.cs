@@ -1,17 +1,15 @@
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 using Playground.PaymentEngine.Stores.Withdrawals.Model;
 
 namespace Playground.PaymentEngine.Stores.Withdrawals.File {
-    public class FileWithdrawalStore: WithdrawalStore {
+    public class FileWithdrawalStore: FileStore, WithdrawalStore {
         private readonly WithdrawalRepository _repository;
 
-        public FileWithdrawalStore(CancellationToken cancellationToken) => 
-            _repository = GetRepository();
+        public FileWithdrawalStore() => 
+            _repository = GetRepository<WithdrawalRepository>();
 
         public Task<IEnumerable<Withdrawal>> GetWithdrawalsAsync(IEnumerable<long> withdrawalIds, CancellationToken cancellationToken) {
             var result =  _repository.Withdrawals
@@ -37,12 +35,6 @@ namespace Playground.PaymentEngine.Stores.Withdrawals.File {
                                      .FirstOrDefault(g => g.Id == id);
 
             return Task.FromResult(result);
-        }
-
-        private static WithdrawalRepository GetRepository() {
-            var path = Path.Join("Stores", "Withdrawals", "File", "repository.xml");
-            using var fileStream = new FileStream(path, FileMode.Open);
-            return (WithdrawalRepository) new XmlSerializer(typeof(WithdrawalRepository)).Deserialize(fileStream);
         }
     }
 }

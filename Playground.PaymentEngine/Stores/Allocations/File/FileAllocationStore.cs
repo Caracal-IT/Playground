@@ -1,19 +1,17 @@
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 using Playground.PaymentEngine.Stores.Allocations.Model;
 
 namespace Playground.PaymentEngine.Stores.Allocations.File {
-    public class FileAllocationStore: AllocationStore {
+    public class FileAllocationStore: FileStore, AllocationStore {
         private readonly AllocationRepository _repository;
 
         private readonly object _allocationLock = new();
         
         public FileAllocationStore() => 
-            _repository = GetRepository();
+            _repository = GetRepository<AllocationRepository>();
 
         public Task<Allocation> GetAllocationAsync(long id, CancellationToken cancellationToken) {
             var result = _repository.Allocations
@@ -69,12 +67,6 @@ namespace Playground.PaymentEngine.Stores.Allocations.File {
                 .ForEach(a => allocations.Remove(a));
 
             return Task.CompletedTask;
-        }
-        
-        private static AllocationRepository GetRepository() {
-            var path = Path.Join("Stores", "Allocations", "File", "repository.xml");
-            using var fileStream = new FileStream(path, FileMode.Open);
-            return (AllocationRepository) new XmlSerializer(typeof(AllocationRepository)).Deserialize(fileStream);
         }
     }
 }

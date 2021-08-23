@@ -1,20 +1,18 @@
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 using Playground.PaymentEngine.Services.CacheService;
 using Playground.PaymentEngine.Stores.Terminals.Model;
 
 namespace Playground.PaymentEngine.Stores.Terminals.File {
-    public class FileTerminalStore: TerminalStore {
+    public class FileTerminalStore: FileStore, TerminalStore {
         private readonly TerminalRepository _repository;
         private readonly ICacheService _cacheService;
         
         public FileTerminalStore(ICacheService cacheService) {
             _cacheService = cacheService;
-            _repository = GetRepository();
+            _repository = GetRepository<TerminalRepository>();
         }
 
         public Task<IEnumerable<Terminal>> GetActiveAccountTypeTerminalsAsync(long accountTypeId, CancellationToken cancellationToken) {
@@ -41,12 +39,6 @@ namespace Playground.PaymentEngine.Stores.Terminals.File {
         public Task LogTerminalResultsAsync(IEnumerable<TerminalResult> results, CancellationToken cancellationToken) {
             _repository.TerminalResults.AddRange(results);
             return Task.CompletedTask;
-        }
-
-        private static TerminalRepository GetRepository() {
-            var path = Path.Join("Stores", "Terminals", "File", "repository.xml");
-            using var fileStream = new FileStream(path, FileMode.Open);
-            return (TerminalRepository) new XmlSerializer(typeof(TerminalRepository)).Deserialize(fileStream);
         }
     }
 }
