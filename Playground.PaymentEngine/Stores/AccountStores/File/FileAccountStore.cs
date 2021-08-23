@@ -4,6 +4,7 @@ using System.Linq;
 using System.Xml.Serialization;
 using Playground.PaymentEngine.Model;
 using Playground.PaymentEngine.Services.CacheService;
+using Playground.PaymentEngine.Stores.AccountStores.Model;
 
 namespace Playground.PaymentEngine.Stores.AccountStores.File {
     public class FileAccountStore: AccountStore {
@@ -16,13 +17,13 @@ namespace Playground.PaymentEngine.Stores.AccountStores.File {
         }
         
         public Account GetAccount(long id) =>
-            _repository.Accounts.FirstOrDefault(a => a.Id == id) ?? new Account();
+            _cacheService.GetValue($"{nameof(GetAccount)}_{id}", () =>_repository.Accounts.FirstOrDefault(a => a.Id == id) ?? new Account());
         
          public IEnumerable<Account> GetCustomerAccounts(long id) =>
-             _repository.Accounts.Where(a => a.CustomerId == id);
+             _cacheService.GetValue($"{nameof(GetCustomerAccounts)}_{id}", () =>_repository.Accounts.Where(a => a.CustomerId == id));
 
          public IEnumerable<AccountType> GetAccountTypes(IEnumerable<long> accountTypeIds) =>
-             _repository.AccountTypes.Where(t => accountTypeIds.Contains(t.Id));
+             _cacheService.GetValue($"{nameof(GetAccountTypes)}_{accountTypeIds}", () => _repository.AccountTypes.Where(t => accountTypeIds.Contains(t.Id)));
         
         private static AccountRepository GetRepository() {
             var path = Path.Join("Stores", "AccountStores", "File", "repository.xml");

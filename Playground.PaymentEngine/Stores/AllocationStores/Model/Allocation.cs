@@ -1,6 +1,6 @@
 using System.Xml.Serialization;
 
-namespace Playground.PaymentEngine.Model {
+namespace Playground.PaymentEngine.Stores.AllocationStores.Model {
     [XmlRoot(ElementName="allocation")]
     public class Allocation {
         [XmlAttribute(AttributeName="id")]

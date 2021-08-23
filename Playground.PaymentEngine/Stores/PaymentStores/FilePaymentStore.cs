@@ -5,30 +5,26 @@ using System.Xml.Serialization;
 using Playground.PaymentEngine.Model;
 using Playground.PaymentEngine.Services.CacheService;
 using Playground.PaymentEngine.Stores.AccountStores;
-using Playground.PaymentEngine.Stores.CustomerStores.Model;
+using Playground.PaymentEngine.Stores.AllocationStores;
+using Playground.PaymentEngine.Stores.AllocationStores.Model;
 
 namespace Playground.PaymentEngine.Stores.PaymentStores {
     public class FilePaymentStore: PaymentStore {
         private Store _store;
-        private readonly ICacheService _cacheService;
         private readonly AccountStore _accountStore;
+        private readonly AllocationStore _allocationStore;
 
-        public FilePaymentStore(ICacheService cacheService, AccountStore accountStore) {
-            _cacheService = cacheService;
+        public FilePaymentStore(AccountStore accountStore, AllocationStore allocationStore) {
             _accountStore = accountStore;
+            _allocationStore = allocationStore;
             LoadStore();
         }
 
         public Store GetStore() => _store;
 
-        public Allocation GetAllocation(long id) =>
-            _store.Allocations
-                .FirstOrDefault(a => a.Id == id)
-                  ??new Allocation();
-        
-        
+
         public ExportAllocation GetExportAllocation(long allocationId) {
-            var allocation = GetAllocation(allocationId);
+            var allocation = _allocationStore.GetAllocation(allocationId);
             var account = _accountStore.GetAccount(allocation.AccountId);
 
             return new ExportAllocation {
@@ -44,10 +40,7 @@ namespace Playground.PaymentEngine.Stores.PaymentStores {
         public IEnumerable<ExportAllocation> GetExportAllocations(IEnumerable<long> allocationIds) =>
             allocationIds.Select(GetExportAllocation)
                          .Where(a => a.AccountId > 0);
-
-        public IEnumerable<Allocation> GetAllocationsByReference(string reference) =>
-            _store.Allocations
-                  .Where(a => !string.IsNullOrWhiteSpace(a.Terminal) && a.Reference.Equals(reference));
+        
 
         public IEnumerable<Withdrawal> GetWithdrawals(IEnumerable<long> withdrawalIds) =>
             _store.Withdrawals
@@ -64,13 +57,9 @@ namespace Playground.PaymentEngine.Stores.PaymentStores {
         public WithdrawalGroup GetWithdrawalGroup(long id) =>
             _store.WithdrawalGroups
                   .FirstOrDefault(g => g.Id == id);
-
-        public void SetAllocationStatus(long id, long statusId, string terminal = null, string reference = null) {
-            var allocation = GetAllocation(id);
-            allocation.AllocationStatusId = statusId;
-            allocation.Terminal = terminal;
-            allocation.Reference = reference;
-        }
+        
+        
+        
 
         public IEnumerable<RuleHistory> GetRuleHistories(IEnumerable<long> withdrawalGroupIds) =>
             _store.RuleHistories
@@ -78,24 +67,6 @@ namespace Playground.PaymentEngine.Stores.PaymentStores {
 
         public void AddRuleHistories(IEnumerable<RuleHistory> histories) =>
             _store.RuleHistories.AddRange(histories);
-
-        private object _allocationLock = new object();
-
-        public Allocation SaveAllocation(Allocation allocation) {
-            var alloc = _store.Allocations.FirstOrDefault(a => a.Id == allocation.Id);
-
-            if (alloc == null) {
-                lock (_allocationLock) {
-                    allocation.Id = _store.Allocations.LastOrDefault()?.Id ?? 0 + 1;
-                }
-            }
-            else
-                _store.Allocations.Remove(alloc);
-
-            _store.Allocations.Add(allocation);
-
-            return allocation;
-        }
 
         private void LoadStore() {
             var path = Path.Join("Resources", "Data", "store.xml");

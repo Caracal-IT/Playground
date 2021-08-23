@@ -9,6 +9,7 @@ using System.Xml.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Playground.PaymentEngine.Model;
 using Playground.PaymentEngine.Stores;
+using Playground.PaymentEngine.Stores.AllocationStores.Model;
 using Playground.PaymentEngine.Stores.PaymentStores;
 using Playground.PaymentEngine.UseCases.Payments.AutoAllocate;
 using Playground.PaymentEngine.UseCases.Payments.Callback;
@@ -25,9 +26,6 @@ namespace Playground.PaymentEngine.Controllers {
 
         [HttpGet]
         public Store Get() => _paymentStore.GetStore();
-        
-        [HttpGet("allocations")]
-        public List<Allocation> GetAllocations() => _paymentStore.GetStore().Allocations;
 
         [HttpPost("approval-rules/run")]
         public Task<RunApprovalRulesResponse> RunApprovalRules([FromServices] RunApprovalRulesUseCase useCase, RunApprovalRulesRequest request, CancellationToken cancellationToken) => 

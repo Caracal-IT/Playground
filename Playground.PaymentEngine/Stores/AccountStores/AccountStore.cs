@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Playground.PaymentEngine.Model;
+using Playground.PaymentEngine.Stores.AccountStores.Model;
 
 namespace Playground.PaymentEngine.Stores.AccountStores {
     public interface AccountStore {

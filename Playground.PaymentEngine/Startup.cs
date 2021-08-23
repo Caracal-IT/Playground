@@ -14,6 +14,8 @@ using Playground.PaymentEngine.Services.Routing;
 using Playground.PaymentEngine.Stores;
 using Playground.PaymentEngine.Stores.AccountStores;
 using Playground.PaymentEngine.Stores.AccountStores.File;
+using Playground.PaymentEngine.Stores.AllocationStores;
+using Playground.PaymentEngine.Stores.AllocationStores.File;
 using Playground.PaymentEngine.Stores.CustomerStores;
 using Playground.PaymentEngine.Stores.CustomerStores.File;
 using Playground.PaymentEngine.Stores.PaymentStores;
@@ -53,6 +55,7 @@ namespace Playground.PaymentEngine {
             
             services.AddSingleton<PaymentStore, FilePaymentStore>();
             services.AddSingleton<AccountStore, FileAccountStore>();
+            services.AddSingleton<AllocationStore, FileAllocationStore>();
             services.AddSingleton<CustomerStore, FileCustomerStore>();
             services.AddSingleton<TerminalStore, FileTerminalStore>();
             

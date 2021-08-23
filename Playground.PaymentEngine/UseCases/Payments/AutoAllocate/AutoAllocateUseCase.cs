@@ -2,8 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Playground.PaymentEngine.Model;
 using Playground.PaymentEngine.Stores.AccountStores;
+using Playground.PaymentEngine.Stores.AccountStores.Model;
+using Playground.PaymentEngine.Stores.AllocationStores;
+using Playground.PaymentEngine.Stores.AllocationStores.Model;
 using Playground.PaymentEngine.Stores.CustomerStores;
 using Playground.PaymentEngine.Stores.PaymentStores;
 
@@ -12,11 +14,13 @@ namespace Playground.PaymentEngine.UseCases.Payments.AutoAllocate {
         private readonly AccountStore _accountStore;
         private readonly PaymentStore _paymentStore;
         private readonly CustomerStore _customerStore;
+        private readonly AllocationStore _allocationStore;
 
-        public AutoAllocateUseCase(AccountStore accountStore, PaymentStore paymentStore, CustomerStore customerStore) {
+        public AutoAllocateUseCase(AccountStore accountStore, PaymentStore paymentStore, AllocationStore allocationStore, CustomerStore customerStore) {
             _accountStore = accountStore;
             _paymentStore = paymentStore;
             _customerStore = customerStore;
+            _allocationStore = allocationStore;
         }
 
         public async Task<AutoAllocateResponse> ExecuteAsync(AutoAllocateRequest request, CancellationToken cancellationToken) {
@@ -27,15 +31,8 @@ namespace Playground.PaymentEngine.UseCases.Payments.AutoAllocate {
             return new AutoAllocateResponse{AllocationResults = results};
         }
 
-        private void RemoveAllocations(long withdrawalGroupId) {
-            var allocations = _paymentStore.GetStore().Allocations;
-            
-            _paymentStore.GetStore()
-                .Allocations
-                .Where(a => a.WithdrawalGroupId == withdrawalGroupId)
-                .ToList()
-                .ForEach(a => allocations.Remove(a));
-        }
+        private void RemoveAllocations(long withdrawalGroupId) => 
+            _allocationStore.RemoveAllocations(withdrawalGroupId);
 
         private List<AutoAllocateResult> AllocateFunds(long withdrawalGroupId) {
             var result = new List<AutoAllocateResult>();
@@ -79,7 +76,7 @@ namespace Playground.PaymentEngine.UseCases.Payments.AutoAllocate {
             return result;
             
             void CreateAllocation(Account account, decimal amount) {
-                 var allocation  = _paymentStore.SaveAllocation(new Allocation {
+                 var allocation  = _allocationStore.SaveAllocation(new Allocation {
                     AccountId = account.Id,
                     Amount = amount,
                     AllocationStatusId = 1,

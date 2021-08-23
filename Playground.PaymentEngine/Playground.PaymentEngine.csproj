@@ -17,6 +17,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Content Include="Stores\AllocationStores\File\repository.xml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
       <Content Include="Stores\TerminalStores\File\repository.xml">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
@@ -53,7 +56,6 @@
     <ItemGroup>
       <Folder Include="Config" />
       <Folder Include="Exports" />
-      <Folder Include="Stores\AccountStores\Model" />
     </ItemGroup>
 
 </Project>

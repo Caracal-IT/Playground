@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Playground.PaymentEngine.Helpers;
 using Playground.PaymentEngine.Model;
+using Playground.PaymentEngine.Stores.AllocationStores;
 using Playground.PaymentEngine.Stores.PaymentStores;
 using Playground.PaymentEngine.Stores.TerminalStores;
 using Playground.PaymentEngine.Stores.TerminalStores.Model;
@@ -19,11 +20,13 @@ namespace Playground.PaymentEngine.UseCases.Payments.Process {
         private readonly PaymentStore _paymentStore;
         private readonly TerminalStore _terminalStore;
         private readonly IRoutingService _routingService;
+        private readonly AllocationStore _allocationStore;
         
-        public ProcessUseCase(PaymentStore paymentStore, TerminalStore terminalStore, IRoutingService routingService) {
+        public ProcessUseCase(AllocationStore allocationStore, PaymentStore paymentStore, TerminalStore terminalStore, IRoutingService routingService) {
             _paymentStore = paymentStore;
             _terminalStore = terminalStore;
             _routingService = routingService;
+            _allocationStore = allocationStore;
         }
 
         public async Task<ProcessResponse> ExecuteAsync(ProcessRequest request, CancellationToken cancellationToken) {
@@ -77,7 +80,7 @@ namespace Playground.PaymentEngine.UseCases.Payments.Process {
                     data.Allocations.ForEach(SetAllocationStatus);
 
                     void SetAllocationStatus(ExportAllocation ea) => 
-                        _paymentStore.SetAllocationStatus(ea.AllocationId, statusId, terminal, data.Reference);
+                        _allocationStore.SetAllocationStatus(ea.AllocationId, statusId, terminal, data.Reference);
                 }
             }
 

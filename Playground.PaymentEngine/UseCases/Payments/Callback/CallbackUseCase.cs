@@ -2,25 +2,23 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Playground.PaymentEngine.Services.Routing;
-using Playground.PaymentEngine.Stores;
-using Playground.PaymentEngine.Stores.PaymentStores;
+using Playground.PaymentEngine.Stores.AllocationStores;
 using Playground.Router;
 
 namespace Playground.PaymentEngine.UseCases.Payments.Callback {
     public class CallbackUseCase {
-        private readonly PaymentStore _paymentStore;
+        private readonly AllocationStore _allocationStore;
         private readonly IRoutingService _routingService;
 
-        public CallbackUseCase(PaymentStore paymentStore, IRoutingService routingService) {
-            _paymentStore = paymentStore;
+        public CallbackUseCase(AllocationStore allocationStore, IRoutingService routingService) {
             _routingService = routingService;
+            _allocationStore = allocationStore;
         }
         
         public async Task<CallbackResponse> ExecuteAsync(CallbackRequest request, CancellationToken cancellationToken) {
             var transactionId = Guid.NewGuid();
             
-            var allocations = _paymentStore.GetAllocationsByReference(request.Reference).ToList();
+            var allocations = _allocationStore.GetAllocationsByReference(request.Reference).ToList();
            
             if (!allocations.Any()) return new CallbackResponse();
             var terminals = new[] { allocations.First().Terminal };

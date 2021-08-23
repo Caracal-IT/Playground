@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
-using Playground.PaymentEngine.Stores.CustomerStores.Model;
 
 namespace Playground.PaymentEngine.Model {
 	[XmlRoot(ElementName="store")]
@@ -20,13 +19,5 @@ namespace Playground.PaymentEngine.Model {
 		[XmlArray("rule-histories")]
 		[XmlArrayItem("rule-history")]
 		public List<RuleHistory> RuleHistories { get; set; } = new();
-		
-		[XmlArray("allocations")]
-		[XmlArrayItem("allocation")]
-		public List<Allocation> Allocations { get; set; }
-		
-		[XmlArray("allocation-statuses")]
-		[XmlArrayItem("allocation-status")]
-		public List<AllocationStatus> AllocationStatuses { get; set; }
 	}
 }

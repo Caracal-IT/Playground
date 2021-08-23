@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
-using Playground.PaymentEngine.Model;
+using Playground.PaymentEngine.Stores.AccountStores.Model;
 
 namespace Playground.PaymentEngine.Stores.AccountStores.File {
     [XmlRoot("repository")]

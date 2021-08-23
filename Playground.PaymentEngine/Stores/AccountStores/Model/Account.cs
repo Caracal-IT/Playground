@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using Playground.PaymentEngine.Model;
 
-namespace Playground.PaymentEngine.Model {
+namespace Playground.PaymentEngine.Stores.AccountStores.Model {
     [XmlRoot(ElementName="account")]
     public class Account {
         [XmlElement("meta-data")]
