@@ -6,20 +6,20 @@ using Playground.PaymentEngine.Stores.ApprovalRules.Model;
 
 namespace Playground.PaymentEngine.Stores.ApprovalRules.File {
     public class FileApprovalRuleStore: FileStore, ApprovalRuleStore {
-        private readonly ApprovalRuleRepository _repository;
+        private readonly ApprovalRuleData _data;
 
         public FileApprovalRuleStore() =>
-            _repository = GetRepository<ApprovalRuleRepository>();
+            _data = GetRepository<ApprovalRuleData>();
         
         public Task<IEnumerable<ApprovalRuleHistory>> GetRuleHistoriesAsync(IEnumerable<long> withdrawalGroupIds, CancellationToken cancellationToken) {
-            var result = _repository.ApprovalRuleRuleHistories
+            var result = _data.ApprovalRuleRuleHistories
                                     .Where(h => withdrawalGroupIds.Contains(h.WithdrawalGroupId));
 
             return Task.FromResult(result);
         }
 
         public Task AddRuleHistoriesAsync(IEnumerable<ApprovalRuleHistory> histories, CancellationToken cancellationToken) {
-            _repository.ApprovalRuleRuleHistories.AddRange(histories);
+            _data.ApprovalRuleRuleHistories.AddRange(histories);
 
             return Task.CompletedTask;
         }

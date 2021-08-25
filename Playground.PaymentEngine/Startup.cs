@@ -33,7 +33,6 @@ using Playground.Router.Clients;
 using Playground.Router.Clients.File;
 using Playground.Rules;
 using Playground.Rules.CustomActions.Terminal;
-using Engine = Playground.Router.Engine;
 
 namespace Playground.PaymentEngine {
     public class Startup {
@@ -65,7 +64,7 @@ namespace Playground.PaymentEngine {
             
             
             
-            services.AddSingleton<Engine, RouterEngine>();
+            services.AddSingleton<Router.Engine, RouterEngine>();
             
             services.AddSingleton<ClientFactory, DefaultClientFactory>();
             services.AddSingleton<HttpTerminalClient>();

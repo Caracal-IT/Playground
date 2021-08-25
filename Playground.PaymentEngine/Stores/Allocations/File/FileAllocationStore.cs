@@ -6,15 +6,15 @@ using Playground.PaymentEngine.Stores.Allocations.Model;
 
 namespace Playground.PaymentEngine.Stores.Allocations.File {
     public class FileAllocationStore: FileStore, AllocationStore {
-        private readonly AllocationRepository _repository;
+        private readonly AllocationData _data;
 
         private readonly object _allocationLock = new();
         
         public FileAllocationStore() => 
-            _repository = GetRepository<AllocationRepository>();
+            _data = GetRepository<AllocationData>();
 
         public Task<Allocation> GetAllocationAsync(long id, CancellationToken cancellationToken) {
-            var result = _repository.Allocations
+            var result = _data.Allocations
                                     .FirstOrDefault(a => a.Id == id)
                                     ??new Allocation();
             
@@ -22,7 +22,7 @@ namespace Playground.PaymentEngine.Stores.Allocations.File {
         }
 
         public Task<IEnumerable<Allocation>> GetAllocationsByReferenceAsync(string reference, CancellationToken cancellationToken) {
-            var result = _repository.Allocations
+            var result = _data.Allocations
                                     .Where(a => !string.IsNullOrWhiteSpace(a.Terminal) && a.Reference.Equals(reference));
 
             return Task.FromResult(result);
@@ -46,21 +46,21 @@ namespace Playground.PaymentEngine.Stores.Allocations.File {
 
             if (alloc == null) {
                 lock (_allocationLock) {
-                    allocation.Id = _repository.Allocations.LastOrDefault()?.Id ?? 0 + 1;
+                    allocation.Id = _data.Allocations.LastOrDefault()?.Id ?? 0 + 1;
                 }
             }
             else
-                _repository.Allocations.Remove(alloc);
+                _data.Allocations.Remove(alloc);
 
-            _repository.Allocations.Add(allocation);
+            _data.Allocations.Add(allocation);
 
             return allocation;
         }
 
         public Task RemoveAllocationsAsync(long withdrawalGroupId, CancellationToken cancellationToken) {
-            var allocations = _repository.Allocations;
+            var allocations = _data.Allocations;
             
-            _repository
+            _data
                 .Allocations
                 .Where(a => a.WithdrawalGroupId == withdrawalGroupId)
                 .ToList()

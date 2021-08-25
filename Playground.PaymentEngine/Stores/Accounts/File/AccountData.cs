@@ -4,7 +4,7 @@ using Playground.PaymentEngine.Stores.Accounts.Model;
 
 namespace Playground.PaymentEngine.Stores.Accounts.File {
     [XmlRoot("repository")]
-    public class AccountRepository {
+    public class AccountData {
         [XmlArray("accounts")]
         [XmlArrayItem("account")]
         public List<Account> Accounts { get; set; }

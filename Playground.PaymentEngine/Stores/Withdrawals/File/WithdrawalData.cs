@@ -4,7 +4,7 @@ using Playground.PaymentEngine.Stores.Withdrawals.Model;
 
 namespace Playground.PaymentEngine.Stores.Withdrawals.File {
 	[XmlRoot(ElementName="repository")]
-	public class WithdrawalRepository {
+	public class WithdrawalData {
 		[XmlArray("withdrawals")]
 		[XmlArrayItem("withdrawal")]
 		public List<Withdrawal> Withdrawals { get; set; }

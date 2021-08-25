@@ -6,32 +6,32 @@ using Playground.PaymentEngine.Stores.Withdrawals.Model;
 
 namespace Playground.PaymentEngine.Stores.Withdrawals.File {
     public class FileWithdrawalStore: FileStore, WithdrawalStore {
-        private readonly WithdrawalRepository _repository;
+        private readonly WithdrawalData _data;
 
         public FileWithdrawalStore() => 
-            _repository = GetRepository<WithdrawalRepository>();
+            _data = GetRepository<WithdrawalData>();
 
         public Task<IEnumerable<Withdrawal>> GetWithdrawalsAsync(IEnumerable<long> withdrawalIds, CancellationToken cancellationToken) {
-            var result =  _repository.Withdrawals
+            var result =  _data.Withdrawals
                                      .Where(w => withdrawalIds.Contains(w.Id));
 
             return Task.FromResult(result);
         }
 
         public async Task<IEnumerable<Withdrawal>> GetWithdrawalGroupWithdrawalsAsync(long id, CancellationToken cancellationToken) {
-            var group = _repository.WithdrawalGroups.FirstOrDefault(g => g.Id == id)??new WithdrawalGroup();
+            var group = _data.WithdrawalGroups.FirstOrDefault(g => g.Id == id)??new WithdrawalGroup();
             return await GetWithdrawalsAsync(group.WithdrawalIds, cancellationToken);
         }
         
         public Task<IEnumerable<WithdrawalGroup>> GetWithdrawalGroupsAsync(IEnumerable<long> withdrawalGroupIds, CancellationToken cancellationToken) {
-            var result = _repository.WithdrawalGroups
+            var result = _data.WithdrawalGroups
                                     .Where(g => withdrawalGroupIds.Contains(g.Id));
 
             return Task.FromResult(result);
         }
 
         public Task<WithdrawalGroup> GetWithdrawalGroupAsync(long id, CancellationToken cancellationToken) {
-            var result =  _repository.WithdrawalGroups
+            var result =  _data.WithdrawalGroups
                                      .FirstOrDefault(g => g.Id == id);
 
             return Task.FromResult(result);

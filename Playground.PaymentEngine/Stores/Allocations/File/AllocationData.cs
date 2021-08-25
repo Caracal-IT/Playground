@@ -4,7 +4,7 @@ using Playground.PaymentEngine.Stores.Allocations.Model;
 
 namespace Playground.PaymentEngine.Stores.Allocations.File {
     [XmlRoot("repository")]
-    public class AllocationRepository {
+    public class AllocationData {
         [XmlArray("allocations")]
         [XmlArrayItem("allocation")]
         public List<Allocation> Allocations { get; set; }

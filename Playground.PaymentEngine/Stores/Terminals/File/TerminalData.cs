@@ -4,7 +4,7 @@ using Playground.PaymentEngine.Stores.Terminals.Model;
 
 namespace Playground.PaymentEngine.Stores.Terminals.File {
     [XmlRoot("repository")]
-    public class TerminalRepository {
+    public class TerminalData {
         [XmlArray("terminals")]
         [XmlArrayItem("terminal")]
         public List<Terminal> Terminals { get; set; }

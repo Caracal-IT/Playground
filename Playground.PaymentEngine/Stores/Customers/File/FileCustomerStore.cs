@@ -5,12 +5,12 @@ using Playground.PaymentEngine.Stores.Customers.Model;
 
 namespace Playground.PaymentEngine.Stores.Customers.File {
     public class FileCustomerStore : FileStore, CustomerStore {
-        private readonly CustomerRepository _repository;
+        private readonly CustomerData _data;
 
-        public FileCustomerStore() => _repository = GetRepository<CustomerRepository>();
+        public FileCustomerStore() => _data = GetRepository<CustomerData>();
 
         public Task<Customer> GetCustomerAsync(long id, CancellationToken cancellationToken) {
-            var result = _repository.Customers.FirstOrDefault(c => c.Id == id);
+            var result = _data.Customers.FirstOrDefault(c => c.Id == id);
             return Task.FromResult(result);
         }
     }

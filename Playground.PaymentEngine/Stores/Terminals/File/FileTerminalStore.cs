@@ -7,18 +7,18 @@ using Playground.PaymentEngine.Stores.Terminals.Model;
 
 namespace Playground.PaymentEngine.Stores.Terminals.File {
     public class FileTerminalStore: FileStore, TerminalStore {
-        private readonly TerminalRepository _repository;
+        private readonly TerminalData _data;
         private readonly ICacheService _cacheService;
         
         public FileTerminalStore(ICacheService cacheService) {
             _cacheService = cacheService;
-            _repository = GetRepository<TerminalRepository>();
+            _data = GetRepository<TerminalData>();
         }
 
         public Task<IEnumerable<Terminal>> GetActiveAccountTypeTerminalsAsync(long accountTypeId, CancellationToken cancellationToken) {
             var result = _cacheService.GetValue($"{nameof(GetActiveAccountTypeTerminalsAsync)}_{accountTypeId}", () =>
-                _repository.TerminalMaps
-                    .Join(_repository.Terminals,
+                _data.TerminalMaps
+                    .Join(_data.Terminals,
                         tm => tm.TerminalId,
                         t => t.Id,
                         (tm, t) => new { Map = tm, Terminal = t }
@@ -32,12 +32,12 @@ namespace Playground.PaymentEngine.Stores.Terminals.File {
         }
 
         public Task<IEnumerable<Terminal>> GetTerminalsAsync(CancellationToken cancellationToken) {
-            var result = _cacheService.GetValue(nameof(GetTerminalsAsync), () => _repository.Terminals.AsEnumerable());
+            var result = _cacheService.GetValue(nameof(GetTerminalsAsync), () => _data.Terminals.AsEnumerable());
             return Task.FromResult(result);
         }
 
         public Task LogTerminalResultsAsync(IEnumerable<TerminalResult> results, CancellationToken cancellationToken) {
-            _repository.TerminalResults.AddRange(results);
+            _data.TerminalResults.AddRange(results);
             return Task.CompletedTask;
         }
     }
