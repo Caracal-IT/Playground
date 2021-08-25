@@ -21,6 +21,8 @@ builder.Services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title
 
 var app = builder.Build();
 
+ApiSetup.Register(app);
+
 if (app.Environment.IsDevelopment()) {
     app.UseDeveloperExceptionPage();
     app.UseSwagger();
