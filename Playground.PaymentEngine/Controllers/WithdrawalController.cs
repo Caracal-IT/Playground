@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
+using Playground.PaymentEngine.UseCases.Withdrawals.GetWithdrawal;
 using Playground.PaymentEngine.UseCases.Withdrawals.GetWithdrawals;
 
 using ViewModel = Playground.PaymentEngine.Models.Withdrawals;
@@ -20,10 +21,21 @@ namespace Playground.PaymentEngine.Controllers {
             _mapper = mapper;
 
         [EnableQuery]
-        public Task<IEnumerable<ViewModel.Withdrawal>> GetAsync([FromServices] GetWithdrawalsUseCase useCase, CancellationToken cancellationToken) =>
-            ExecuteAsync(async () => {
+        public async Task<ActionResult<IEnumerable<ViewModel.Withdrawal>>> GetAsync([FromServices] GetWithdrawalsUseCase useCase, CancellationToken cancellationToken) =>
+            await ExecuteAsync(async () => {
                 var result = await useCase.ExecuteAsync(new GetWithdrawalsRequest(), cancellationToken);
-                return _mapper.Map<IEnumerable<ViewModel.Withdrawal>>(result.Withdrawals);
+                return Ok(_mapper.Map<IEnumerable<ViewModel.Withdrawal>>(result.Withdrawals));
+            });
+
+        [HttpGet("{id:long}")]
+        public Task<ActionResult<ViewModel.Withdrawal>> GetAsync([FromServices] GetWithdrawalUseCase useCase, [FromRoute] long id, CancellationToken cancellationToken) =>
+            ExecuteAsync<ActionResult<ViewModel.Withdrawal>>(async () => {
+                var withdrawal = await useCase.ExecuteAsync(id, cancellationToken);
+
+                if (withdrawal?.Withdrawal == null)
+                    return NotFound();
+                
+                return Ok(_mapper.Map<ViewModel.Withdrawal>(withdrawal.Withdrawal));
             });
     }
 }
