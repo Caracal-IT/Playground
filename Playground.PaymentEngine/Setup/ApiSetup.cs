@@ -9,8 +9,6 @@ namespace Playground.PaymentEngine.Setup {
             WithdrawalSetup.Setup(builder);
         }
         
-        public static void Register(WebApplication app) {
-          //  WithdrawalSetup.Register(app);
-        }
+        public static void Register(WebApplication _) { }
     }
 }
