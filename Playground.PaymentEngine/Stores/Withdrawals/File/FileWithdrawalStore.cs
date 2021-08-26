@@ -21,6 +21,20 @@ namespace Playground.PaymentEngine.Stores.Withdrawals.File {
             return Task.FromResult(result);
         }
 
+        public Task DeleteWithdrawalsAsync(IEnumerable<long> withdrawalIds, CancellationToken cancellationToken) {
+            _data.Withdrawals = _data.Withdrawals.Where(w => !withdrawalIds.Contains(w.Id)).ToList();
+            return Task.CompletedTask;
+        }
+
+        public Task UpdateWithdrawalStatusAsync(IEnumerable<long> withdrawalIds, long statusId, CancellationToken cancellationToken) {
+            _data.Withdrawals
+                 .Where(w => withdrawalIds.Contains(w.Id))
+                 .ToList()
+                 .ForEach(w => w.WithdrawalStatusId = statusId);
+            
+            return Task.CompletedTask;
+        }
+
         public async Task<IEnumerable<Withdrawal>> GetWithdrawalGroupWithdrawalsAsync(long id, CancellationToken cancellationToken) {
             var group = _data.WithdrawalGroups.FirstOrDefault(g => g.Id == id)??new WithdrawalGroup();
             return await GetWithdrawalsAsync(group.WithdrawalIds, cancellationToken);

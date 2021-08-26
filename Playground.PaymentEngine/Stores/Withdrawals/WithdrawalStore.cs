@@ -7,6 +7,8 @@ namespace Playground.PaymentEngine.Stores.Withdrawals {
     public interface WithdrawalStore {
         Task<IEnumerable<Withdrawal>> GetWithdrawalsAsync(CancellationToken cancellationToken);
         Task<IEnumerable<Withdrawal>> GetWithdrawalsAsync(IEnumerable<long> withdrawalIds, CancellationToken cancellationToken);
+        Task DeleteWithdrawalsAsync(IEnumerable<long> withdrawalIds, CancellationToken cancellationToken);
+        Task UpdateWithdrawalStatusAsync(IEnumerable<long> withdrawalIds, long statusId, CancellationToken cancellationToken);
         Task<IEnumerable<Withdrawal>> GetWithdrawalGroupWithdrawalsAsync(long id, CancellationToken cancellationToken);
         Task<IEnumerable<WithdrawalGroup>> GetWithdrawalGroupsAsync(IEnumerable<long> withdrawalGroupIds, CancellationToken cancellationToken);
         Task<WithdrawalGroup> GetWithdrawalGroupAsync(long id, CancellationToken cancellationToken);

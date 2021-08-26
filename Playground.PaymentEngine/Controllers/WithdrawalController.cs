@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
+using Playground.PaymentEngine.UseCases.Withdrawals.ChangeWithdrawalStatus;
+using Playground.PaymentEngine.UseCases.Withdrawals.DeleteWithdrawal;
 using Playground.PaymentEngine.UseCases.Withdrawals.GetWithdrawal;
 using Playground.PaymentEngine.UseCases.Withdrawals.GetWithdrawals;
 
@@ -36,6 +38,20 @@ namespace Playground.PaymentEngine.Controllers {
                     return NotFound();
                 
                 return Ok(_mapper.Map<ViewModel.Withdrawal>(withdrawal.Withdrawal));
+            });
+        
+        [HttpDelete("{id:long}")]
+        public Task<ActionResult> DeleteAsync([FromServices] DeleteWithdrawalUseCase useCase, [FromRoute] long id, CancellationToken cancellationToken) =>
+            ExecuteAsync<ActionResult>(async () => {
+                await useCase.ExecuteAsync(id, cancellationToken);
+                return NoContent();
+            });
+        
+        [HttpPatch("{id:long}")]
+        public Task<ActionResult> UpdateAsync([FromServices] ChangeWithdrawalStatusUseCase useCase, [FromRoute] long id, [FromBody] ViewModel.Status status, CancellationToken cancellationToken) =>
+            ExecuteAsync<ActionResult>(async () => {
+                await useCase.ExecuteAsync(id, status.StatusId, cancellationToken);
+                return NoContent();
             });
     }
 }
