@@ -48,7 +48,7 @@ namespace Playground.PaymentEngine.Controllers {
             });
         
         [HttpPatch("{id:long}")]
-        public Task<ActionResult> UpdateAsync([FromServices] ChangeWithdrawalStatusUseCase useCase, [FromRoute] long id, [FromBody] ViewModel.Status status, CancellationToken cancellationToken) =>
+        public Task<ActionResult> UpdateStatusAsync([FromServices] ChangeWithdrawalStatusUseCase useCase, [FromRoute] long id, [FromBody] ViewModel.Status status, CancellationToken cancellationToken) =>
             ExecuteAsync<ActionResult>(async () => {
                 await useCase.ExecuteAsync(id, status.StatusId, cancellationToken);
                 return NoContent();
