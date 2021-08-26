@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.OData;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -13,7 +14,8 @@ builder.Services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Directory.
 
 builder.Services.AddLogging();
 builder.Services.AddHttpClient();
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+                .AddOData(options => options.EnableQueryFeatures());
 
 builder.Services.AddMvc()
                 .AddXmlSerializerFormatters()
