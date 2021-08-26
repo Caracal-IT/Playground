@@ -7,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 ApiSetup.Setup(builder);
 InfrastructureSetup.Setup(builder);
 
+builder.Services.AddAutoMapper(typeof(ApiSetup).Assembly);
+
 builder.Services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Directory.GetCurrentDirectory()));
 
 builder.Services.AddLogging();

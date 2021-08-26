@@ -11,6 +11,9 @@ namespace Playground.PaymentEngine.Stores.Withdrawals.File {
         public FileWithdrawalStore() => 
             _data = GetRepository<WithdrawalData>();
 
+        public Task<IEnumerable<Withdrawal>> GetWithdrawalsAsync(CancellationToken cancellationToken) => 
+            Task.FromResult(_data.Withdrawals.AsEnumerable());
+
         public Task<IEnumerable<Withdrawal>> GetWithdrawalsAsync(IEnumerable<long> withdrawalIds, CancellationToken cancellationToken) {
             var result =  _data.Withdrawals
                                      .Where(w => withdrawalIds.Contains(w.Id));

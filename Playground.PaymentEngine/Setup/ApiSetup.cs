@@ -10,7 +10,7 @@ namespace Playground.PaymentEngine.Setup {
         }
         
         public static void Register(WebApplication app) {
-            WithdrawalSetup.Register(app);
+          //  WithdrawalSetup.Register(app);
         }
     }
 }
