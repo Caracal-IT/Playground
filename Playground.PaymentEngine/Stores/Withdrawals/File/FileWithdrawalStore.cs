@@ -11,6 +11,20 @@ namespace Playground.PaymentEngine.Stores.Withdrawals.File {
         public FileWithdrawalStore() => 
             _data = GetRepository<WithdrawalData>();
 
+        private static object _createLock = new();
+        public Task<Withdrawal> CreateWithdrawalAsync(Withdrawal withdrawal, CancellationToken cancellationToken) {
+            long id;
+            
+            lock (_createLock) {
+                id = _data.Withdrawals.Max(w => w.Id) + 1;
+            }
+
+            withdrawal.Id = id;
+            _data.Withdrawals.Add(withdrawal);
+
+            return Task.FromResult(withdrawal);
+        }
+        
         public Task<IEnumerable<Withdrawal>> GetWithdrawalsAsync(CancellationToken cancellationToken) => 
             Task.FromResult(_data.Withdrawals.AsEnumerable());
 
