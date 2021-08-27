@@ -16,5 +16,8 @@ namespace Playground.PaymentEngine.Stores.Withdrawals.Model {
         public DateTime DateRequested { get; set; }
         [XmlAttribute(AttributeName="withdrawal-status-id")]
         public long WithdrawalStatusId { get; set; }
+        
+        [XmlIgnore]
+        public bool IsDeleted { get; set; }
     }
 }

@@ -26,27 +26,29 @@ namespace Playground.PaymentEngine.Stores.Withdrawals.File {
         }
         
         public Task<IEnumerable<Withdrawal>> GetWithdrawalsAsync(CancellationToken cancellationToken) => 
-            Task.FromResult(_data.Withdrawals.AsEnumerable());
+            Task.FromResult(_data.Withdrawals.Where(w => !w.IsDeleted).AsEnumerable());
 
-        public Task<IEnumerable<Withdrawal>> GetWithdrawalsAsync(IEnumerable<long> withdrawalIds, CancellationToken cancellationToken) {
-            var result =  _data.Withdrawals
-                                     .Where(w => withdrawalIds.Contains(w.Id));
-
-            return Task.FromResult(result);
+        public async Task<IEnumerable<Withdrawal>> GetWithdrawalsAsync(IEnumerable<long> withdrawalIds, CancellationToken cancellationToken) {
+            var result = await GetWithdrawalsAsync(cancellationToken);
+            return result.Where(w => withdrawalIds.Contains(w.Id));
         }
 
-        public Task DeleteWithdrawalsAsync(IEnumerable<long> withdrawalIds, CancellationToken cancellationToken) {
-            _data.Withdrawals = _data.Withdrawals.Where(w => !withdrawalIds.Contains(w.Id)).ToList();
-            return Task.CompletedTask;
+        public async Task DeleteWithdrawalsAsync(IEnumerable<long> withdrawalIds, CancellationToken cancellationToken) {
+            var w = await GetWithdrawalsAsync(withdrawalIds, cancellationToken);
+            var withdrawals = w.ToList();
+                
+            withdrawals.ForEach(i => i.IsDeleted = true);
+            _data.Withdrawals = _data.Withdrawals
+                                     .Where(i => !i.IsDeleted && i.WithdrawalStatusId != 0)
+                                     .ToList();
         }
 
-        public Task UpdateWithdrawalStatusAsync(IEnumerable<long> withdrawalIds, long statusId, CancellationToken cancellationToken) {
-            _data.Withdrawals
-                 .Where(w => withdrawalIds.Contains(w.Id))
-                 .ToList()
-                 .ForEach(w => w.WithdrawalStatusId = statusId);
+        public async Task UpdateWithdrawalStatusAsync(IEnumerable<long> withdrawalIds, long statusId, CancellationToken cancellationToken) {
+            if (statusId == 0)
+                return;
             
-            return Task.CompletedTask;
+            var withdrawals = await GetWithdrawalsAsync(withdrawalIds, cancellationToken);
+            withdrawals.ToList().ForEach(w => w.WithdrawalStatusId = statusId);
         }
 
         public async Task<IEnumerable<Withdrawal>> GetWithdrawalGroupWithdrawalsAsync(long id, CancellationToken cancellationToken) {
