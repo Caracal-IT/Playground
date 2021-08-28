@@ -1,7 +1,4 @@
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Playground.PaymentEngine.Stores.Withdrawals.Model;
 
 namespace Playground.PaymentEngine.Stores.Withdrawals.File {
@@ -56,15 +53,18 @@ namespace Playground.PaymentEngine.Stores.Withdrawals.File {
             var ids = withdrawalIds.Where(i => !groupedWithdrawals.Contains(i));
             var withdrawals = await GetWithdrawalsAsync(ids, cancellationToken);
 
-            return withdrawals.GroupBy(
-                w => w.CustomerId,
-                w => w.Id,
-                (customerId, ids) => new WithdrawalGroup {
-                    Id = GetNewGroupId(), 
-                    CustomerId = customerId, 
-                    WithdrawalIdsString = string.Join(",", ids)
-                });
+            var groups = withdrawals.GroupBy(w => w.CustomerId, w => w.Id, CreateWithdrawalGroup).ToList();
+
+            _data.WithdrawalGroups.AddRange(groups);
+            return groups;
         }
+        
+        private WithdrawalGroup CreateWithdrawalGroup(long customerId, IEnumerable<long> withdrawalIds) =>
+            new() {
+                Id = GetNewGroupId(),
+                CustomerId = customerId,
+                WithdrawalIdsString = string.Join(",", withdrawalIds)
+            };
 
         private static readonly object GroupLock = new();
         private long GetNewGroupId() {
@@ -73,27 +73,32 @@ namespace Playground.PaymentEngine.Stores.Withdrawals.File {
             }
         }
         
+        public Task<WithdrawalGroup> GetWithdrawalGroupAsync(long id, CancellationToken cancellationToken) {
+            var result =  _data.WithdrawalGroups
+                .FirstOrDefault(g => g.Id == id);
+
+            return Task.FromResult(result);
+        }
+
+        public Task UnGroupWithdrawalsAsync(long withdrawalGroupId, CancellationToken cancellationToken) {
+            _data.WithdrawalGroups = _data.WithdrawalGroups.Where(g => g.Id != withdrawalGroupId).ToList();
+            return Task.CompletedTask;
+        }
         
-        
-        
-        
-        public async Task<IEnumerable<Withdrawal>> GetWithdrawalGroupWithdrawalsAsync(long id, CancellationToken cancellationToken) {
-            var group = _data.WithdrawalGroups.FirstOrDefault(g => g.Id == id)??new WithdrawalGroup();
-            return await GetWithdrawalsAsync(group.WithdrawalIds, cancellationToken);
+        public Task<IEnumerable<WithdrawalGroup>> GetWithdrawalGroupsAsync(CancellationToken cancellationToken) {
+            return Task.FromResult(_data.WithdrawalGroups.AsEnumerable());
         }
         
         public Task<IEnumerable<WithdrawalGroup>> GetWithdrawalGroupsAsync(IEnumerable<long> withdrawalGroupIds, CancellationToken cancellationToken) {
             var result = _data.WithdrawalGroups
-                                    .Where(g => withdrawalGroupIds.Contains(g.Id));
+                .Where(g => withdrawalGroupIds.Contains(g.Id));
 
             return Task.FromResult(result);
         }
-
-        public Task<WithdrawalGroup> GetWithdrawalGroupAsync(long id, CancellationToken cancellationToken) {
-            var result =  _data.WithdrawalGroups
-                                     .FirstOrDefault(g => g.Id == id);
-
-            return Task.FromResult(result);
+        
+        public async Task<IEnumerable<Withdrawal>> GetWithdrawalGroupWithdrawalsAsync(long id, CancellationToken cancellationToken) {
+            var group = _data.WithdrawalGroups.FirstOrDefault(g => g.Id == id)??new WithdrawalGroup();
+            return await GetWithdrawalsAsync(group.WithdrawalIds, cancellationToken);
         }
     }
 }

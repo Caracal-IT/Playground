@@ -3,8 +3,10 @@ using Playground.PaymentEngine.UseCases.Withdrawals.ChangeWithdrawalStatus;
 using Playground.PaymentEngine.UseCases.Withdrawals.CreateWithdrawal;
 using Playground.PaymentEngine.UseCases.Withdrawals.DeleteWithdrawal;
 using Playground.PaymentEngine.UseCases.Withdrawals.GetWithdrawal;
+using Playground.PaymentEngine.UseCases.Withdrawals.GetWithdrawalGroups;
 using Playground.PaymentEngine.UseCases.Withdrawals.GetWithdrawals;
 using Playground.PaymentEngine.UseCases.Withdrawals.GroupWithdrawals;
+using Playground.PaymentEngine.UseCases.Withdrawals.UnGroupWithdrawals;
 
 namespace Playground.PaymentEngine.Setup.Application {
     public static class WithdrawalSetup {
@@ -16,6 +18,8 @@ namespace Playground.PaymentEngine.Setup.Application {
             builder.Services.AddSingleton<ChangeWithdrawalStatusUseCase>();
             
             builder.Services.AddSingleton<GroupWithdrawalsUseCase>();
+            builder.Services.AddSingleton<UnGroupWithdrawalsUseCase>();
+            builder.Services.AddSingleton<GetWithdrawalGroupsUseCase>();
         }
     }
 }

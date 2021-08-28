@@ -4,6 +4,7 @@ using CreateWithdrawal = Playground.PaymentEngine.UseCases.Withdrawals.CreateWit
 using GetWithdrawals = Playground.PaymentEngine.UseCases.Withdrawals.GetWithdrawals;
 using GetWithdrawal = Playground.PaymentEngine.UseCases.Withdrawals.GetWithdrawal;
 using GroupWithdrawals = Playground.PaymentEngine.UseCases.Withdrawals.GroupWithdrawals;
+using GetWithdrawalGroups = Playground.PaymentEngine.UseCases.Withdrawals.GetWithdrawalGroups;
 
 using ViewModel = Playground.PaymentEngine.Models.Withdrawals;
 
@@ -16,6 +17,8 @@ namespace Playground.PaymentEngine.Setup.Profiles {
             CreateMap<GetWithdrawal.Withdrawal, ViewModel.Withdrawal>();
 
             CreateMap<GroupWithdrawals.WithdrawalGroup, ViewModel.WithdrawalGroup>()
+                .ForMember(w => w.Withdrawals, s => s.MapFrom(w => w.WithdrawalIds));
+            CreateMap<GetWithdrawalGroups.WithdrawalGroup, ViewModel.WithdrawalGroup>()
                 .ForMember(w => w.Withdrawals, s => s.MapFrom(w => w.WithdrawalIds));
         }
     }

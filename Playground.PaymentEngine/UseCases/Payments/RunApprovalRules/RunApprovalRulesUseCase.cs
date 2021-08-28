@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Playground.PaymentEngine.Helpers;
 using Playground.PaymentEngine.Stores.ApprovalRules;
 using Playground.PaymentEngine.Stores.ApprovalRules.Model;
@@ -11,7 +8,8 @@ using Playground.PaymentEngine.Stores.Model;
 using Playground.PaymentEngine.Stores.Withdrawals;
 using Playground.PaymentEngine.Stores.Withdrawals.Model;
 using Playground.Rules;
-using RulesEngine.Models;
+
+using ActionResult = RulesEngine.Models.ActionResult;
 
 namespace Playground.PaymentEngine.UseCases.Payments.RunApprovalRules {
     public class RunApprovalRulesUseCase {
