@@ -9,7 +9,7 @@ using Playground.PaymentEngine.UseCases.Withdrawals.CreateWithdrawal;
 using Playground.PaymentEngine.UseCases.Withdrawals.DeleteWithdrawal;
 using Playground.PaymentEngine.UseCases.Withdrawals.GetWithdrawal;
 using Playground.PaymentEngine.UseCases.Withdrawals.GetWithdrawals;
-
+using Playground.PaymentEngine.UseCases.Withdrawals.GroupWithdrawals;
 using ViewModel = Playground.PaymentEngine.Models.Withdrawals;
 
 using static Playground.PaymentEngine.Extensions.WebExtensions;
@@ -60,6 +60,13 @@ namespace Playground.PaymentEngine.Controllers {
             ExecuteAsync<ActionResult>(async () => {
                 await useCase.ExecuteAsync(id, status.StatusId, cancellationToken);
                 return NoContent();
+            });
+        
+        [HttpPost("group")]
+        public Task<ActionResult<IEnumerable<ViewModel.WithdrawalGroup>>> Group([FromServices] GroupWithdrawalsUseCase useCase, [FromBody] ViewModel.GroupWithdrawalRequest request, CancellationToken cancellationToken) =>
+            ExecuteAsync<ActionResult<IEnumerable<ViewModel.WithdrawalGroup>>> (async () => {
+                var response = await useCase.ExecuteAsync(request.Withdrawals, cancellationToken);
+                return Ok(_mapper.Map<IEnumerable<ViewModel.WithdrawalGroup>>(response.WithdrawalGroups));
             });
     }
 }

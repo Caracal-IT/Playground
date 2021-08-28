@@ -50,7 +50,33 @@ namespace Playground.PaymentEngine.Stores.Withdrawals.File {
             var withdrawals = await GetWithdrawalsAsync(withdrawalIds, cancellationToken);
             withdrawals.ToList().ForEach(w => w.WithdrawalStatusId = statusId);
         }
+        
+        public async Task<IEnumerable<WithdrawalGroup>> GroupWithdrawalsAsync(IEnumerable<long> withdrawalIds, CancellationToken cancellationToken) {
+            var groupedWithdrawals = _data.WithdrawalGroups.SelectMany(g => g.WithdrawalIds);
+            var ids = withdrawalIds.Where(i => !groupedWithdrawals.Contains(i));
+            var withdrawals = await GetWithdrawalsAsync(ids, cancellationToken);
 
+            return withdrawals.GroupBy(
+                w => w.CustomerId,
+                w => w.Id,
+                (customerId, ids) => new WithdrawalGroup {
+                    Id = GetNewGroupId(), 
+                    CustomerId = customerId, 
+                    WithdrawalIdsString = string.Join(",", ids)
+                });
+        }
+
+        private static readonly object GroupLock = new();
+        private long GetNewGroupId() {
+            lock (GroupLock) {
+                return  _data.WithdrawalGroups.Max(w => w.Id) + 1;
+            }
+        }
+        
+        
+        
+        
+        
         public async Task<IEnumerable<Withdrawal>> GetWithdrawalGroupWithdrawalsAsync(long id, CancellationToken cancellationToken) {
             var group = _data.WithdrawalGroups.FirstOrDefault(g => g.Id == id)??new WithdrawalGroup();
             return await GetWithdrawalsAsync(group.WithdrawalIds, cancellationToken);
