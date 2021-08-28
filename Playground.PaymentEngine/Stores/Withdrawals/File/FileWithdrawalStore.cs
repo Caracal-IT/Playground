@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Playground.PaymentEngine.Stores.Withdrawals.Model;
 
@@ -74,8 +75,7 @@ namespace Playground.PaymentEngine.Stores.Withdrawals.File {
         }
         
         public Task<WithdrawalGroup> GetWithdrawalGroupAsync(long id, CancellationToken cancellationToken) {
-            var result =  _data.WithdrawalGroups
-                .FirstOrDefault(g => g.Id == id);
+            var result =  _data.WithdrawalGroups.FirstOrDefault(g => g.Id == id);
 
             return Task.FromResult(result);
         }
@@ -99,6 +99,22 @@ namespace Playground.PaymentEngine.Stores.Withdrawals.File {
         public async Task<IEnumerable<Withdrawal>> GetWithdrawalGroupWithdrawalsAsync(long id, CancellationToken cancellationToken) {
             var group = _data.WithdrawalGroups.FirstOrDefault(g => g.Id == id)??new WithdrawalGroup();
             return await GetWithdrawalsAsync(group.WithdrawalIds, cancellationToken);
+        }
+
+        public async Task<WithdrawalGroup> AppendWithdrawalGroupsAsync(long id, IEnumerable<long> withdrawalIds, CancellationToken cancellationToken) {
+            var groups = await GetWithdrawalGroupsAsync(new[] { id }, cancellationToken);
+            var group = groups.FirstOrDefault();
+            
+            if (group == null) return null;
+            
+            var groupedWithdrawals = _data.WithdrawalGroups.SelectMany(g => g.WithdrawalIds);
+            var ids = withdrawalIds.Where(i => !groupedWithdrawals.Contains(i));
+
+            var wIds = group.WithdrawalIds;
+            wIds.AddRange(ids);
+            group.WithdrawalIdsString = string.Join(",", wIds.Distinct());
+
+            return group;
         }
     }
 }

@@ -1,3 +1,4 @@
+using Playground.PaymentEngine.UseCases.Withdrawals.AppendGroupWithdrawals;
 using Playground.PaymentEngine.UseCases.Withdrawals.GetWithdrawalGroups;
 using Playground.PaymentEngine.UseCases.Withdrawals.GroupWithdrawals;
 using Playground.PaymentEngine.UseCases.Withdrawals.UnGroupWithdrawals;
@@ -31,6 +32,13 @@ namespace Playground.PaymentEngine.Controllers {
             ExecuteAsync<ActionResult> (async () => {
                 await useCase.ExecuteAsync(id, cancellationToken);
                 return NoContent();
+            });
+        
+        [HttpPatch("{id:long}")]
+        public Task<ActionResult<ViewModel.WithdrawalGroup>> Patch([FromServices] AppendGroupWithdrawalsUseCase useCase, [FromRoute] long id, [FromBody] ViewModel.GroupWithdrawalRequest request, CancellationToken cancellationToken) =>
+            ExecuteAsync<ActionResult<ViewModel.WithdrawalGroup>> (async () => {
+                var result = await useCase.ExecuteAsync(id, request.Withdrawals, cancellationToken);
+                return Ok(_mapper.Map<ViewModel.WithdrawalGroup>(result.WithdrawalGroup));
             });
     }
 }
