@@ -1,5 +1,4 @@
-using System.Collections.Generic;
-using Playground.PaymentEngine.Stores.Model;
+using Playground.PaymentEngine.UseCases.Shared;
 
 namespace Playground.PaymentEngine.UseCases.Payments.Process {
     public class ExportAllocation {

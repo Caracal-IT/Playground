@@ -1,7 +1,6 @@
 using System;
-using System.Xml.Serialization;
+using Playground.PaymentEngine.Models.Shared;
 using Playground.PaymentEngine.Stores.ApprovalRules.Model;
-using Playground.PaymentEngine.Stores.Model;
 
 namespace Playground.PaymentEngine.Models.ApprovalRules {
     public class ApprovalRuleHistory {

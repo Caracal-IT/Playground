@@ -1,6 +1,5 @@
-using System.Collections.Generic;
 using System.Xml.Serialization;
-using Playground.PaymentEngine.Stores.Model;
+using Playground.PaymentEngine.UseCases.Shared;
 
 namespace Playground.PaymentEngine.UseCases.Payments.Process {
     [XmlRoot(ElementName = "export-data")]

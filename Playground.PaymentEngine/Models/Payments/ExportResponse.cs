@@ -1,4 +1,4 @@
-using Playground.PaymentEngine.Stores.Model;
+using Playground.PaymentEngine.Models.Shared;
 
 namespace Playground.PaymentEngine.Models.Payments {
     public class ExportResponse {

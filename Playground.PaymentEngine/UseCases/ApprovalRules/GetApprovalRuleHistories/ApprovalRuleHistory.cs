@@ -1,6 +1,6 @@
 using System;
 using Playground.PaymentEngine.Stores.ApprovalRules.Model;
-using Playground.PaymentEngine.Stores.Model;
+using Playground.PaymentEngine.UseCases.Shared;
 
 namespace Playground.PaymentEngine.UseCases.ApprovalRules.GetApprovalRuleHistories {
     public class ApprovalRuleHistory {

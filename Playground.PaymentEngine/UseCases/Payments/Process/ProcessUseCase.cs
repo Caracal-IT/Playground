@@ -1,13 +1,11 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Playground.PaymentEngine.Helpers;
 using Playground.PaymentEngine.Stores.Accounts;
 using Playground.PaymentEngine.Stores.Allocations;
 using Playground.PaymentEngine.Stores.Terminals;
 using Playground.PaymentEngine.Stores.Terminals.Model;
+using Playground.PaymentEngine.UseCases.Shared;
 using Playground.Router;
 using Playground.Xml;
 
@@ -20,12 +18,14 @@ namespace Playground.PaymentEngine.UseCases.Payments.Process {
         private readonly IRoutingService _routingService;
         private readonly AllocationStore _allocationStore;
         private readonly AccountStore _accountStore;
+        private readonly IMapper _mapper;
         
-        public ProcessUseCase(AllocationStore allocationStore, AccountStore accountStore, TerminalStore terminalStore, IRoutingService routingService) {
+        public ProcessUseCase(AllocationStore allocationStore, AccountStore accountStore, TerminalStore terminalStore, IRoutingService routingService, IMapper mapper) {
             _accountStore = accountStore;
             _allocationStore = allocationStore;
             _terminalStore = terminalStore;
             _routingService = routingService;
+            _mapper = mapper;
         }
 
         public async Task<ProcessResponse> ExecuteAsync(ProcessRequest request, CancellationToken cancellationToken) {
@@ -64,7 +64,7 @@ namespace Playground.PaymentEngine.UseCases.Payments.Process {
                     Reference = response.Reference,
                     Success = response.Code == "00",
                     Terminal = response.Terminal,
-                    MetaData = response.MetaData
+                    MetaData = _mapper.Map<List<Stores.Model.MetaData>>(response.MetaData)
                 };
             }
 
@@ -118,7 +118,7 @@ namespace Playground.PaymentEngine.UseCases.Payments.Process {
                     AccountId = account.Id,
                     AccountTypeId = account.AccountTypeId,
                     CustomerId = account.CustomerId,
-                    MetaData = account.MetaData
+                    MetaData = _mapper.Map<List<MetaData>>(account.MetaData)
                 };
             }
         }
