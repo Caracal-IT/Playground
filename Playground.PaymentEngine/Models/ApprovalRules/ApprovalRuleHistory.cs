@@ -1,6 +1,6 @@
 using System;
 using Playground.PaymentEngine.Models.Shared;
-using Playground.PaymentEngine.Stores.ApprovalRules.Model;
+using Playground.PaymentEngine.Store.ApprovalRules.Model;
 
 namespace Playground.PaymentEngine.Models.ApprovalRules {
     public class ApprovalRuleHistory {
@@ -8,6 +8,6 @@ namespace Playground.PaymentEngine.Models.ApprovalRules {
         public Guid TransactionId { get; set; }
         public DateTime TransactionDate { get; set; }
         public List<MetaData> Metadata { get; set; }
-        public List<ApprovalRule> Rules { get; set; }
+        public List<ApprovalRule> Rules { get; set; } //t: create approval rule model
     }
 }

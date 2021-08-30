@@ -1,8 +1,6 @@
 using System;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Playground.PaymentEngine.Stores.Allocations;
+using Playground.PaymentEngine.Store.Allocations;
 using Playground.Router;
 
 namespace Playground.PaymentEngine.UseCases.Payments.Callback {

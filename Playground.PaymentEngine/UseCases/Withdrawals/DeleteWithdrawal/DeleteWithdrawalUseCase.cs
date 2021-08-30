@@ -1,6 +1,4 @@
-using System.Threading;
-using System.Threading.Tasks;
-using Playground.PaymentEngine.Stores.Withdrawals;
+using Playground.PaymentEngine.Store.Withdrawals;
 
 namespace Playground.PaymentEngine.UseCases.Withdrawals.DeleteWithdrawal {
     public class DeleteWithdrawalUseCase {

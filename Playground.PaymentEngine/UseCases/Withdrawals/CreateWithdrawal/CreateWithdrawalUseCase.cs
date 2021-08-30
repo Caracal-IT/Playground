@@ -1,10 +1,7 @@
 using System;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
-using Playground.PaymentEngine.Stores.Withdrawals;
+using Playground.PaymentEngine.Store.Withdrawals;
 
-using Data = Playground.PaymentEngine.Stores.Withdrawals.Model;
+using Data = Playground.PaymentEngine.Store.Withdrawals.Model;
 
 namespace Playground.PaymentEngine.UseCases.Withdrawals.CreateWithdrawal {
     public class CreateWithdrawalUseCase {

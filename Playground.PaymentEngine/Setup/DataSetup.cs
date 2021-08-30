@@ -1,17 +1,17 @@
 using Microsoft.Extensions.DependencyInjection;
+using Playground.PaymentEngine.Store.Accounts;
+using Playground.PaymentEngine.Store.Allocations;
+using Playground.PaymentEngine.Store.ApprovalRules;
+using Playground.PaymentEngine.Store.Customers;
+using Playground.PaymentEngine.Store.File.Accounts;
+using Playground.PaymentEngine.Store.File.Allocations;
+using Playground.PaymentEngine.Store.File.ApprovalRules;
+using Playground.PaymentEngine.Store.File.Customers;
+using Playground.PaymentEngine.Store.File.Terminals;
+using Playground.PaymentEngine.Store.File.Withdrawals;
+using Playground.PaymentEngine.Store.Terminals;
+using Playground.PaymentEngine.Store.Withdrawals;
 
-using Playground.PaymentEngine.Stores.Accounts;
-using Playground.PaymentEngine.Stores.Accounts.File;
-using Playground.PaymentEngine.Stores.Allocations;
-using Playground.PaymentEngine.Stores.Allocations.File;
-using Playground.PaymentEngine.Stores.ApprovalRules;
-using Playground.PaymentEngine.Stores.ApprovalRules.File;
-using Playground.PaymentEngine.Stores.Customers;
-using Playground.PaymentEngine.Stores.Customers.File;
-using Playground.PaymentEngine.Stores.Terminals;
-using Playground.PaymentEngine.Stores.Terminals.File;
-using Playground.PaymentEngine.Stores.Withdrawals;
-using Playground.PaymentEngine.Stores.Withdrawals.File;
 
 namespace Playground.PaymentEngine.Setup {
     public static class DataSetup {

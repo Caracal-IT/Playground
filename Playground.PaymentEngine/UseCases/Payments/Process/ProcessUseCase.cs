@@ -1,10 +1,10 @@
 using System;
 using System.Linq;
 using Playground.PaymentEngine.Helpers;
-using Playground.PaymentEngine.Stores.Accounts;
-using Playground.PaymentEngine.Stores.Allocations;
-using Playground.PaymentEngine.Stores.Terminals;
-using Playground.PaymentEngine.Stores.Terminals.Model;
+using Playground.PaymentEngine.Store.Accounts;
+using Playground.PaymentEngine.Store.Allocations;
+using Playground.PaymentEngine.Store.Terminals;
+using Playground.PaymentEngine.Store.Terminals.Model;
 using Playground.PaymentEngine.UseCases.Shared;
 using Playground.Router;
 using Playground.Xml;
@@ -64,7 +64,7 @@ namespace Playground.PaymentEngine.UseCases.Payments.Process {
                     Reference = response.Reference,
                     Success = response.Code == "00",
                     Terminal = response.Terminal,
-                    MetaData = _mapper.Map<List<Stores.Model.MetaData>>(response.MetaData)
+                    MetaData = _mapper.Map<List<Store.Model.MetaData>>(response.MetaData)
                 };
             }
 

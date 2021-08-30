@@ -1,4 +1,4 @@
-using Playground.PaymentEngine.Stores.Withdrawals;
+using Playground.PaymentEngine.Store.Withdrawals;
 
 namespace Playground.PaymentEngine.UseCases.Withdrawals.AppendGroupWithdrawals {
     public class AppendGroupWithdrawalsUseCase {

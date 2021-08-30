@@ -1,4 +1,4 @@
-using Data = Playground.PaymentEngine.Stores.Model;
+using Data = Playground.PaymentEngine.Store.Model;
 
 namespace Playground.PaymentEngine.UseCases.Shared {
     public class SharedProfile: Profile {

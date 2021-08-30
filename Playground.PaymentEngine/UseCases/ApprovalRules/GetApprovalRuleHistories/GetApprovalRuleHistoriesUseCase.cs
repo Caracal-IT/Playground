@@ -1,4 +1,4 @@
-using Playground.PaymentEngine.Stores.ApprovalRules;
+using Playground.PaymentEngine.Store.ApprovalRules;
 
 namespace Playground.PaymentEngine.UseCases.ApprovalRules.GetApprovalRuleHistories {
     public class GetApprovalRuleHistoriesUseCase {

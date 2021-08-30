@@ -1,4 +1,4 @@
-using Data = Playground.PaymentEngine.Stores.ApprovalRules.Model;
+using Data = Playground.PaymentEngine.Store.ApprovalRules.Model;
 
 namespace Playground.PaymentEngine.UseCases.ApprovalRules.GetLastRunApprovalRules {
     public class ApprovalRuleProfile: Profile {

@@ -15,23 +15,13 @@
     <ItemGroup>
       <ProjectReference Include="..\Playground.Router\Playground.Router.csproj" />
       <ProjectReference Include="..\Rules\Playground.Rules\Playground.Rules.csproj" />
+      <ProjectReference Include="..\Stores\Playground.PaymentEngine.Store.File\Playground.PaymentEngine.Store.File.csproj" />
+      <ProjectReference Include="..\Stores\Playground.PaymentEngine.Store\Playground.PaymentEngine.Store.csproj" />
       <ProjectReference Include="..\Xml\Playground.Xml\Playground.Xml.csproj" />
       <ProjectReference Include="..\Xml\XSLT\Playground.XsltTransform\Playground.XsltTransform.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="Stores\Allocations\File\repository.xml">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
-      <Content Include="Stores\ApprovalRules\File\repository.xml">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
-      <Content Include="Stores\Terminals\File\repository.xml">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
-      <Content Include="Stores\Withdrawals\File\repository.xml">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
       <Content Include="Terminals\Templates\Rebilly.xslt">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
@@ -50,13 +40,7 @@
       <None Remove="Resources\Templates\Terminals\Terminal1.xslt" />
       <None Remove="Resources\Data\terminal.store.xml" />
       <None Remove="Stores\CustomerStores\File\repository.xml" />
-      <Content Include="Stores\Customers\File\repository.xml">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="Stores\AccountStores\File\repository.xml" />
-      <Content Include="Stores\Accounts\File\repository.xml">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
     </ItemGroup>
 
     <ItemGroup>

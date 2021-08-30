@@ -1,8 +1,4 @@
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
-using Playground.PaymentEngine.Stores.Withdrawals;
+using Playground.PaymentEngine.Store.Withdrawals;
 
 namespace Playground.PaymentEngine.UseCases.Withdrawals.GetWithdrawals {
     public class GetWithdrawalsUseCase {

@@ -1,11 +1,11 @@
 using System.Linq;
 using Playground.PaymentEngine.Helpers;
-using Playground.PaymentEngine.Stores.Accounts;
-using Playground.PaymentEngine.Stores.Accounts.Model;
-using Playground.PaymentEngine.Stores.Allocations;
-using Playground.PaymentEngine.Stores.Allocations.Model;
-using Playground.PaymentEngine.Stores.Customers;
-using Playground.PaymentEngine.Stores.Withdrawals;
+using Playground.PaymentEngine.Store.Accounts;
+using Playground.PaymentEngine.Store.Accounts.Model;
+using Playground.PaymentEngine.Store.Allocations;
+using Playground.PaymentEngine.Store.Allocations.Model;
+using Playground.PaymentEngine.Store.Customers;
+using Playground.PaymentEngine.Store.Withdrawals;
 
 namespace Playground.PaymentEngine.UseCases.Allocations.AutoAllocate {
     public class AutoAllocateUseCase {

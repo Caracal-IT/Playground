@@ -1,9 +1,6 @@
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Playground.PaymentEngine.Extensions;
-using Playground.PaymentEngine.Stores.Terminals;
+using Playground.PaymentEngine.Store.Terminals;
 using Playground.PaymentEngine.Terminals.Functions;
 using Playground.Router;
 

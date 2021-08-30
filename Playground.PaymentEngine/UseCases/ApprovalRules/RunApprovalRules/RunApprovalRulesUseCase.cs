@@ -1,12 +1,12 @@
 using System;
 using System.Linq;
 using Playground.PaymentEngine.Helpers;
-using Playground.PaymentEngine.Stores.ApprovalRules;
-using Playground.PaymentEngine.Stores.ApprovalRules.Model;
-using Playground.PaymentEngine.Stores.Customers;
-using Playground.PaymentEngine.Stores.Model;
-using Playground.PaymentEngine.Stores.Withdrawals;
-using Playground.PaymentEngine.Stores.Withdrawals.Model;
+using Playground.PaymentEngine.Store.ApprovalRules;
+using Playground.PaymentEngine.Store.ApprovalRules.Model;
+using Playground.PaymentEngine.Store.Customers;
+using Playground.PaymentEngine.Store.Withdrawals;
+using Playground.PaymentEngine.Store.Withdrawals.Model;
+using Playground.PaymentEngine.Store.Model;
 using Playground.Rules;
 using ActionResult = RulesEngine.Models.ActionResult;
 

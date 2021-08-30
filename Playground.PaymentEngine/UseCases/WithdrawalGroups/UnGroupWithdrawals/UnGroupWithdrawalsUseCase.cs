@@ -1,7 +1,6 @@
-using Playground.PaymentEngine.Stores.Withdrawals;
-using Playground.PaymentEngine.UseCases.Withdrawals.GroupWithdrawals;
+using Playground.PaymentEngine.Store.Withdrawals;
 
-namespace Playground.PaymentEngine.UseCases.Withdrawals.UnGroupWithdrawals {
+namespace Playground.PaymentEngine.UseCases.WithdrawalGroups.UnGroupWithdrawals {
     public class UnGroupWithdrawalsUseCase {
         private readonly WithdrawalStore _store;
 

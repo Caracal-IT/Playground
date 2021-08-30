@@ -1,5 +1,4 @@
-using System.Linq;
-using Playground.PaymentEngine.Stores.ApprovalRules;
+using Playground.PaymentEngine.Store.ApprovalRules;
 
 namespace Playground.PaymentEngine.UseCases.ApprovalRules.GetLastRunApprovalRules {
     public class GetLastRunApprovalRulesUseCase {

@@ -1,8 +1,5 @@
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
-using Playground.PaymentEngine.Stores.Withdrawals;
+using Playground.PaymentEngine.Store.Withdrawals;
 
 namespace Playground.PaymentEngine.UseCases.Withdrawals.GetWithdrawal {
     public class GetWithdrawalUseCase {
