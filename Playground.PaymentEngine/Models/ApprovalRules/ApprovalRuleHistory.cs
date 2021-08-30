@@ -8,6 +8,6 @@ namespace Playground.PaymentEngine.Models.ApprovalRules {
         public Guid TransactionId { get; set; }
         public DateTime TransactionDate { get; set; }
         public List<MetaData> Metadata { get; set; }
-        public List<ApprovalRule> Rules { get; set; } //t: create approval rule model
+        public List<ApprovalRule> Rules { get; set; }
     }
 }

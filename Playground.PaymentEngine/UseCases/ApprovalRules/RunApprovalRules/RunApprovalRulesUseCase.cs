@@ -83,7 +83,7 @@ namespace Playground.PaymentEngine.UseCases.ApprovalRules.RunApprovalRules {
                 Metadata = new List<MetaData>{ new(){ Name = "withdrawal-id", Value = $"{withdrawalGroupId}"}}
             };
 
-        private static ApprovalRule MapRule(ApprovalRuleOutcome outcome) =>
+        private static Store.ApprovalRules.Model.ApprovalRule MapRule(ApprovalRuleOutcome outcome) =>
             new() {
                 RuleName = outcome.RuleName,
                 Message = outcome.Message,

@@ -8,7 +8,9 @@ namespace Playground.PaymentEngine.Setup.Profiles {
         public ApprovalRuleProfile() {
             CreateMap<RunApprovalRules.ApprovalRuleOutcome, ViewModel.ApprovalRuleOutcome>();
             CreateMap<GetApprovalRuleHistories.ApprovalRuleHistory, ViewModel.ApprovalRuleHistory>();
+            CreateMap<GetApprovalRuleHistories.ApprovalRule, ViewModel.ApprovalRule>();
             CreateMap<ApprovalRuleHistory, ViewModel.ApprovalRuleHistory>();
+            CreateMap<ApprovalRule, ViewModel.ApprovalRule>();
         }
     }
 }

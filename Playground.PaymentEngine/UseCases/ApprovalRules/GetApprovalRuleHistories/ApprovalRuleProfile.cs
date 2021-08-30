@@ -4,6 +4,7 @@ namespace Playground.PaymentEngine.UseCases.ApprovalRules.GetApprovalRuleHistori
     public class ApprovalRuleProfile: Profile {
         public ApprovalRuleProfile() {
             CreateMap<Data.ApprovalRuleHistory, ApprovalRuleHistory>();
+            CreateMap<Data.ApprovalRule, ApprovalRule>();
         }
     }
 }
