@@ -11,6 +11,9 @@ namespace Playground.PaymentEngine.Stores.ApprovalRules.File {
         public Task<IEnumerable<ApprovalRuleHistory>> GetRuleHistoriesAsync(CancellationToken cancellationToken) => 
             Task.FromResult(_data.ApprovalRuleRuleHistories.AsEnumerable());
 
+        public Task<IEnumerable<ApprovalRuleHistory>> GetLastRunApprovalRulesAsync(CancellationToken cancellationToken) => 
+            Task.FromResult(_data.ApprovalRuleRuleHistories.GroupBy(r => r.WithdrawalGroupId, (_, h) => h.Last()));
+        
         public Task AddRuleHistoriesAsync(IEnumerable<ApprovalRuleHistory> histories, CancellationToken cancellationToken) {
             _data.ApprovalRuleRuleHistories.AddRange(histories);
 
