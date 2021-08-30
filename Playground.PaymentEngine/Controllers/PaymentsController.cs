@@ -9,7 +9,6 @@ using System.Xml.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Playground.PaymentEngine.Stores.ApprovalRules;
 using Playground.PaymentEngine.Stores.ApprovalRules.Model;
-using Playground.PaymentEngine.UseCases.Payments.AutoAllocate;
 using Playground.PaymentEngine.UseCases.Payments.Callback;
 using Playground.PaymentEngine.UseCases.Payments.Process;
 using Playground.PaymentEngine.UseCases.Payments.RunApprovalRules;
@@ -19,29 +18,6 @@ namespace Playground.PaymentEngine.Controllers {
     [ApiController]
     [Route("[controller]")]
     public class PaymentsController: ControllerBase {
-        private readonly ApprovalRuleStore _approvalRuleStore;
-            
-        public PaymentsController(ApprovalRuleStore approvalRuleStore) => 
-            _approvalRuleStore = approvalRuleStore;
-
-        [HttpPost("approval-rules/run")]
-        public Task<RunApprovalRulesResponse> RunApprovalRules([FromServices] RunApprovalRulesUseCase useCase, RunApprovalRulesRequest request, CancellationToken cancellationToken) => 
-            useCase.ExecuteAsync(request, cancellationToken);
-
-        [HttpPost("approval-rules")]
-        public Task<IEnumerable<ApprovalRuleHistory>> GetApprovalRulesAsync(List<long> request, CancellationToken cancellationToken) =>
-            _approvalRuleStore.GetRuleHistoriesAsync(request, cancellationToken);
-        
-        [HttpPost("approval-rules/last")]
-        public async Task<IEnumerable<ApprovalRuleHistory>> GetLatestApprovalRulesAsync(List<long> request, CancellationToken cancellationToken) {
-            var rules = await _approvalRuleStore.GetRuleHistoriesAsync(request, cancellationToken);
-            return rules.GroupBy(r => r.WithdrawalGroupId, (_, h) => h.Last());
-        }
-
-        [HttpPost("auto-allocate")]
-        public Task<AutoAllocateResponse> AutoAllocateAsync([FromServices]  AutoAllocateUseCase useCase, AutoAllocateRequest request, CancellationToken cancellationToken) => 
-            useCase.ExecuteAsync(request, cancellationToken);
-
         [HttpPost("process")]
         public async Task<ProcessResponse> ProcessAsync([FromServices] ProcessUseCase useCase, ProcessRequest request, CancellationToken cancellationToken) => 
             await useCase.ExecuteAsync(request, cancellationToken);

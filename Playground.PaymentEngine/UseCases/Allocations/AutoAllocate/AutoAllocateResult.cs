@@ -1,4 +1,4 @@
-namespace Playground.PaymentEngine.UseCases.Payments.AutoAllocate {
+namespace Playground.PaymentEngine.UseCases.Allocations.AutoAllocate {
     public class AutoAllocateResult {
         public long AllocationId { get; set; }
         public long WithdrawalGroupId { get; set; }

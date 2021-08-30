@@ -1,5 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using Playground.PaymentEngine.UseCases.Payments.AutoAllocate;
+using Playground.PaymentEngine.UseCases.Allocations.AutoAllocate;
 
 namespace Playground.PaymentEngine.Setup.Application {
     public static class AllocationSetup {

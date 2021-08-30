@@ -62,6 +62,7 @@
     <ItemGroup>
       <Folder Include="Config" />
       <Folder Include="Exports" />
+      <Folder Include="UseCases\Allocations" />
     </ItemGroup>
 
 </Project>

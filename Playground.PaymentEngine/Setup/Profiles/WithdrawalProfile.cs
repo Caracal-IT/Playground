@@ -1,5 +1,3 @@
-using AutoMapper;
-
 using CreateWithdrawal = Playground.PaymentEngine.UseCases.Withdrawals.CreateWithdrawal;
 using GetWithdrawals = Playground.PaymentEngine.UseCases.Withdrawals.GetWithdrawals;
 using GetWithdrawal = Playground.PaymentEngine.UseCases.Withdrawals.GetWithdrawal;

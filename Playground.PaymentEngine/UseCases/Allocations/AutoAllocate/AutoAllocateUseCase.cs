@@ -1,7 +1,4 @@
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Playground.PaymentEngine.Helpers;
 using Playground.PaymentEngine.Stores.Accounts;
 using Playground.PaymentEngine.Stores.Accounts.Model;
@@ -10,7 +7,7 @@ using Playground.PaymentEngine.Stores.Allocations.Model;
 using Playground.PaymentEngine.Stores.Customers;
 using Playground.PaymentEngine.Stores.Withdrawals;
 
-namespace Playground.PaymentEngine.UseCases.Payments.AutoAllocate {
+namespace Playground.PaymentEngine.UseCases.Allocations.AutoAllocate {
     public class AutoAllocateUseCase {
         private readonly AccountStore _accountStore;
         private readonly WithdrawalStore _withdrawalStore;
@@ -24,10 +21,11 @@ namespace Playground.PaymentEngine.UseCases.Payments.AutoAllocate {
             _allocationStore = allocationStore;
         }
 
-        public async Task<AutoAllocateResponse> ExecuteAsync(AutoAllocateRequest request, CancellationToken cancellationToken) {
-            await request.WithdrawalGroups.Select(RemoveAllocationsAsync).WhenAll(50);
+        public async Task<AutoAllocateResponse> ExecuteAsync(IEnumerable<long> withdrawalGroups, CancellationToken cancellationToken) {
+            var groups = withdrawalGroups.ToList();
+            await groups.Select(RemoveAllocationsAsync).WhenAll(50);
             
-            var results = await request.WithdrawalGroups.Select(w => AllocateFundsAsync(w, cancellationToken)).WhenAll(50);
+            var results = await groups.Select(w => AllocateFundsAsync(w, cancellationToken)).WhenAll(50);
             return new AutoAllocateResponse { AllocationResults = results.SelectMany(a => a).ToList() };
 
             async Task RemoveAllocationsAsync(long withdrawalGroupId) =>
