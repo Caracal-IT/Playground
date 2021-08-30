@@ -15,8 +15,8 @@ using Playground.Xml;
 
 namespace Playground.PaymentEngine.Controllers {
     [ApiController]
-    [Route("[controller]")]
-    public class PaymentsController: ControllerBase {
+    [Route("payments")]
+    public class PaymentController: ControllerBase {
         [HttpPost("process")]
         public async Task<ProcessResponse> ProcessAsync([FromServices] ProcessUseCase useCase, ProcessRequest request, CancellationToken cancellationToken) => 
             await useCase.ExecuteAsync(request, cancellationToken);
