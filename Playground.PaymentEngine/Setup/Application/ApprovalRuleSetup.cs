@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Playground.PaymentEngine.Helpers;
-using Playground.PaymentEngine.UseCases.Payments.RunApprovalRules;
+using Playground.PaymentEngine.UseCases.ApprovalRules.RunApprovalRules;
 using Playground.Rules;
 using Playground.Rules.CustomActions.Terminal;
 

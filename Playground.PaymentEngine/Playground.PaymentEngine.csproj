@@ -63,6 +63,8 @@
       <Folder Include="Config" />
       <Folder Include="Exports" />
       <Folder Include="UseCases\Allocations" />
+      <Folder Include="UseCases\ApprovalRules" />
+      <Folder Include="UseCases\WithdrawalGroups" />
     </ItemGroup>
 
 </Project>

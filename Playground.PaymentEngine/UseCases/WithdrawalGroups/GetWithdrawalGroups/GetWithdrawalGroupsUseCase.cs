@@ -1,6 +1,6 @@
 using Playground.PaymentEngine.Stores.Withdrawals;
 
-namespace Playground.PaymentEngine.UseCases.Withdrawals.GetWithdrawalGroups {
+namespace Playground.PaymentEngine.UseCases.WithdrawalGroups.GetWithdrawalGroups {
     public class GetWithdrawalGroupsUseCase {
         private readonly WithdrawalStore _store;  
         private readonly IMapper _mapper;

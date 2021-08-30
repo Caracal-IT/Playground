@@ -11,7 +11,6 @@ using Playground.PaymentEngine.Stores.ApprovalRules;
 using Playground.PaymentEngine.Stores.ApprovalRules.Model;
 using Playground.PaymentEngine.UseCases.Payments.Callback;
 using Playground.PaymentEngine.UseCases.Payments.Process;
-using Playground.PaymentEngine.UseCases.Payments.RunApprovalRules;
 using Playground.Xml;
 
 namespace Playground.PaymentEngine.Controllers {

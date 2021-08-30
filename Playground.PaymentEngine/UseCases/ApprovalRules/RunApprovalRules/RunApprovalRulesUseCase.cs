@@ -8,10 +8,9 @@ using Playground.PaymentEngine.Stores.Model;
 using Playground.PaymentEngine.Stores.Withdrawals;
 using Playground.PaymentEngine.Stores.Withdrawals.Model;
 using Playground.Rules;
-
 using ActionResult = RulesEngine.Models.ActionResult;
 
-namespace Playground.PaymentEngine.UseCases.Payments.RunApprovalRules {
+namespace Playground.PaymentEngine.UseCases.ApprovalRules.RunApprovalRules {
     public class RunApprovalRulesUseCase {
         private readonly Engine _engine;
         private readonly WithdrawalStore _withdrawalStore;
@@ -25,8 +24,8 @@ namespace Playground.PaymentEngine.UseCases.Payments.RunApprovalRules {
             _engine = engine;
         }
 
-        public async Task<RunApprovalRulesResponse> ExecuteAsync(RunApprovalRulesRequest request, CancellationToken cancellationToken) {
-            var inputEnum = await _withdrawalStore.GetWithdrawalGroupsAsync(request.WithdrawalGroups, cancellationToken);
+        public async Task<RunApprovalRulesResponse> ExecuteAsync(IEnumerable<long> withdrawalGroups, CancellationToken cancellationToken) {
+            var inputEnum = await _withdrawalStore.GetWithdrawalGroupsAsync(withdrawalGroups, cancellationToken);
             var inputs = await inputEnum.Select(g => MapInputAsync(g, cancellationToken))
                                         .WhenAll(50);
                                              

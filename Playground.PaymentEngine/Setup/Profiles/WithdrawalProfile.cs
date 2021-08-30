@@ -1,8 +1,8 @@
+using Playground.PaymentEngine.UseCases.WithdrawalGroups.GetWithdrawalGroups;
 using CreateWithdrawal = Playground.PaymentEngine.UseCases.Withdrawals.CreateWithdrawal;
 using GetWithdrawals = Playground.PaymentEngine.UseCases.Withdrawals.GetWithdrawals;
 using GetWithdrawal = Playground.PaymentEngine.UseCases.Withdrawals.GetWithdrawal;
 using GroupWithdrawals = Playground.PaymentEngine.UseCases.Withdrawals.GroupWithdrawals;
-using GetWithdrawalGroups = Playground.PaymentEngine.UseCases.Withdrawals.GetWithdrawalGroups;
 using AppendGroupWithdrawals = Playground.PaymentEngine.UseCases.Withdrawals.AppendGroupWithdrawals;
 
 using ViewModel = Playground.PaymentEngine.Models.Withdrawals;
@@ -17,7 +17,7 @@ namespace Playground.PaymentEngine.Setup.Profiles {
 
             CreateMap<GroupWithdrawals.WithdrawalGroup, ViewModel.WithdrawalGroup>()
                 .ForMember(w => w.Withdrawals, s => s.MapFrom(w => w.WithdrawalIds));
-            CreateMap<GetWithdrawalGroups.WithdrawalGroup, ViewModel.WithdrawalGroup>()
+            CreateMap<WithdrawalGroup, ViewModel.WithdrawalGroup>()
                 .ForMember(w => w.Withdrawals, s => s.MapFrom(w => w.WithdrawalIds));
             CreateMap<AppendGroupWithdrawals.WithdrawalGroup, ViewModel.WithdrawalGroup>()
                 .ForMember(w => w.Withdrawals, s => s.MapFrom(w => w.WithdrawalIds));

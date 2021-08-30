@@ -1,6 +1,6 @@
 using Data = Playground.PaymentEngine.Stores.Withdrawals.Model;
 
-namespace Playground.PaymentEngine.UseCases.Withdrawals.GetWithdrawalGroups {
+namespace Playground.PaymentEngine.UseCases.WithdrawalGroups.GetWithdrawalGroups {
     public class WithdrawalProfile: Profile {
         public WithdrawalProfile() {
             CreateMap<Data.WithdrawalGroup, WithdrawalGroup>();

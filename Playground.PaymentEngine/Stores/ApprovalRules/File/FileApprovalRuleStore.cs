@@ -1,7 +1,4 @@
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Playground.PaymentEngine.Stores.ApprovalRules.Model;
 
 namespace Playground.PaymentEngine.Stores.ApprovalRules.File {
@@ -11,12 +8,8 @@ namespace Playground.PaymentEngine.Stores.ApprovalRules.File {
         public FileApprovalRuleStore() =>
             _data = GetRepository<ApprovalRuleData>();
         
-        public Task<IEnumerable<ApprovalRuleHistory>> GetRuleHistoriesAsync(IEnumerable<long> withdrawalGroupIds, CancellationToken cancellationToken) {
-            var result = _data.ApprovalRuleRuleHistories
-                                    .Where(h => withdrawalGroupIds.Contains(h.WithdrawalGroupId));
-
-            return Task.FromResult(result);
-        }
+        public Task<IEnumerable<ApprovalRuleHistory>> GetRuleHistoriesAsync(CancellationToken cancellationToken) => 
+            Task.FromResult(_data.ApprovalRuleRuleHistories.AsEnumerable());
 
         public Task AddRuleHistoriesAsync(IEnumerable<ApprovalRuleHistory> histories, CancellationToken cancellationToken) {
             _data.ApprovalRuleRuleHistories.AddRange(histories);

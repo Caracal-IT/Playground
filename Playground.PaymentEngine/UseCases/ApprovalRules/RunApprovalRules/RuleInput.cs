@@ -1,6 +1,6 @@
 using System.Xml.Serialization;
 
-namespace Playground.PaymentEngine.UseCases.Payments.RunApprovalRules {
+namespace Playground.PaymentEngine.UseCases.ApprovalRules.RunApprovalRules {
     [XmlRoot("rule-input")]
     public class RuleInput {
         [XmlAttribute("withdrawal-group-id")]

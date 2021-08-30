@@ -1,10 +1,10 @@
 using Microsoft.Extensions.DependencyInjection;
+using Playground.PaymentEngine.UseCases.WithdrawalGroups.GetWithdrawalGroups;
 using Playground.PaymentEngine.UseCases.Withdrawals.AppendGroupWithdrawals;
 using Playground.PaymentEngine.UseCases.Withdrawals.ChangeWithdrawalStatus;
 using Playground.PaymentEngine.UseCases.Withdrawals.CreateWithdrawal;
 using Playground.PaymentEngine.UseCases.Withdrawals.DeleteWithdrawal;
 using Playground.PaymentEngine.UseCases.Withdrawals.GetWithdrawal;
-using Playground.PaymentEngine.UseCases.Withdrawals.GetWithdrawalGroups;
 using Playground.PaymentEngine.UseCases.Withdrawals.GetWithdrawals;
 using Playground.PaymentEngine.UseCases.Withdrawals.GroupWithdrawals;
 using Playground.PaymentEngine.UseCases.Withdrawals.UnGroupWithdrawals;
