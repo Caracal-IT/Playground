@@ -1,6 +1,12 @@
+using System.Xml.Serialization;
+
 namespace Playground.PaymentEngine.UseCases.Shared {
+    [XmlRoot("setting")]
     public class Setting {
-        public string Name { get; set; }
-        public string Value { get; set; }
+        [XmlAttribute("name")]
+        public string Name { get; set; } = string.Empty;
+        
+        [XmlAttribute("value")]
+        public string Value { get; set; } = string.Empty;
     }
 }
