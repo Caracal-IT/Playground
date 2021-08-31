@@ -3,10 +3,12 @@ using Playground.PaymentEngine.Store.Accounts;
 using Playground.PaymentEngine.Store.Allocations;
 using Playground.PaymentEngine.Store.ApprovalRules;
 using Playground.PaymentEngine.Store.Customers;
+using Playground.PaymentEngine.Store.Deposits;
 using Playground.PaymentEngine.Store.File.Accounts;
 using Playground.PaymentEngine.Store.File.Allocations;
 using Playground.PaymentEngine.Store.File.ApprovalRules;
 using Playground.PaymentEngine.Store.File.Customers;
+using Playground.PaymentEngine.Store.File.Deposits;
 using Playground.PaymentEngine.Store.File.Terminals;
 using Playground.PaymentEngine.Store.File.Withdrawals;
 using Playground.PaymentEngine.Store.Terminals;
@@ -22,6 +24,7 @@ namespace Playground.PaymentEngine.Setup {
             builder.Services.AddSingleton<ApprovalRuleStore, FileApprovalRuleStore>();
             builder.Services.AddSingleton<CustomerStore, FileCustomerStore>();
             builder.Services.AddSingleton<TerminalStore, FileTerminalStore>();
+            builder.Services.AddSingleton<DepositStore, FileDepositStore>();
         }
     }
 }

@@ -23,6 +23,9 @@
       <Content Include="Customers\repository.xml">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+      <Content Include="Deposits\repository.xml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
       <Content Include="Terminals\repository.xml">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>

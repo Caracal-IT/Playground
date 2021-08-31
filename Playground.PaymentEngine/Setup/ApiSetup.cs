@@ -5,6 +5,7 @@ namespace Playground.PaymentEngine.Setup {
         public static void Setup(WebApplicationBuilder builder) {
             AllocationSetup.Setup(builder);
             ApprovalRuleSetup.Setup(builder);
+            DepositSetup.Setup(builder);
             PaymentSetup.Setup(builder);
             WithdrawalSetup.Setup(builder);
         }
