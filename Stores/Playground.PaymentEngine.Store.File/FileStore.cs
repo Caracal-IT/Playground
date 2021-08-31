@@ -9,7 +9,7 @@ namespace Playground.PaymentEngine.Store.File {
             var path = Path.Join(location[^4], location[^3], location[^2], ns[^1], "repository.xml");
         
             using var fileStream = new FileStream(path, FileMode.Open);
-            return (T) new XmlSerializer(typeof(T)).Deserialize(fileStream);
+            return (T) new XmlSerializer(typeof(T)).Deserialize(fileStream)!;
         }
     }
 }
