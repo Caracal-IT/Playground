@@ -2,7 +2,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Playground.PaymentEngine.Helpers {
+namespace Playground.Core {
     public static class Hashing {
         public static string Hash256(string strToHash) {
             using var sha256 = SHA256.Create();

@@ -1,15 +1,9 @@
 using System.Linq;
-using Playground.Core;
 using Playground.Core.Extensions;
-using Playground.PaymentEngine.Helpers;
-using Playground.PaymentEngine.Store.Accounts;
 using Playground.PaymentEngine.Store.Accounts.Model;
-using Playground.PaymentEngine.Store.Allocations;
 using Playground.PaymentEngine.Store.Allocations.Model;
-using Playground.PaymentEngine.Store.Customers;
-using Playground.PaymentEngine.Store.Withdrawals;
 
-namespace Playground.PaymentEngine.UseCases.Allocations.AutoAllocate {
+namespace Playground.PaymentEngine.Application.UseCases.Allocations.AutoAllocate {
     public class AutoAllocateUseCase {
         private readonly AccountStore _accountStore;
         private readonly WithdrawalStore _withdrawalStore;
@@ -45,7 +39,7 @@ namespace Playground.PaymentEngine.UseCases.Allocations.AutoAllocate {
                 return new List<AutoAllocateResult>();
 
             var customer = await _customerStore.GetCustomerAsync(withdrawalGroup.CustomerId, cancellationToken);
-            var accountEnum = await _accountStore.GetCustomerAccountsAsync(customer.Id, cancellationToken);
+            var accountEnum = await _accountStore.GetCustomerAccountsAsync(customer?.Id??0, cancellationToken);
             var accounts = accountEnum.ToList();
             var accountTypes = await _accountStore.GetAccountTypesAsync(accounts.Select(a => a.AccountTypeId), cancellationToken);
 

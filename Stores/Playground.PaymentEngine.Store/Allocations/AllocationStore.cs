@@ -10,7 +10,7 @@ namespace Playground.PaymentEngine.Store.Allocations {
         
         Task SetAllocationStatusAsync(long id, long statusId, CancellationToken cancellationToken);
         Task SetAllocationStatusAsync(long id, long statusId, string terminal, CancellationToken cancellationToken);
-        Task SetAllocationStatusAsync(long id, long statusId, string terminal, string reference, CancellationToken cancellationToken);
+        Task SetAllocationStatusAsync(long id, long statusId, string terminal, string? reference, CancellationToken cancellationToken);
             
         Task<Allocation> SaveAllocationAsync(Allocation allocation, CancellationToken cancellationToken);
 

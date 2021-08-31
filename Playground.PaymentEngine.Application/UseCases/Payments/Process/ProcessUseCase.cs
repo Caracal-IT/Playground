@@ -1,20 +1,14 @@
 using System;
 using System.Linq;
-using Playground.Core;
 using Playground.Core.Extensions;
-using Playground.PaymentEngine.Helpers;
-using Playground.PaymentEngine.Store.Accounts;
-using Playground.PaymentEngine.Store.Allocations;
-using Playground.PaymentEngine.Store.Terminals;
+using Playground.PaymentEngine.Application.UseCases.Shared;
 using Playground.PaymentEngine.Store.Terminals.Model;
-using Playground.PaymentEngine.UseCases.Shared;
 using Playground.Router;
 using Playground.Xml;
-
 using static Playground.Core.Hashing;
 using static Playground.Xml.Serialization.Serializer;
 
-namespace Playground.PaymentEngine.UseCases.Payments.Process {
+namespace Playground.PaymentEngine.Application.UseCases.Payments.Process {
     public class ProcessUseCase {
         private readonly TerminalStore _terminalStore;
         private readonly IRoutingService _routingService;
@@ -46,7 +40,7 @@ namespace Playground.PaymentEngine.UseCases.Payments.Process {
                 var terminalEnum = await _terminalStore.GetActiveAccountTypeTerminalsAsync(data.AccountTypeId, cancellationToken);
                 var terminals = terminalEnum.Select(t => t.Name);
                 
-                var req = new RoutingRequest(transactionId, nameof(ProcessUseCase), data.ToXml(), terminals);
+                var req = new RoutingRequest(transactionId, nameof(ProcessUseCase), data.ToXml(), terminals!);
                 var response = await _routingService.SendAsync(req, cancellationToken);
 
                 var result = response.Select(r => r.Result).Select(DeSerialize<ExportResponse>);
@@ -81,7 +75,7 @@ namespace Playground.PaymentEngine.UseCases.Payments.Process {
                     await data.Allocations.Select(SetAllocationStatusAsync).WhenAll(50);
 
                     async Task SetAllocationStatusAsync(ExportAllocation ea) => 
-                        await _allocationStore.SetAllocationStatusAsync(ea.AllocationId, statusId, terminal, data.Reference, cancellationToken);
+                        await _allocationStore.SetAllocationStatusAsync(ea.AllocationId, statusId, terminal!, data.Reference, cancellationToken);
                 }
             }
 

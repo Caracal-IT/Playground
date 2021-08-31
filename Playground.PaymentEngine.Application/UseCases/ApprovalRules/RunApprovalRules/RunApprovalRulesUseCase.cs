@@ -1,18 +1,13 @@
 using System;
 using System.Linq;
-using Playground.Core;
 using Playground.Core.Extensions;
-using Playground.PaymentEngine.Helpers;
-using Playground.PaymentEngine.Store.ApprovalRules;
 using Playground.PaymentEngine.Store.ApprovalRules.Model;
-using Playground.PaymentEngine.Store.Customers;
-using Playground.PaymentEngine.Store.Withdrawals;
-using Playground.PaymentEngine.Store.Withdrawals.Model;
 using Playground.PaymentEngine.Store.Model;
+using Playground.PaymentEngine.Store.Withdrawals.Model;
 using Playground.Rules;
 using ActionResult = RulesEngine.Models.ActionResult;
 
-namespace Playground.PaymentEngine.UseCases.ApprovalRules.RunApprovalRules {
+namespace Playground.PaymentEngine.Application.UseCases.ApprovalRules.RunApprovalRules {
     public class RunApprovalRulesUseCase {
         private readonly Engine _engine;
         private readonly WithdrawalStore _withdrawalStore;
@@ -52,18 +47,18 @@ namespace Playground.PaymentEngine.UseCases.ApprovalRules.RunApprovalRules {
 
             return new RuleInput {
                 WithdrawalGroupId = withdrawalGroup.Id,
-                CustomerId = customer.Id,
-                Balance = customer.Balance,
+                CustomerId = customer?.Id??0,
+                Balance = customer?.Balance??0M,
                 Amount = withdrawals.Sum(w => w.Amount)
             };
         }
 
         private static ApprovalRuleOutcome MapToOutcome(Result result) =>
             new() {
-                WithdrawalGroupId = ((RuleInput)result.Input)!.WithdrawalGroupId,
+                WithdrawalGroupId = ((RuleInput)result.Input!).WithdrawalGroupId,
                 RuleName = result.Name,
                 IsSuccessful = IsSuccessful(result),
-                Message = result.Message
+                Message = result.Message??string.Empty
             };
 
         private static bool IsSuccessful(Result result) {

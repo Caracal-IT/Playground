@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Playground.PaymentEngine.Helpers {
+namespace Playground.Core.Extensions {
     public static class TaskExtensions {
         public static Task WhenAll(this IEnumerable<Task> tasks, int maxConcurrentRequests) {
             SemaphoreSlim semaphore = new(initialCount: 1, maxConcurrentRequests);
