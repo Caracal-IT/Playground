@@ -6,6 +6,6 @@ namespace Playground.PaymentEngine.Store.Withdrawals.Model {
         [XmlAttribute(AttributeName="id")]
         public long Id { get; set; }
         [XmlAttribute(AttributeName="name")]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
     }
 }

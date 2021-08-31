@@ -6,7 +6,7 @@ namespace Playground.PaymentEngine.Store.Accounts.Model {
     [XmlRoot(ElementName="account")]
     public class Account {
         [XmlElement("meta-data")]
-        public List<MetaData> MetaData { get; set; }
+        public List<MetaData> MetaData { get; set; } = new();
         [XmlAttribute(AttributeName="id")]
         public long Id { get; set; }
         [XmlAttribute("account-type-id")]

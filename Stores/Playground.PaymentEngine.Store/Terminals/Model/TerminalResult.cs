@@ -7,7 +7,7 @@ namespace Playground.PaymentEngine.Store.Terminals.Model {
     [XmlRoot(ElementName="terminal-result")]
     public class TerminalResult {
         [XmlElement("meta-data")]
-        public List<MetaData> MetaData { get; set; }
+        public List<MetaData> MetaData { get; set; } = new();
         
         [XmlAttribute("success")]
         public bool Success { get; set; }
@@ -16,15 +16,15 @@ namespace Playground.PaymentEngine.Store.Terminals.Model {
         public DateTime Date { get; set; }
         
         [XmlAttribute("reference")]
-        public string Reference { get; set; }
+        public string? Reference { get; set; }
         
         [XmlAttribute("terminal")]
-        public string Terminal { get; set; }
+        public string? Terminal { get; set; }
         
         [XmlAttribute("code")]
-        public string Code { get; set; }
+        public string? Code { get; set; }
         
         [XmlElement("message")]
-        public string Message { get; set; }
+        public string? Message { get; set; }
     }
 }

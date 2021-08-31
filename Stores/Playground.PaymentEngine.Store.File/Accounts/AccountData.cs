@@ -7,10 +7,10 @@ namespace Playground.PaymentEngine.Store.File.Accounts {
     public class AccountData {
         [XmlArray("accounts")]
         [XmlArrayItem("account")]
-        public List<Account> Accounts { get; set; }
-		
+        public List<Account> Accounts { get; set; } = new();
+
         [XmlArray("account-types")]
         [XmlArrayItem("account-type")]
-        public List<AccountType> AccountTypes { get; set; }
+        public List<AccountType> AccountTypes { get; set; } = new();
     }
 }

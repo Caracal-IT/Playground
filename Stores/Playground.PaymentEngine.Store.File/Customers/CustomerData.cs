@@ -7,6 +7,6 @@ namespace Playground.PaymentEngine.Store.File.Customers {
     public class CustomerData {
         [XmlArray("customers")]
         [XmlArrayItem("customer")]
-        public List<Customer> Customers { get; set; }
+        public List<Customer> Customers { get; set; } = new();
     }
 }

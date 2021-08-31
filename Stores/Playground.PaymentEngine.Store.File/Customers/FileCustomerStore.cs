@@ -10,7 +10,7 @@ namespace Playground.PaymentEngine.Store.File.Customers {
 
         public FileCustomerStore() => _data = GetRepository<CustomerData>();
 
-        public Task<Customer> GetCustomerAsync(long id, CancellationToken cancellationToken) {
+        public Task<Customer?> GetCustomerAsync(long id, CancellationToken cancellationToken) {
             var result = _data.Customers.FirstOrDefault(c => c.Id == id);
             return Task.FromResult(result);
         }

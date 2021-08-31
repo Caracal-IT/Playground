@@ -17,9 +17,9 @@ namespace Playground.PaymentEngine.Store.Allocations.Model {
         public long AllocationStatusId { get; set; }
         
         [XmlAttribute(AttributeName="terminal")]
-        public string Terminal { get; set; }
+        public string? Terminal { get; set; }
         
         [XmlAttribute(AttributeName="reference")]
-        public string Reference { get; set; }
+        public string? Reference { get; set; }
     }
 }

@@ -9,10 +9,10 @@ namespace Playground.PaymentEngine.Store.Terminals.Model {
         public long Id { get; set; }
         
         [XmlAttribute("name")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
         
         [XmlAttribute("type")]
-        public string Type { get; set; }
+        public string? Type { get; set; }
         
         [XmlAttribute("retry-count")]
         public int RetryCount { get; set; }

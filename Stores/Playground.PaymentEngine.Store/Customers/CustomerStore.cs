@@ -4,6 +4,6 @@ using Playground.PaymentEngine.Store.Customers.Model;
 
 namespace Playground.PaymentEngine.Store.Customers {
     public interface CustomerStore {
-        Task<Customer> GetCustomerAsync(long id, CancellationToken cancellationToken);
+        Task<Customer?> GetCustomerAsync(long id, CancellationToken cancellationToken);
     }
 }

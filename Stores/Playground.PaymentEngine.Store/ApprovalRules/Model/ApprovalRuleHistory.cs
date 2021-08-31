@@ -12,10 +12,11 @@ namespace Playground.PaymentEngine.Store.ApprovalRules.Model {
         public Guid TransactionId { get; set; }
         [XmlAttribute(AttributeName="transaction-date")]
         public DateTime TransactionDate { get; set; }
-        [XmlElement(ElementName="meta-data")]
-        public List<MetaData> Metadata { get; set; }
+
+        [XmlElement(ElementName = "meta-data")]
+        public List<MetaData> Metadata { get; set; } = new();
         
         [XmlElement(ElementName="rule")]
-        public List<ApprovalRule> Rules { get; set; }
+        public List<ApprovalRule> Rules { get; set; } = new();
     }
 }

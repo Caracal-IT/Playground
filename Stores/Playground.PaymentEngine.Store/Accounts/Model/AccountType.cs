@@ -6,9 +6,9 @@ namespace Playground.PaymentEngine.Store.Accounts.Model {
         [XmlAttribute("id")]
         public long Id { get; set; }
         [XmlAttribute("name")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
         [XmlAttribute("charge")]
-        public string Charge { get; set; }
+        public decimal Charge { get; set; }
         [XmlAttribute("threshold", DataType="decimal")]
         public decimal Threshold { get; set; }
         [XmlAttribute("process-order")]
