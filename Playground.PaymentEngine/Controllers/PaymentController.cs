@@ -1,8 +1,8 @@
 using System.Text;
 using System.Text.Json;
 using System.Xml.Linq;
-using Playground.PaymentEngine.UseCases.Payments.Callback;
-using Playground.PaymentEngine.UseCases.Payments.Process;
+using Playground.PaymentEngine.Application.UseCases.Payments.Callback;
+using Playground.PaymentEngine.Application.UseCases.Payments.Process;
 using Playground.Xml;
 
 using ViewModel = Playground.PaymentEngine.Models.Payments;

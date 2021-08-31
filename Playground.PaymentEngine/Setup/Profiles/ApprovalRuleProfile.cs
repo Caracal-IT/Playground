@@ -1,6 +1,6 @@
-using Playground.PaymentEngine.UseCases.ApprovalRules.GetLastRunApprovalRules;
-using RunApprovalRules = Playground.PaymentEngine.UseCases.ApprovalRules.RunApprovalRules;
-using GetApprovalRuleHistories = Playground.PaymentEngine.UseCases.ApprovalRules.GetApprovalRuleHistories;
+using GetLastRunApprovalRules = Playground.PaymentEngine.Application.UseCases.ApprovalRules.GetLastRunApprovalRules;
+using RunApprovalRules = Playground.PaymentEngine.Application.UseCases.ApprovalRules.RunApprovalRules;
+using GetApprovalRuleHistories = Playground.PaymentEngine.Application.UseCases.ApprovalRules.GetApprovalRuleHistories;
 using ViewModel = Playground.PaymentEngine.Models.ApprovalRules;
 
 namespace Playground.PaymentEngine.Setup.Profiles {
@@ -9,8 +9,8 @@ namespace Playground.PaymentEngine.Setup.Profiles {
             CreateMap<RunApprovalRules.ApprovalRuleOutcome, ViewModel.ApprovalRuleOutcome>();
             CreateMap<GetApprovalRuleHistories.ApprovalRuleHistory, ViewModel.ApprovalRuleHistory>();
             CreateMap<GetApprovalRuleHistories.ApprovalRule, ViewModel.ApprovalRule>();
-            CreateMap<ApprovalRuleHistory, ViewModel.ApprovalRuleHistory>();
-            CreateMap<ApprovalRule, ViewModel.ApprovalRule>();
+            CreateMap<GetLastRunApprovalRules.ApprovalRuleHistory, ViewModel.ApprovalRuleHistory>();
+            CreateMap<GetLastRunApprovalRules.ApprovalRule, ViewModel.ApprovalRule>();
         }
     }
 }

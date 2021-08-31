@@ -1,4 +1,4 @@
-using UseCase = Playground.PaymentEngine.UseCases.Shared;
+using UseCase = Playground.PaymentEngine.Application.UseCases.Shared;
 
 namespace Playground.PaymentEngine.Models.Shared {
     public class SharedProfile: Profile {

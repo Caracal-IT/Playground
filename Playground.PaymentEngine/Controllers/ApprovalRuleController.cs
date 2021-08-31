@@ -1,7 +1,6 @@
-using System.Linq;
-using Playground.PaymentEngine.UseCases.ApprovalRules.GetApprovalRuleHistories;
-using Playground.PaymentEngine.UseCases.ApprovalRules.GetLastRunApprovalRules;
-using Playground.PaymentEngine.UseCases.ApprovalRules.RunApprovalRules;
+using Playground.PaymentEngine.Application.UseCases.ApprovalRules.GetApprovalRuleHistories;
+using Playground.PaymentEngine.Application.UseCases.ApprovalRules.GetLastRunApprovalRules;
+using Playground.PaymentEngine.Application.UseCases.ApprovalRules.RunApprovalRules;
 
 using ViewModel = Playground.PaymentEngine.Models.ApprovalRules;
 

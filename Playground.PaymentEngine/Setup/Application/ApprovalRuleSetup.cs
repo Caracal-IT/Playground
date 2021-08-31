@@ -1,8 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Playground.PaymentEngine.Helpers;
-using Playground.PaymentEngine.UseCases.ApprovalRules.GetApprovalRuleHistories;
-using Playground.PaymentEngine.UseCases.ApprovalRules.GetLastRunApprovalRules;
-using Playground.PaymentEngine.UseCases.ApprovalRules.RunApprovalRules;
+using Playground.PaymentEngine.Application.UseCases.ApprovalRules.GetApprovalRuleHistories;
+using Playground.PaymentEngine.Application.UseCases.ApprovalRules.GetLastRunApprovalRules;
+using Playground.PaymentEngine.Application.UseCases.ApprovalRules.RunApprovalRules;
 using Playground.Rules;
 using Playground.Rules.CustomActions.Terminal;
 

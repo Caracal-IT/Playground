@@ -2,13 +2,14 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.OData;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Playground.PaymentEngine.Application.UseCases.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 
 ApiSetup.Setup(builder);
 InfrastructureSetup.Setup(builder);
 
-builder.Services.AddAutoMapper(typeof(ApiSetup).Assembly);
+builder.Services.AddAutoMapper(typeof(ApiSetup).Assembly, typeof(SharedProfile).Assembly);
 
 builder.Services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Directory.GetCurrentDirectory()));
 

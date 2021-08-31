@@ -1,4 +1,4 @@
-using AutoAllocate = Playground.PaymentEngine.UseCases.Allocations.AutoAllocate;
+using AutoAllocate = Playground.PaymentEngine.Application.UseCases.Allocations.AutoAllocate;
 
 using ViewModel = Playground.PaymentEngine.Models.Allocations;
 

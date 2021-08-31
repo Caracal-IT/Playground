@@ -1,4 +1,4 @@
-using Process = Playground.PaymentEngine.UseCases.Payments.Process;
+using Process = Playground.PaymentEngine.Application.UseCases.Payments.Process;
 using ViewModel = Playground.PaymentEngine.Models.Payments;
 
 namespace Playground.PaymentEngine.Setup.Profiles {

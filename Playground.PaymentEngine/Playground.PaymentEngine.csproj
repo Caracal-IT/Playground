@@ -13,6 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Playground.PaymentEngine.Application\Playground.PaymentEngine.Application.csproj" />
       <ProjectReference Include="..\Playground.Router\Playground.Router.csproj" />
       <ProjectReference Include="..\Rules\Playground.Rules\Playground.Rules.csproj" />
       <ProjectReference Include="..\Stores\Playground.PaymentEngine.Store.File\Playground.PaymentEngine.Store.File.csproj" />
@@ -46,7 +47,6 @@
     <ItemGroup>
       <Folder Include="Config" />
       <Folder Include="Exports" />
-      <Folder Include="UseCases\WithdrawalGroups" />
     </ItemGroup>
 
 </Project>
