@@ -36,7 +36,7 @@ namespace Playground.Router.Clients {
             return isXml ? result : result.ToXml("response");
             
             string GetJsonText() {
-                dynamic requestJson = JObject.Parse(message.ToJson()!.ToString());
+                dynamic requestJson = JObject.Parse(message.ToJson()!.ToString()!);
                 return requestJson.request.ToString();
             }
         }

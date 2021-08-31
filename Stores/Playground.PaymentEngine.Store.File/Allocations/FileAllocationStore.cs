@@ -24,7 +24,7 @@ namespace Playground.PaymentEngine.Store.File.Allocations {
 
         public Task<IEnumerable<Allocation>> GetAllocationsByReferenceAsync(string reference, CancellationToken cancellationToken) {
             var result = _data.Allocations
-                                    .Where(a => !string.IsNullOrWhiteSpace(a.Terminal) && a.Reference.Equals(reference));
+                                    .Where(a => !string.IsNullOrWhiteSpace(a.Terminal) && (a.Reference?.Equals(reference)??false));
 
             return Task.FromResult(result);
         }
@@ -32,10 +32,10 @@ namespace Playground.PaymentEngine.Store.File.Allocations {
         public Task SetAllocationStatusAsync(long id, long statusId, CancellationToken cancellationToken) =>
             SetAllocationStatusAsync(id, statusId, null, cancellationToken);
         
-        public Task SetAllocationStatusAsync(long id, long statusId, string terminal, CancellationToken cancellationToken) =>
+        public Task SetAllocationStatusAsync(long id, long statusId, string? terminal, CancellationToken cancellationToken) =>
             SetAllocationStatusAsync(id, statusId, terminal, null, cancellationToken);
 
-        public async Task SetAllocationStatusAsync(long id, long statusId, string terminal, string reference, CancellationToken cancellationToken) {
+        public async Task SetAllocationStatusAsync(long id, long statusId, string? terminal, string? reference, CancellationToken cancellationToken) {
             var allocation = await GetAllocationAsync(id, cancellationToken);
             allocation.AllocationStatusId = statusId;
             allocation.Terminal = terminal;

@@ -12,10 +12,10 @@ using Playground.XsltTransform.Extensions;
 
 namespace Playground.Router {
     public class Transaction {
-        private Request _request;
-        private List<Response> _responses;
-        private ClientFactory _clientFactory;
-        private CancellationToken _cancellationToken;
+        private readonly Request _request;
+        private readonly List<Response> _responses;
+        private readonly ClientFactory _clientFactory;
+        private readonly CancellationToken _cancellationToken;
         
         private string _requestXml;
 

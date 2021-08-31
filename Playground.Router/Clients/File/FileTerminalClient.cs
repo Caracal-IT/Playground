@@ -8,7 +8,7 @@ using static Playground.Xml.Serialization.Serializer;
 
 namespace Playground.Router.Clients.File {
     public class FileTerminalClient : Client {
-        private static ReaderWriterLock _locker = new();
+        private static readonly ReaderWriterLock _locker = new();
 
         public Task<string> SendAsync(Configuration configuration, string message, CancellationToken cancellationToken) {
             var request = DeSerialize<Request>(message);

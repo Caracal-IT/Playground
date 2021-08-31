@@ -16,9 +16,9 @@ namespace Playground.XsltTransform.Extensions {
             Transformer.Transform(xml, xslt, extensions);
         
         public static XmlTextReader Reader(this string text) =>
-            new XmlTextReader(new StringReader(text));
+            new (new StringReader(text));
 
         public static XmlTextWriter Writer(this StringBuilder sb) =>
-            new XmlTextWriter(new StringWriter(sb));
+            new (new StringWriter(sb));
     }
 }

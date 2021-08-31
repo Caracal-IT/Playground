@@ -80,7 +80,7 @@ namespace Playground.PaymentEngine.Store.File.Withdrawals {
         public Task<WithdrawalGroup> GetWithdrawalGroupAsync(long id, CancellationToken cancellationToken) {
             var result =  _data.WithdrawalGroups.FirstOrDefault(g => g.Id == id);
 
-            return Task.FromResult(result);
+            return Task.FromResult(result??new WithdrawalGroup());
         }
 
         public Task UnGroupWithdrawalsAsync(long withdrawalGroupId, CancellationToken cancellationToken) {
@@ -104,7 +104,7 @@ namespace Playground.PaymentEngine.Store.File.Withdrawals {
             return await GetWithdrawalsAsync(group.WithdrawalIds, cancellationToken);
         }
 
-        public async Task<WithdrawalGroup> AppendWithdrawalGroupsAsync(long id, IEnumerable<long> withdrawalIds, CancellationToken cancellationToken) {
+        public async Task<WithdrawalGroup?> AppendWithdrawalGroupsAsync(long id, IEnumerable<long> withdrawalIds, CancellationToken cancellationToken) {
             var groups = await GetWithdrawalGroupsAsync(new[] { id }, cancellationToken);
             var group = groups.FirstOrDefault();
             
