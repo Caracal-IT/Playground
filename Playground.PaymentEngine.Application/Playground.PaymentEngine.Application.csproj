@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="10.1.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Playground.Core\Playground.Core.csproj" />
+      <ProjectReference Include="..\Playground.Router\Playground.Router.csproj" />
+      <ProjectReference Include="..\Rules\Playground.Rules\Playground.Rules.csproj" />
+      <ProjectReference Include="..\Stores\Playground.PaymentEngine.Store\Playground.PaymentEngine.Store.csproj" />
+      <ProjectReference Include="..\Xml\Playground.Xml\Playground.Xml.csproj" />
+      <ProjectReference Include="..\Xml\XSLT\Playground.XsltTransform\Playground.XsltTransform.csproj" />
+    </ItemGroup>
+
+</Project>
