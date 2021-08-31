@@ -4,19 +4,19 @@ using System.Xml.Serialization;
 using Playground.PaymentEngine.Store.Model;
 
 namespace Playground.PaymentEngine.Store.ApprovalRules.Model {
-    [XmlRoot(ElementName="approval-rule-history")]
+    [XmlRoot("approval-rule-history")]
     public class ApprovalRuleHistory {
-        [XmlAttribute(AttributeName="withdrawal-group-id")]
+        [XmlAttribute("withdrawal-group-id")]
         public long WithdrawalGroupId { get; set; }
-        [XmlAttribute(AttributeName="transaction-id")]
+        [XmlAttribute("transaction-id")]
         public Guid TransactionId { get; set; }
-        [XmlAttribute(AttributeName="transaction-date")]
+        [XmlAttribute("transaction-date")]
         public DateTime TransactionDate { get; set; }
 
-        [XmlElement(ElementName = "meta-data")]
+        [XmlElement("meta-data")]
         public List<MetaData> Metadata { get; set; } = new();
         
-        [XmlElement(ElementName="rule")]
+        [XmlElement("rule")]
         public List<ApprovalRule> Rules { get; set; } = new();
     }
 }

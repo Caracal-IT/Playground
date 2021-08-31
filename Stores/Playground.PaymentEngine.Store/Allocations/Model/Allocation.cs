@@ -1,25 +1,25 @@
 using System.Xml.Serialization;
 
 namespace Playground.PaymentEngine.Store.Allocations.Model {
-    [XmlRoot(ElementName="allocation")]
+    [XmlRoot("allocation")]
     public class Allocation {
-        [XmlAttribute(AttributeName="id")]
+        [XmlAttribute("id")]
         public long Id { get; set; }
-        [XmlAttribute(AttributeName="withdrawal-group-id")]
+        [XmlAttribute("withdrawal-group-id")]
         public long WithdrawalGroupId { get; set; }
-        [XmlAttribute(AttributeName="account-id")]
+        [XmlAttribute("account-id")]
         public long AccountId { get; set; }
-        [XmlAttribute(AttributeName="amount", DataType="decimal")]
+        [XmlAttribute("amount", DataType="decimal")]
         public decimal Amount { get; set; }
-        [XmlAttribute(AttributeName="charge", DataType="decimal")]
+        [XmlAttribute("charge", DataType="decimal")]
         public decimal Charge { get; set; }
-        [XmlAttribute(AttributeName="allocation-status-id")]
+        [XmlAttribute("allocation-status-id")]
         public long AllocationStatusId { get; set; }
         
-        [XmlAttribute(AttributeName="terminal")]
+        [XmlAttribute("terminal")]
         public string? Terminal { get; set; }
         
-        [XmlAttribute(AttributeName="reference")]
+        [XmlAttribute("reference")]
         public string? Reference { get; set; }
     }
 }

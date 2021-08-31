@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 using Playground.PaymentEngine.Store.Model;
 
 namespace Playground.PaymentEngine.Store.Terminals.Model {
-    [XmlRoot(ElementName="terminal-result")]
+    [XmlRoot("terminal-result")]
     public class TerminalResult {
         [XmlElement("meta-data")]
         public List<MetaData> MetaData { get; set; } = new();

@@ -4,15 +4,15 @@ using System.Linq;
 using System.Xml.Serialization;
 
 namespace Playground.PaymentEngine.Store.Withdrawals.Model {
-    [XmlRoot(ElementName="withdrawal-group")]
+    [XmlRoot("withdrawal-group")]
     public class WithdrawalGroup {
-        [XmlAttribute(AttributeName="id")]
+        [XmlAttribute("id")]
         public long Id { get; set; }
         
-        [XmlAttribute(AttributeName="customer-id")]
+        [XmlAttribute("customer-id")]
         public long CustomerId { get; set; }
 
-        [XmlAttribute(AttributeName = "withdrawal-ids")]
+        [XmlAttribute("withdrawal-ids")]
         public string WithdrawalIdsString {
             get => string.Join(",", WithdrawalIds);
             set => WithdrawalIds = value.Split(',').Select(x => Convert.ToInt64(x!.Trim())).ToList();

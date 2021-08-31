@@ -3,11 +3,11 @@ using System.Xml.Serialization;
 using Playground.PaymentEngine.Store.Model;
 
 namespace Playground.PaymentEngine.Store.Accounts.Model {
-    [XmlRoot(ElementName="account")]
+    [XmlRoot("account")]
     public class Account {
         [XmlElement("meta-data")]
         public List<MetaData> MetaData { get; set; } = new();
-        [XmlAttribute(AttributeName="id")]
+        [XmlAttribute("id")]
         public long Id { get; set; }
         [XmlAttribute("account-type-id")]
         public long AccountTypeId { get; set; }

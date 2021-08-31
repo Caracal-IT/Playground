@@ -1,11 +1,11 @@
 using System.Xml.Serialization;
 
 namespace Playground.PaymentEngine.Store.Allocations.Model {
-    [XmlRoot(ElementName="allocation-status")]
+    [XmlRoot("allocation-status")]
     public class AllocationStatus {
-        [XmlAttribute(AttributeName="id")]
+        [XmlAttribute("id")]
         public long Id { get; set; }
-        [XmlAttribute(AttributeName="name")]
+        [XmlAttribute("name")]
         public string Name { get; set; } = string.Empty;
     }
 }

@@ -3,7 +3,7 @@ using System.Xml.Serialization;
 using Playground.PaymentEngine.Store.Model;
 
 namespace Playground.PaymentEngine.Store.Terminals.Model {
-    [XmlRoot(ElementName="terminal")]
+    [XmlRoot("terminal")]
     public class Terminal {
         [XmlAttribute("id")]
         public long Id { get; set; }

@@ -1,13 +1,13 @@
 using System.Xml.Serialization;
 
 namespace Playground.PaymentEngine.Store.ApprovalRules.Model {
-    [XmlRoot(ElementName="approval-rule")]
+    [XmlRoot("approval-rule")]
     public class ApprovalRule {
-        [XmlAttribute(AttributeName="name")]
+        [XmlAttribute("name")]
         public string RuleName { get; set; } = "Rule1";
-        [XmlAttribute(AttributeName="isSuccessful")]
+        [XmlAttribute("isSuccessful")]
         public bool IsSuccessful { get; set; }
-        [XmlAttribute(AttributeName="message")]
+        [XmlAttribute("message")]
         public string? Message { get; set; }
     }
 }

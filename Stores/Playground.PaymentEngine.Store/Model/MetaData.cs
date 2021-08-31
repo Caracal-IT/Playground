@@ -1,12 +1,12 @@
 using System.Xml.Serialization;
 
 namespace Playground.PaymentEngine.Store.Model {
-    [XmlRoot(ElementName="meta-data")]
+    [XmlRoot("meta-data")]
     public class MetaData {
-        [XmlAttribute(AttributeName="name")]
+        [XmlAttribute("name")]
         public string Name { get; set; } = string.Empty;
 
-        [XmlAttribute(AttributeName = "value")]
+        [XmlAttribute("value")]
         public string Value { get; set; } = string.Empty;
     }
 }
