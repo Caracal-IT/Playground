@@ -6,7 +6,7 @@ using ViewModel = Playground.PaymentEngine.Models.ApprovalRules;
 
 namespace Playground.PaymentEngine.Controllers {
     [ApiController]
-    [Route("approval-rule")]
+    [Route("approval-rules")]
     public class ApprovalRuleController: ControllerBase {
         private readonly IMapper _mapper;
         

@@ -6,7 +6,7 @@ using ViewModel = Playground.PaymentEngine.Models.Withdrawals;
 
 namespace Playground.PaymentEngine.Controllers {
     [ApiController]
-    [Route("withdrawal/group")]
+    [Route("withdrawals/groups")]
     public class WithdrawalGroupController: ControllerBase {
         private readonly IMapper _mapper;
         
