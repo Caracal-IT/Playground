@@ -6,7 +6,6 @@ using Playground.PaymentEngine.Store.Withdrawals.Model;
 namespace Playground.PaymentEngine.Store.Withdrawals {
     public interface WithdrawalStore {
         Task<Withdrawal> CreateWithdrawalAsync(Withdrawal withdrawal, CancellationToken cancellationToken);
-        
         Task<IEnumerable<Withdrawal>> GetWithdrawalsAsync(CancellationToken cancellationToken);
         Task<IEnumerable<Withdrawal>> GetWithdrawalsAsync(IEnumerable<long> withdrawalIds, CancellationToken cancellationToken);
         Task DeleteWithdrawalsAsync(IEnumerable<long> withdrawalIds, CancellationToken cancellationToken);

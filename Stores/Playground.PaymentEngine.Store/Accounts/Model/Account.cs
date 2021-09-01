@@ -5,8 +5,6 @@ using Playground.PaymentEngine.Store.Model;
 namespace Playground.PaymentEngine.Store.Accounts.Model {
     [XmlRoot("account")]
     public class Account {
-        [XmlElement("meta-data")]
-        public List<MetaData> MetaData { get; set; } = new();
         [XmlAttribute("id")]
         public long Id { get; set; }
         [XmlAttribute("account-type-id")]
@@ -18,5 +16,7 @@ namespace Playground.PaymentEngine.Store.Accounts.Model {
         
         [XmlAttribute("pmop")]
         public bool IsPreferredAccount { get; set; }
+        [XmlElement("meta-data")]
+        public List<MetaData> MetaData { get; set; } = new();
     }
 }

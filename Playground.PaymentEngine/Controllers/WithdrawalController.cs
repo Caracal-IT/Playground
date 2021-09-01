@@ -3,6 +3,7 @@ using Playground.PaymentEngine.Application.UseCases.Withdrawals.CreateWithdrawal
 using Playground.PaymentEngine.Application.UseCases.Withdrawals.DeleteWithdrawal;
 using Playground.PaymentEngine.Application.UseCases.Withdrawals.GetWithdrawal;
 using Playground.PaymentEngine.Application.UseCases.Withdrawals.GetWithdrawals;
+
 using ViewModel = Playground.PaymentEngine.Models.Withdrawals;
 
 namespace Playground.PaymentEngine.Controllers {
@@ -14,18 +15,19 @@ namespace Playground.PaymentEngine.Controllers {
         public WithdrawalController(IMapper mapper) => 
             _mapper = mapper;
         
-        [HttpPost]
-        public async Task<ActionResult<ViewModel.Withdrawal>> Post([FromServices] CreateWithdrawalUseCase useCase, [FromBody] ViewModel.CreateWithdrawalRequest request, CancellationToken cancellationToken) =>
-            await ExecuteAsync(async () => {
-                var result = await useCase.ExecuteAsync(_mapper.Map<CreateWithdrawalRequest>(request), cancellationToken);
-                return Ok(_mapper.Map<ViewModel.Withdrawal>(result.Withdrawal));
-            });
-
         [EnableQuery]
         public async Task<ActionResult<IEnumerable<ViewModel.Withdrawal>>> GetAsync([FromServices] GetWithdrawalsUseCase useCase, CancellationToken cancellationToken) =>
             await ExecuteAsync(async () => {
-                var result = await useCase.ExecuteAsync(new GetWithdrawalsRequest(), cancellationToken);
+                var result = await useCase.ExecuteAsync(cancellationToken);
                 return Ok(_mapper.Map<IEnumerable<ViewModel.Withdrawal>>(result.Withdrawals));
+            });
+        
+        
+        [HttpPost]
+        public async Task<ActionResult<ViewModel.Withdrawal>> PostAsync([FromServices] CreateWithdrawalUseCase useCase, [FromBody] ViewModel.CreateWithdrawalRequest request, CancellationToken cancellationToken) =>
+            await ExecuteAsync(async () => {
+                var result = await useCase.ExecuteAsync(_mapper.Map<CreateWithdrawalRequest>(request), cancellationToken);
+                return Ok(_mapper.Map<ViewModel.Withdrawal>(result.Withdrawal));
             });
 
         [HttpGet("{id:long}")]
