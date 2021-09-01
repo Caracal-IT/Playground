@@ -16,7 +16,12 @@ namespace Playground.PaymentEngine.Store.File.Deposits {
             _data = GetRepository<DepositData>();
         }
 
-        public Task<IEnumerable<Deposit>> GetWithdrawalsAsync(CancellationToken cancellationToken) =>
+        public Task<IEnumerable<Deposit>> GetDepositsAsync(CancellationToken cancellationToken) =>
             Task.FromResult(_data.Deposits.AsEnumerable());
+
+        public async Task<IEnumerable<Deposit>> GetDepositsAsync(IEnumerable<long> depositIds, CancellationToken cancellationToken) {
+            var deposits = await GetDepositsAsync(cancellationToken);
+            return deposits.Where(i => depositIds.Contains(i.Id));
+        }
     }
 }

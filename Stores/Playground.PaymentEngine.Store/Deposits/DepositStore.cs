@@ -5,6 +5,7 @@ using Playground.PaymentEngine.Store.Deposits.Model;
 
 namespace Playground.PaymentEngine.Store.Deposits {
     public interface DepositStore {
-        Task<IEnumerable<Deposit>> GetWithdrawalsAsync(CancellationToken cancellationToken);
+        Task<IEnumerable<Deposit>> GetDepositsAsync(CancellationToken cancellationToken);
+        Task<IEnumerable<Deposit>> GetDepositsAsync(IEnumerable<long> depositIds, CancellationToken cancellationToken);
     }
 }

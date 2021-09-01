@@ -1,4 +1,4 @@
-using System;
+using Playground.PaymentEngine.Application.UseCases.Deposits.GetDeposit;
 using Playground.PaymentEngine.Application.UseCases.Deposits.GetDeposits;
 using ViewModel = Playground.PaymentEngine.Models.Deposits;
 
@@ -16,6 +16,17 @@ namespace Playground.PaymentEngine.Controllers {
             await ExecuteAsync(async () => {
                 var response = await useCase.ExecuteAsync(cancellationToken);
                 return Ok(_mapper.Map<IEnumerable<ViewModel.Deposit>>(response.Deposits));
+            });
+        
+        [HttpGet("{id:long}")]
+        public async Task<ActionResult<ViewModel.Deposit>> GetAsync([FromServices] GetDepositUseCase useCase, [FromRoute] long id, CancellationToken cancellationToken) =>
+            await ExecuteAsync<ActionResult<ViewModel.Deposit>>(async () => {
+                var response = await useCase.ExecuteAsync(id, cancellationToken);
+                
+                if (response?.Deposit == null)
+                    return NotFound();
+                
+                return Ok(_mapper.Map<ViewModel.Deposit>(response.Deposit));
             });
     }
 }

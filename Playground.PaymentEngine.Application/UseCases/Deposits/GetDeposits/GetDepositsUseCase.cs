@@ -11,7 +11,7 @@ namespace Playground.PaymentEngine.Application.UseCases.Deposits.GetDeposits {
         }
 
         public async Task<GetDepositsResponse> ExecuteAsync(CancellationToken cancellationToken) {
-            var deposits = await _store.GetWithdrawalsAsync(cancellationToken);
+            var deposits = await _store.GetDepositsAsync(cancellationToken);
             return new GetDepositsResponse { Deposits = _mapper.Map<IEnumerable<Deposit>>(deposits) };
         }
     }

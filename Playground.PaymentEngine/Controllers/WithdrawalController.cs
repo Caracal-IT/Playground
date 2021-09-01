@@ -33,12 +33,12 @@ namespace Playground.PaymentEngine.Controllers {
         [HttpGet("{id:long}")]
         public Task<ActionResult<ViewModel.Withdrawal>> GetAsync([FromServices] GetWithdrawalUseCase useCase, [FromRoute] long id, CancellationToken cancellationToken) =>
             ExecuteAsync<ActionResult<ViewModel.Withdrawal>>(async () => {
-                var withdrawal = await useCase.ExecuteAsync(id, cancellationToken);
+                var response = await useCase.ExecuteAsync(id, cancellationToken);
 
-                if (withdrawal?.Withdrawal == null)
+                if (response?.Withdrawal == null)
                     return NotFound();
                 
-                return Ok(_mapper.Map<ViewModel.Withdrawal>(withdrawal.Withdrawal));
+                return Ok(_mapper.Map<ViewModel.Withdrawal>(response.Withdrawal));
             });
         
         [HttpDelete("{id:long}")]
