@@ -17,7 +17,7 @@ namespace Playground.PaymentEngine.Store.File.Withdrawals {
             long id;
             
             lock (CreateLock) {
-                id = _data.Withdrawals.Max(w => w.Id) + 1;
+                id = _data.Withdrawals.Any() ? _data.Withdrawals.Max(w => w.Id) + 1: 1;
             }
 
             withdrawal.Id = id;

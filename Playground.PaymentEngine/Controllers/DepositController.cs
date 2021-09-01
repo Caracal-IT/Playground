@@ -1,4 +1,5 @@
 using Playground.PaymentEngine.Application.UseCases.Deposits.CreateDeposit;
+using Playground.PaymentEngine.Application.UseCases.Deposits.DeleteDeposit;
 using Playground.PaymentEngine.Application.UseCases.Deposits.GetDeposit;
 using Playground.PaymentEngine.Application.UseCases.Deposits.GetDeposits;
 using ViewModel = Playground.PaymentEngine.Models.Deposits;
@@ -35,6 +36,13 @@ namespace Playground.PaymentEngine.Controllers {
             await ExecuteAsync(async () => {
                 var result = await useCase.ExecuteAsync(_mapper.Map<CreateDepositRequest>(request), cancellationToken);
                 return Ok(_mapper.Map<ViewModel.Deposit>(result.Deposit));
+            });
+        
+        [HttpDelete("{id:long}")]
+        public Task<ActionResult> DeleteAsync([FromServices] DeleteDepositUseCase useCase, [FromRoute] long id, CancellationToken cancellationToken) =>
+            ExecuteAsync<ActionResult>(async () => {
+                await useCase.ExecuteAsync(id, cancellationToken);
+                return NoContent();
             });
     }
 }

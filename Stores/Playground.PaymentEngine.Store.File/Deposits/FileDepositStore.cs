@@ -29,13 +29,18 @@ namespace Playground.PaymentEngine.Store.File.Deposits {
             long id;
             
             lock (CreateLock) {
-                id = _data.Deposits.Max(w => w.Id) + 1;
+                id = _data.Deposits.Any() ? _data.Deposits.Max(w => w.Id) + 1: 1;
             }
 
             deposit.Id = id;
             _data.Deposits.Add(deposit);
             
             return Task.FromResult(deposit);
+        }
+        
+        public Task DeleteDepositsAsync(IEnumerable<long> depositIds, CancellationToken cancellationToken) {
+            _data.Deposits = _data.Deposits.Where(d => !depositIds.Contains(d.Id)).ToList();
+            return Task.CompletedTask;
         }
     }
 }
