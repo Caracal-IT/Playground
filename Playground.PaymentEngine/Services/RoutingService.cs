@@ -3,8 +3,9 @@ using Playground.PaymentEngine.Extensions;
 using Playground.PaymentEngine.Store.Terminals;
 using Playground.PaymentEngine.Terminals.Functions;
 using Playground.Router;
+using Playground.Router.Services;
 
-namespace Playground.PaymentEngine.Services.Routing {
+namespace Playground.PaymentEngine.Services {
     public class RoutingService: IRoutingService {
         private readonly TerminalStore _terminalStore;
         

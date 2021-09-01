@@ -46,8 +46,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Config" />
       <Folder Include="Exports" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Config\Rules\approval.rule.json" />
     </ItemGroup>
 
 </Project>

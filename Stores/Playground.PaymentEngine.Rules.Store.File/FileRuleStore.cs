@@ -20,7 +20,7 @@ namespace Playground.PaymentEngine.Rules.Store.File {
         }
         
         private async Task<string> GetRulesJsonAsync(string name, CancellationToken cancellationToken) {
-            var dir = _fileProvider.GetDirectoryContents(Path.Join("Config", "Rules"));
+            var dir = _fileProvider.GetDirectoryContents("Rules");
             var file = dir.FirstOrDefault(f => f.Name.Equals($"{name}.rule.json"));
 
             if (file == null)

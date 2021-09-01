@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Playground.Core;
-using Playground.PaymentEngine.Services.CacheService;
+using Playground.PaymentEngine.Services;
 
 namespace Playground.PaymentEngine.Setup {
     public static class CacheSetup {

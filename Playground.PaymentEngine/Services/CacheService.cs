@@ -3,7 +3,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Playground.Core;
 using static System.TimeSpan;
 
-namespace Playground.PaymentEngine.Services.CacheService {
+namespace Playground.PaymentEngine.Services {
     public class CacheService: ICacheService {
         private readonly IMemoryCache _memoryCache;
         

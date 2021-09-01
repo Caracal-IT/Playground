@@ -1,10 +1,10 @@
 using Microsoft.Extensions.DependencyInjection;
-
-using Playground.PaymentEngine.Services.Routing;
+using Playground.PaymentEngine.Services;
 using Playground.PaymentEngine.Terminals.Functions;
 using Playground.Router;
 using Playground.Router.Clients;
 using Playground.Router.Clients.File;
+using Playground.Router.Services;
 
 namespace Playground.PaymentEngine.Setup {
     public static class RoutingSetup {
