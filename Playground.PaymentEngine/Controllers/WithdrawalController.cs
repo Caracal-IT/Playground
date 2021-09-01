@@ -54,8 +54,6 @@ namespace Playground.PaymentEngine.Controllers {
                 await useCase.ExecuteAsync(id, status.StatusId, cancellationToken);
                 return NoContent();
             });
-        
-        
     }
 }
 

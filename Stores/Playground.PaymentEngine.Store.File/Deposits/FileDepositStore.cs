@@ -23,5 +23,19 @@ namespace Playground.PaymentEngine.Store.File.Deposits {
             var deposits = await GetDepositsAsync(cancellationToken);
             return deposits.Where(i => depositIds.Contains(i.Id));
         }
+
+        private static readonly object CreateLock = new();
+        public Task<Deposit> CreateDepositAsync(Deposit deposit, CancellationToken cancellationToken) {
+            long id;
+            
+            lock (CreateLock) {
+                id = _data.Deposits.Max(w => w.Id) + 1;
+            }
+
+            deposit.Id = id;
+            _data.Deposits.Add(deposit);
+            
+            return Task.FromResult(deposit);
+        }
     }
 }

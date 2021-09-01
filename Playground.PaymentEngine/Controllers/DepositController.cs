@@ -1,3 +1,4 @@
+using Playground.PaymentEngine.Application.UseCases.Deposits.CreateDeposit;
 using Playground.PaymentEngine.Application.UseCases.Deposits.GetDeposit;
 using Playground.PaymentEngine.Application.UseCases.Deposits.GetDeposits;
 using ViewModel = Playground.PaymentEngine.Models.Deposits;
@@ -27,6 +28,13 @@ namespace Playground.PaymentEngine.Controllers {
                     return NotFound();
                 
                 return Ok(_mapper.Map<ViewModel.Deposit>(response.Deposit));
+            });
+        
+        [HttpPost]
+        public async Task<ActionResult<ViewModel.Deposit>> PostAsync([FromServices] CreateDepositUseCase useCase, [FromBody] ViewModel.CreateDepositRequest request, CancellationToken cancellationToken) =>
+            await ExecuteAsync(async () => {
+                var result = await useCase.ExecuteAsync(_mapper.Map<CreateDepositRequest>(request), cancellationToken);
+                return Ok(_mapper.Map<ViewModel.Deposit>(result.Deposit));
             });
     }
 }
