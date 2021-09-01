@@ -30,6 +30,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.PaymentEngine.St
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.PaymentEngine.Application", "Playground.PaymentEngine.Application\Playground.PaymentEngine.Application.csproj", "{FD4E9569-EDC1-4464-8371-3C2233D43980}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.PaymentEngine.Rules.Store.File", "Stores\Playground.PaymentEngine.Rules.Store.File\Playground.PaymentEngine.Rules.Store.File.csproj", "{0718EF3D-92AF-4A44-8FB7-5A4C73520C2D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.PaymentEngine.Rules.Store", "Stores\Playground.PaymentEngine.Rules.Store\Playground.PaymentEngine.Rules.Store.csproj", "{96392C8E-926A-4FA4-ACCD-E3F819190A9D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +48,8 @@ Global
 		{5027204C-471E-44A2-B869-EAFCB0124333} = {CDBE39D0-B4DC-4735-9FAB-6BD702C493F8}
 		{B4FB852C-6116-4F78-8945-16547CCE5C49} = {09E272FD-F040-4266-944D-121BF9465612}
 		{843BBCD2-23D1-44A6-9CBF-4FB4739F8CC1} = {09E272FD-F040-4266-944D-121BF9465612}
+		{0718EF3D-92AF-4A44-8FB7-5A4C73520C2D} = {09E272FD-F040-4266-944D-121BF9465612}
+		{96392C8E-926A-4FA4-ACCD-E3F819190A9D} = {09E272FD-F040-4266-944D-121BF9465612}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{42FFBAD9-CDA3-4F09-9B8D-C5770036E6E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -90,5 +96,13 @@ Global
 		{FD4E9569-EDC1-4464-8371-3C2233D43980}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD4E9569-EDC1-4464-8371-3C2233D43980}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD4E9569-EDC1-4464-8371-3C2233D43980}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0718EF3D-92AF-4A44-8FB7-5A4C73520C2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0718EF3D-92AF-4A44-8FB7-5A4C73520C2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0718EF3D-92AF-4A44-8FB7-5A4C73520C2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0718EF3D-92AF-4A44-8FB7-5A4C73520C2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96392C8E-926A-4FA4-ACCD-E3F819190A9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96392C8E-926A-4FA4-ACCD-E3F819190A9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96392C8E-926A-4FA4-ACCD-E3F819190A9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96392C8E-926A-4FA4-ACCD-E3F819190A9D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

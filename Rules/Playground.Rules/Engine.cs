@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Playground.PaymentEngine.Rules.Store;
 using Playground.Rules.CustomActions.Terminal;
 using RulesEngine.Actions;
 using RulesEngine.Models;

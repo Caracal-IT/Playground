@@ -16,6 +16,7 @@
       <ProjectReference Include="..\Playground.PaymentEngine.Application\Playground.PaymentEngine.Application.csproj" />
       <ProjectReference Include="..\Playground.Router\Playground.Router.csproj" />
       <ProjectReference Include="..\Rules\Playground.Rules\Playground.Rules.csproj" />
+      <ProjectReference Include="..\Stores\Playground.PaymentEngine.Rules.Store.File\Playground.PaymentEngine.Rules.Store.File.csproj" />
       <ProjectReference Include="..\Stores\Playground.PaymentEngine.Store.File\Playground.PaymentEngine.Store.File.csproj" />
       <ProjectReference Include="..\Stores\Playground.PaymentEngine.Store\Playground.PaymentEngine.Store.csproj" />
       <ProjectReference Include="..\Xml\Playground.Xml\Playground.Xml.csproj" />

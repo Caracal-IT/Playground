@@ -5,10 +5,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.FileProviders;
 using Newtonsoft.Json;
-using Playground.Rules;
 using RulesEngine.Models;
 
-namespace Playground.PaymentEngine.Helpers {
+namespace Playground.PaymentEngine.Rules.Store.File {
     public class FileRuleStore: RuleStore {
         private readonly IFileProvider _fileProvider;
 
@@ -17,7 +16,7 @@ namespace Playground.PaymentEngine.Helpers {
         
         public async Task<IEnumerable<WorkflowRules>> GetRulesAsync(string name, CancellationToken cancellationToken) {
             var json = await GetRulesJsonAsync(name, cancellationToken);
-            return JsonConvert.DeserializeObject<List<WorkflowRules>>(json);
+            return JsonConvert.DeserializeObject<List<WorkflowRules>>(json)!;
         }
         
         private async Task<string> GetRulesJsonAsync(string name, CancellationToken cancellationToken) {
