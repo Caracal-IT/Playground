@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Folder Include="Accounts" />
+      <Folder Include="Allocations" />
+      <Folder Include="ApprovalRules" />
+      <Folder Include="Customers" />
+      <Folder Include="Deposits" />
+      <Folder Include="Terminals" />
+      <Folder Include="Withdrawals" />
+    </ItemGroup>
+
+</Project>

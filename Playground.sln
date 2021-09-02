@@ -42,6 +42,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Applications", "Application
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.PaymentEngine.External.Mock.Api", "Playground.PaymentEngine.External.Mock.Api\Playground.PaymentEngine.External.Mock.Api.csproj", "{D00BD186-63BE-420C-9198-69AA7C9B099D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.PaymentEngine.Store.EF", "Stores\Playground.PaymentEngine.Store.EF\Playground.PaymentEngine.Store.EF.csproj", "{BEA75E11-0277-4ACF-A914-AB67682F4001}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,6 +67,7 @@ Global
 		{3345CFCB-61A3-4735-AEE5-9EAFA29FA0F7} = {E5D7D45E-84C3-4507-8594-1CCDFA6CC2C8}
 		{FD4E9569-EDC1-4464-8371-3C2233D43980} = {77E7D628-3530-40E0-B95D-78831E5BC076}
 		{D00BD186-63BE-420C-9198-69AA7C9B099D} = {E5D7D45E-84C3-4507-8594-1CCDFA6CC2C8}
+		{BEA75E11-0277-4ACF-A914-AB67682F4001} = {09E272FD-F040-4266-944D-121BF9465612}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{42FFBAD9-CDA3-4F09-9B8D-C5770036E6E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -123,5 +126,9 @@ Global
 		{D00BD186-63BE-420C-9198-69AA7C9B099D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D00BD186-63BE-420C-9198-69AA7C9B099D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D00BD186-63BE-420C-9198-69AA7C9B099D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEA75E11-0277-4ACF-A914-AB67682F4001}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEA75E11-0277-4ACF-A914-AB67682F4001}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEA75E11-0277-4ACF-A914-AB67682F4001}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEA75E11-0277-4ACF-A914-AB67682F4001}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
