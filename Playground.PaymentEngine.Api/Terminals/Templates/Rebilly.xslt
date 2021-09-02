@@ -5,7 +5,7 @@
         <xsl:if test="config">
             <config>
                 <settings>
-                    <setting name="url" value="https://localhost:5001/Rebilly/Process"/>
+                    <setting name="url" value="https://localhost:5002/Rebilly/Process"/>
                     <setting name="header:api-key" value="6565744884400474747"/>
                 </settings>
             </config>
@@ -59,7 +59,7 @@
         <xsl:if test="config">
             <config>
                 <settings>
-                    <setting name="url" value="https://localhost:5001/Rebilly/Callback"/>
+                    <setting name="url" value="https://localhost:5002/Rebilly/Callback"/>
                 </settings>
             </config>
         </xsl:if>
