@@ -8,7 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.XsltTransform", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.XsltTransformTests", "Xml\XSLT\Playground.XsltTransformTests\Playground.XsltTransformTests.csproj", "{AFA0B06F-97F4-4B84-BCFF-F1B411D8B94D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.PaymentEngine", "Playground.PaymentEngine\Playground.PaymentEngine.csproj", "{3345CFCB-61A3-4735-AEE5-9EAFA29FA0F7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.PaymentEngine.Api", "Playground.PaymentEngine.Api\Playground.PaymentEngine.Api.csproj", "{3345CFCB-61A3-4735-AEE5-9EAFA29FA0F7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.Router", "Playground.Router\Playground.Router.csproj", "{7C2C538D-E8EE-432F-8499-9CFEA1DA9846}"
 EndProject
