@@ -35,8 +35,20 @@ namespace Playground.PaymentEngine.Application.UseCases.Payments.Process {
             await UpdateStatusesAsync();
             await SaveResultsAsync();
                 
-            return new ProcessResponse(items.Select(i => i.Response.Last()));
+            return new ProcessResponse(items.Select(CreateResponse));
 
+            ExportResponse CreateResponse(ExportData data) {
+                if (data.Response.Any())
+                    return data.Response.Last();
+
+                return new ExportResponse {
+                    Reference = data.Reference,
+                    Name = $"Account Type : {data.AccountTypeId}",
+                    Message = "Failed",
+                    Code = "-1"
+                };
+            }
+            
             async Task ExportAsync(ExportData data) {
                 var terminalEnum = await _terminalStore.GetActiveAccountTypeTerminalsAsync(data.AccountTypeId, cancellationToken);
                 var terminals = terminalEnum.Select(t => t.Name);
@@ -47,7 +59,7 @@ namespace Playground.PaymentEngine.Application.UseCases.Payments.Process {
                 var result = response.Select(r => r.Result).Select(DeSerialize<ExportResponse>);
                 data.Response.AddRange(result);
             }
-
+            
             async Task SaveResultsAsync() {
                 var results = items.SelectMany(i => i.Response).Select(MapResults);
                 await _terminalStore.LogTerminalResultsAsync(results, cancellationToken);

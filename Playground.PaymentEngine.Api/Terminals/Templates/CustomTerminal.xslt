@@ -5,7 +5,7 @@
         <xsl:if test="config">
             <config>
                 <settings>
-                    <setting name="url" value="https://localhost:5002/CustomProvider/Process"/>
+                    <setting name="url" value="https://localhost:6001/CustomProvider/Process"/>
                     <setting name="content-type" value="application/xml"/>
                 </settings>
             </config>

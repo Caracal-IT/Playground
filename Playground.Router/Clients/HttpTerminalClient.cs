@@ -32,6 +32,9 @@ namespace Playground.Router.Clients {
 
             var resp = await _httpClient.PostAsync(url, content, cancellationToken);
             var result = await resp.Content.ReadAsStringAsync(cancellationToken);
+
+            if (!resp.IsSuccessStatusCode || string.IsNullOrWhiteSpace(result))
+                return string.Empty;
             
             return isXml ? result : result.ToXml("response");
             

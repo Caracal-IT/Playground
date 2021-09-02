@@ -5,7 +5,7 @@
         <xsl:if test="config">
             <config>
                 <settings>
-                    <setting name="url" value="https://localhost:5002/GlobalPay/Process"/>
+                    <setting name="url" value="https://localhost:6001/GlobalPay/Process"/>
                 </settings>
             </config>
         </xsl:if>

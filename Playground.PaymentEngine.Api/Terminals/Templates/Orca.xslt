@@ -5,7 +5,7 @@
         <xsl:if test="config">
             <config>
                 <settings>
-                    <setting name="url" value="https://localhost:5002/Compliance/Fraud/Validate"/>
+                    <setting name="url" value="https://localhost:6001/Compliance/Fraud/Validate"/>
                 </settings>
             </config>
         </xsl:if>
