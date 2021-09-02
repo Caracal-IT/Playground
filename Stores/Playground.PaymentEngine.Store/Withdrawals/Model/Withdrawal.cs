@@ -10,8 +10,6 @@ namespace Playground.PaymentEngine.Store.Withdrawals.Model {
         public long CustomerId { get; set; }
         [XmlAttribute("amount", DataType="decimal")]
         public decimal Amount { get; set; }
-        [XmlAttribute("balance", DataType="decimal")]
-        public decimal Balance { get; set; }
         [XmlAttribute("date-requested", DataType="date")]
         public DateTime DateRequested { get; set; }
         [XmlAttribute("withdrawal-status-id")]
