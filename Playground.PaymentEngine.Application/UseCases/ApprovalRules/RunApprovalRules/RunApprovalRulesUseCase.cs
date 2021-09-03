@@ -43,7 +43,8 @@ namespace Playground.PaymentEngine.Application.UseCases.ApprovalRules.RunApprova
         private async Task<RuleInput> MapInputAsync(WithdrawalGroup withdrawalGroup, CancellationToken cancellationToken) {
             var withdrawalEnum = await _withdrawalStore.GetWithdrawalsAsync(withdrawalGroup.WithdrawalIds, cancellationToken);
             var withdrawals = withdrawalEnum.ToList();
-            var customer = await _customerStore.GetCustomerAsync(withdrawals.First().CustomerId, cancellationToken);
+            var customers = await _customerStore.GetCustomersAsync(new []{withdrawals.First().CustomerId}, cancellationToken);
+            var customer = customers.FirstOrDefault();
 
             return new RuleInput {
                 WithdrawalGroupId = withdrawalGroup.Id,
