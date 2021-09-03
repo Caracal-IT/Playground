@@ -1,7 +1,7 @@
 using System;
 using Playground.PaymentEngine.Application.UseCases.Shared;
 
-namespace Playground.PaymentEngine.Application.UseCases.Deposits.GetDeposits {
+namespace Playground.PaymentEngine.Application.UseCases.Deposits {
     public class Deposit {
         public long Id { get; set; }
         public long AccountId { get; set; }
