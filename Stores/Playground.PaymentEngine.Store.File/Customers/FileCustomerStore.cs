@@ -37,5 +37,10 @@ namespace Playground.PaymentEngine.Store.File.Customers {
             _data.Customers = _data.Customers.Where(c => !customerIds.Contains(c.Id)).ToList();
             return Task.CompletedTask;
         }
+
+        public async Task UpdateCustomerAsync(Customer customer, CancellationToken cancellationToken) {
+            await DeleteCustomersAsync(new[] { customer.Id }, cancellationToken);
+            _data.Customers.Add(customer);
+        }
     }
 }
