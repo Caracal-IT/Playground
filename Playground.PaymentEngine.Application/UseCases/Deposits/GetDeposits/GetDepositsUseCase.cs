@@ -1,5 +1,3 @@
-using Playground.PaymentEngine.Store.Deposits;
-
 namespace Playground.PaymentEngine.Application.UseCases.Deposits.GetDeposits {
     public class GetDepositsUseCase {
         private readonly DepositStore _store;

@@ -5,7 +5,8 @@ using Playground.PaymentEngine.Store.Allocations.Model;
 
 namespace Playground.PaymentEngine.Store.Allocations {
     public interface AllocationStore {
-        Task<Allocation> GetAllocationAsync(long id, CancellationToken cancellationToken);
+        Task<IEnumerable<Allocation>> GetAllocationsAsync(CancellationToken cancellationToken);
+        Task<IEnumerable<Allocation>> GetAllocationAsync(IEnumerable<long> allocationIds, CancellationToken cancellationToken);
         Task<IEnumerable<Allocation>> GetAllocationsByReferenceAsync(string reference, CancellationToken cancellationToken);
         
         Task SetAllocationStatusAsync(long id, long statusId, CancellationToken cancellationToken);

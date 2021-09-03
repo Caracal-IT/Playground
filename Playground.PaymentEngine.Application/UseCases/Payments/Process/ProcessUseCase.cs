@@ -2,8 +2,8 @@ using System;
 using System.Linq;
 using Playground.Core.Extensions;
 using Playground.PaymentEngine.Application.UseCases.Shared;
+using Playground.PaymentEngine.Store.Allocations.Model;
 using Playground.PaymentEngine.Store.Terminals.Model;
-using Playground.Router;
 using Playground.Router.Services;
 using Playground.Xml;
 using static Playground.Core.Hashing;
@@ -118,7 +118,9 @@ namespace Playground.PaymentEngine.Application.UseCases.Payments.Process {
             return allocations.Where(a => a.AccountId > 0);
 
             async Task<ExportAllocation> GetExportAllocationAsync(long allocationId) {
-                var allocation = await _allocationStore.GetAllocationAsync(allocationId, cancellationToken);
+                var allocs = await _allocationStore.GetAllocationAsync(new []{allocationId}, cancellationToken);
+                var allocation = allocs.FirstOrDefault() ?? new Allocation();
+                
                 var account = await _accountStore.GetAccountAsync(allocation.AccountId, cancellationToken);
 
                 return new ExportAllocation {

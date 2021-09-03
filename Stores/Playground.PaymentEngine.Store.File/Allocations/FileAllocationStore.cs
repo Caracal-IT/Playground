@@ -14,12 +14,12 @@ namespace Playground.PaymentEngine.Store.File.Allocations {
         public FileAllocationStore() => 
             _data = GetRepository<AllocationData>();
 
-        public Task<Allocation> GetAllocationAsync(long id, CancellationToken cancellationToken) {
-            var result = _data.Allocations
-                                    .FirstOrDefault(a => a.Id == id)
-                                    ??new Allocation();
-            
-            return Task.FromResult(result);
+        public Task<IEnumerable<Allocation>> GetAllocationsAsync(CancellationToken cancellationToken) =>
+            Task.FromResult(_data.Allocations.AsEnumerable());
+
+        public async Task<IEnumerable<Allocation>> GetAllocationAsync(IEnumerable<long> allocationIds, CancellationToken cancellationToken) {
+            var result = await GetAllocationsAsync(cancellationToken);
+            return result.Where(a => allocationIds.Contains(a.Id));
         }
 
         public Task<IEnumerable<Allocation>> GetAllocationsByReferenceAsync(string reference, CancellationToken cancellationToken) {
@@ -36,15 +36,18 @@ namespace Playground.PaymentEngine.Store.File.Allocations {
             SetAllocationStatusAsync(id, statusId, terminal, null, cancellationToken);
 
         public async Task SetAllocationStatusAsync(long id, long statusId, string? terminal, string? reference, CancellationToken cancellationToken) {
-            var allocation = await GetAllocationAsync(id, cancellationToken);
+            var allocations = await GetAllocationAsync(new []{id}, cancellationToken);
+            var allocation = allocations.FirstOrDefault() ?? new Allocation();
+            
             allocation.AllocationStatusId = statusId;
             allocation.Terminal = terminal;
             allocation.Reference = reference;
         }
 
         public async Task<Allocation> SaveAllocationAsync(Allocation allocation, CancellationToken cancellationToken) {
-            var alloc = await GetAllocationAsync(allocation.Id, cancellationToken);
-
+            var allocations = await GetAllocationAsync(new []{ allocation.Id }, cancellationToken);
+            var alloc = allocations.FirstOrDefault();
+            
             if (alloc == null) {
                 lock (_allocationLock) {
                     allocation.Id = _data.Allocations.LastOrDefault()?.Id ?? 0 + 1;

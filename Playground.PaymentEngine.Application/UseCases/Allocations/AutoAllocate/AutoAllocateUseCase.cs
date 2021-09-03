@@ -1,20 +1,22 @@
 using System.Linq;
 using Playground.Core.Extensions;
 using Playground.PaymentEngine.Store.Accounts.Model;
-using Playground.PaymentEngine.Store.Allocations.Model;
+using Data = Playground.PaymentEngine.Store.Allocations.Model;
 
 namespace Playground.PaymentEngine.Application.UseCases.Allocations.AutoAllocate {
     public class AutoAllocateUseCase {
+        private readonly IMapper _mapper;
         private readonly AccountStore _accountStore;
         private readonly WithdrawalStore _withdrawalStore;
         private readonly CustomerStore _customerStore;
         private readonly AllocationStore _allocationStore;
 
-        public AutoAllocateUseCase(AccountStore accountStore, WithdrawalStore withdrawalStore, AllocationStore allocationStore, CustomerStore customerStore) {
+        public AutoAllocateUseCase(AccountStore accountStore, WithdrawalStore withdrawalStore, AllocationStore allocationStore, CustomerStore customerStore, IMapper mapper) {
             _accountStore = accountStore;
             _withdrawalStore = withdrawalStore;
             _customerStore = customerStore;
             _allocationStore = allocationStore;
+            _mapper = mapper;
         }
 
         public async Task<AutoAllocateResponse> ExecuteAsync(IEnumerable<long> withdrawalGroups, CancellationToken cancellationToken) {
@@ -73,23 +75,15 @@ namespace Playground.PaymentEngine.Application.UseCases.Allocations.AutoAllocate
             return result;
             
             async Task AddNewAllocationAsync(Account account, decimal amount) {
-                 var allocation  = await _allocationStore.SaveAllocationAsync(new Allocation {
+                 var allocation  = await _allocationStore.SaveAllocationAsync(new Data.Allocation {
                     AccountId = account.Id,
                     Amount = amount,
                     AllocationStatusId = 1,
                     WithdrawalGroupId = withdrawalGroupId
                  }, cancellationToken);
                  
-                 result.Add(MapResult(allocation));
+                 result.Add(_mapper.Map<AutoAllocateResult>(allocation));
             }
         }
-
-        private static AutoAllocateResult MapResult(Allocation allocation) =>
-            new AutoAllocateResult {
-                AllocationId = allocation.Id,
-                Amount = allocation.Amount,
-                AccountId = allocation.AccountId,
-                WithdrawalGroupId = allocation.WithdrawalGroupId
-            };
     }
 }
