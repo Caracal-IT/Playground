@@ -3,7 +3,7 @@ using Playground.PaymentEngine.Application.UseCases.Deposits.DeleteDeposit;
 using Playground.PaymentEngine.Application.UseCases.Deposits.GetDeposit;
 using Playground.PaymentEngine.Application.UseCases.Deposits.GetDeposits;
 using CreateDepositRequest = Playground.PaymentEngine.Application.UseCases.Deposits.CreateDeposit.CreateDepositRequest;
-using Deposit = Playground.PaymentEngine.Api.Models.Deposits.Deposit;
+
 using ViewModel = Playground.PaymentEngine.Api.Models.Deposits;
 
 namespace Playground.PaymentEngine.Api.Controllers {
@@ -17,28 +17,28 @@ namespace Playground.PaymentEngine.Api.Controllers {
 
         [HttpGet]
         [EnableQuery]
-        public async Task<ActionResult<IEnumerable<Deposit>>> GetAsync([FromServices] GetDepositsUseCase useCase, CancellationToken cancellationToken) =>
+        public async Task<ActionResult<IEnumerable<ViewModel.Deposit>>> GetAsync([FromServices] GetDepositsUseCase useCase, CancellationToken cancellationToken) =>
             await ExecuteAsync(async () => {
                 var response = await useCase.ExecuteAsync(cancellationToken);
-                return Ok(_mapper.Map<IEnumerable<Deposit>>(response.Deposits));
+                return Ok(_mapper.Map<IEnumerable<ViewModel.Deposit>>(response.Deposits));
             });
         
         [HttpGet("{id:long}")]
-        public async Task<ActionResult<Deposit>> GetAsync([FromServices] GetDepositUseCase useCase, [FromRoute] long id, CancellationToken cancellationToken) =>
-            await ExecuteAsync<ActionResult<Deposit>>(async () => {
+        public async Task<ActionResult<ViewModel.Deposit>> GetAsync([FromServices] GetDepositUseCase useCase, [FromRoute] long id, CancellationToken cancellationToken) =>
+            await ExecuteAsync<ActionResult<ViewModel.Deposit>>(async () => {
                 var response = await useCase.ExecuteAsync(id, cancellationToken);
                 
                 if (response.Deposit == null)
                     return NotFound();
                 
-                return Ok(_mapper.Map<Deposit>(response.Deposit));
+                return Ok(_mapper.Map<ViewModel.Deposit>(response.Deposit));
             });
         
         [HttpPost]
-        public async Task<ActionResult<Deposit>> PostAsync([FromServices] CreateDepositUseCase useCase, [FromBody] Models.Deposits.CreateDepositRequest request, CancellationToken cancellationToken) =>
+        public async Task<ActionResult<ViewModel.Deposit>> PostAsync([FromServices] CreateDepositUseCase useCase, [FromBody] ViewModel.CreateDepositRequest request, CancellationToken cancellationToken) =>
             await ExecuteAsync(async () => {
                 var result = await useCase.ExecuteAsync(_mapper.Map<CreateDepositRequest>(request), cancellationToken);
-                return Ok(_mapper.Map<Deposit>(result.Deposit));
+                return Ok(_mapper.Map<ViewModel.Deposit>(result.Deposit));
             });
         
         [HttpDelete("{id:long}")]

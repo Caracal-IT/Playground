@@ -1,4 +1,4 @@
-using Playground.PaymentEngine.Application.UseCases.Shared;
+using Playground.PaymentEngine.Api.Models.Shared;
 
 namespace Playground.PaymentEngine.Api.Models.Customers {
     public record CreateCustomerRequest(decimal Balance) {

@@ -1,4 +1,5 @@
 using System.Linq;
+using Data = Playground.PaymentEngine.Store.Model;
 
 namespace Playground.PaymentEngine.Application.UseCases.Customers.EditCustomer {
     public class EditCustomerUseCase {
@@ -29,6 +30,13 @@ namespace Playground.PaymentEngine.Application.UseCases.Customers.EditCustomer {
                     .Join(modified, m => m.Name, u => u.Name, (m, u) => new {MetaData = m, UpdateMetaData = u})
                     .ToList()
                     .ForEach(i => i.MetaData.Value = i.UpdateMetaData.Value);
+
+            var items = customer.MetaData.Select(m => m.Name);
+            var newItems = request.MetaData
+                                  .Where(m => !items.Contains(m.Name))
+                                  .Select(m => _mapper.Map<Data.MetaData>(m));
+            
+            customer.MetaData.AddRange(newItems);
 
             await _store.UpdateCustomerAsync(customer, cancellationToken);
             
