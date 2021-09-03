@@ -65,8 +65,10 @@ namespace Playground.PaymentEngine.Application.UseCases.Allocations.AutoAllocate
 
             if (withdrawalAmount <= 0) return result;
             
-            var preferredAcc = orderedAccounts.FirstOrDefault(a => a.IsPreferredAccount) ?? orderedAccounts.First();
-            await AddNewAllocationAsync(preferredAcc, withdrawalAmount);
+            var preferredAcc = orderedAccounts.FirstOrDefault(a => a.IsPreferredAccount) ?? orderedAccounts.FirstOrDefault();
+            
+            if (preferredAcc != null) 
+                await AddNewAllocationAsync(preferredAcc, withdrawalAmount);
             
             return result;
             
