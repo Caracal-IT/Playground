@@ -1,4 +1,4 @@
-namespace Playground.PaymentEngine.Application.UseCases.Withdrawals.AppendGroupWithdrawals {
+namespace Playground.PaymentEngine.Application.UseCases.WithdrawalGroups.AppendGroupWithdrawals {
     public class AppendGroupWithdrawalsUseCase {
         private readonly WithdrawalStore _store;  
         private readonly IMapper _mapper;

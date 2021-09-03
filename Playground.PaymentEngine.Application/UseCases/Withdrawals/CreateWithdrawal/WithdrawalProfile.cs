@@ -4,7 +4,6 @@ namespace Playground.PaymentEngine.Application.UseCases.Withdrawals.CreateWithdr
     public class WithdrawalProfile: Profile {
         public WithdrawalProfile() {
             CreateMap<CreateWithdrawalRequest, Data.Withdrawal>();
-            CreateMap<Data.Withdrawal, Withdrawal>();
         }
     }
 }

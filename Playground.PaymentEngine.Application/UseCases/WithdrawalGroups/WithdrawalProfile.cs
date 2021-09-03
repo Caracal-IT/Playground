@@ -1,9 +1,9 @@
 using Data = Playground.PaymentEngine.Store.Withdrawals.Model;
 
-namespace Playground.PaymentEngine.Application.UseCases.Withdrawals.GetWithdrawal {
+namespace Playground.PaymentEngine.Application.UseCases.WithdrawalGroups {
     public class WithdrawalProfile: Profile {
         public WithdrawalProfile() {
-            CreateMap<Data.Withdrawal, Withdrawal>();
+            CreateMap<Data.WithdrawalGroup, WithdrawalGroup>();
         }
     }
 }

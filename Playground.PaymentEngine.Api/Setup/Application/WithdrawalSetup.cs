@@ -1,8 +1,4 @@
 using Microsoft.Extensions.DependencyInjection;
-using Playground.PaymentEngine.Application.UseCases.WithdrawalGroups.GetWithdrawalGroups;
-using Playground.PaymentEngine.Application.UseCases.WithdrawalGroups.GroupWithdrawals;
-using Playground.PaymentEngine.Application.UseCases.WithdrawalGroups.UnGroupWithdrawals;
-using Playground.PaymentEngine.Application.UseCases.Withdrawals.AppendGroupWithdrawals;
 using Playground.PaymentEngine.Application.UseCases.Withdrawals.ChangeWithdrawalStatus;
 using Playground.PaymentEngine.Application.UseCases.Withdrawals.CreateWithdrawal;
 using Playground.PaymentEngine.Application.UseCases.Withdrawals.DeleteWithdrawal;
@@ -17,11 +13,6 @@ namespace Playground.PaymentEngine.Api.Setup.Application {
             builder.Services.AddSingleton<GetWithdrawalUseCase>();
             builder.Services.AddSingleton<DeleteWithdrawalUseCase>();
             builder.Services.AddSingleton<ChangeWithdrawalStatusUseCase>();
-            
-            builder.Services.AddSingleton<GroupWithdrawalsUseCase>();
-            builder.Services.AddSingleton<UnGroupWithdrawalsUseCase>();
-            builder.Services.AddSingleton<GetWithdrawalGroupsUseCase>();
-            builder.Services.AddSingleton<AppendGroupWithdrawalsUseCase>();
         }
     }
 }

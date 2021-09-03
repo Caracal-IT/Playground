@@ -1,8 +1,8 @@
 using Playground.PaymentEngine.Api.Models.Withdrawals;
+using Playground.PaymentEngine.Application.UseCases.WithdrawalGroups.AppendGroupWithdrawals;
 using Playground.PaymentEngine.Application.UseCases.WithdrawalGroups.GetWithdrawalGroups;
 using Playground.PaymentEngine.Application.UseCases.WithdrawalGroups.GroupWithdrawals;
 using Playground.PaymentEngine.Application.UseCases.WithdrawalGroups.UnGroupWithdrawals;
-using Playground.PaymentEngine.Application.UseCases.Withdrawals.AppendGroupWithdrawals;
 using ViewModel = Playground.PaymentEngine.Api.Models.Withdrawals;
 using WithdrawalGroup = Playground.PaymentEngine.Api.Models.Withdrawals.WithdrawalGroup;
 
