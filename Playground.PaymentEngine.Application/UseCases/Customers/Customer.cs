@@ -1,6 +1,6 @@
 using Playground.PaymentEngine.Application.UseCases.Shared;
 
-namespace Playground.PaymentEngine.Application.UseCases.Customers.GetCustomer {
+namespace Playground.PaymentEngine.Application.UseCases.Customers {
     public class Customer {
         public long Id { get; set; }
         public decimal Balance { get; set; }
