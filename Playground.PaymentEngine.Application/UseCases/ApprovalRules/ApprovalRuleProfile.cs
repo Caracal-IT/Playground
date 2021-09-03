@@ -1,6 +1,6 @@
 using Data = Playground.PaymentEngine.Store.ApprovalRules.Model;
 
-namespace Playground.PaymentEngine.Application.UseCases.ApprovalRules.GetLastRunApprovalRules {
+namespace Playground.PaymentEngine.Application.UseCases.ApprovalRules {
     public class ApprovalRuleProfile: Profile {
         public ApprovalRuleProfile() {
             CreateMap<Data.ApprovalRuleHistory, ApprovalRuleHistory>();

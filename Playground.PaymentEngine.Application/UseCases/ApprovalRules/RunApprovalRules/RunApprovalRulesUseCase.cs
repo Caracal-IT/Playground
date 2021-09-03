@@ -1,11 +1,12 @@
 using System;
 using System.Linq;
 using Playground.Core.Extensions;
-using Playground.PaymentEngine.Store.ApprovalRules.Model;
-using Playground.PaymentEngine.Store.Model;
 using Playground.PaymentEngine.Store.Withdrawals.Model;
 using Playground.Rules;
 using ActionResult = RulesEngine.Models.ActionResult;
+
+using Data = Playground.PaymentEngine.Store.ApprovalRules.Model;
+using SharedData = Playground.PaymentEngine.Store.Model;
 
 namespace Playground.PaymentEngine.Application.UseCases.ApprovalRules.RunApprovalRules {
     public class RunApprovalRulesUseCase {
@@ -72,16 +73,16 @@ namespace Playground.PaymentEngine.Application.UseCases.ApprovalRules.RunApprova
             await _approvalRuleStore.AddRuleHistoriesAsync(rules, cancellationToken);
         }
 
-        private static ApprovalRuleHistory GetRuleHistory(long withdrawalGroupId, IEnumerable<ApprovalRuleOutcome> outcomes) =>
+        private static Data.ApprovalRuleHistory GetRuleHistory(long withdrawalGroupId, IEnumerable<ApprovalRuleOutcome> outcomes) =>
             new() {
                 WithdrawalGroupId = withdrawalGroupId,
                 TransactionId =  Guid.NewGuid(),
                 TransactionDate = DateTime.Now,
                 Rules = outcomes.Select(MapRule).ToList(),
-                Metadata = new List<MetaData>{ new(){ Name = "withdrawal-id", Value = $"{withdrawalGroupId}"}}
+                Metadata = new List<SharedData.MetaData>{ new(){ Name = "withdrawal-id", Value = $"{withdrawalGroupId}"}}
             };
 
-        private static Store.ApprovalRules.Model.ApprovalRule MapRule(ApprovalRuleOutcome outcome) =>
+        private static Data.ApprovalRule MapRule(ApprovalRuleOutcome outcome) =>
             new() {
                 RuleName = outcome.RuleName,
                 Message = outcome.Message,

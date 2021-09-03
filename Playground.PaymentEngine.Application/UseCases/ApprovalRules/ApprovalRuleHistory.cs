@@ -1,7 +1,7 @@
 using System;
 using Playground.PaymentEngine.Application.UseCases.Shared;
 
-namespace Playground.PaymentEngine.Application.UseCases.ApprovalRules.GetLastRunApprovalRules {
+namespace Playground.PaymentEngine.Application.UseCases.ApprovalRules {
     public class ApprovalRuleHistory {
         public long WithdrawalGroupId { get; set; }
         public Guid TransactionId { get; set; }
