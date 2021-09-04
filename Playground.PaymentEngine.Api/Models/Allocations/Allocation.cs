@@ -1,7 +1,7 @@
 using System.Xml.Serialization;
 
 namespace Playground.PaymentEngine.Api.Models.Allocations {
-    public class Allocation {
+    public record Allocation {
         public long Id { get; set; }
         public long WithdrawalGroupId { get; set; }
         public long AccountId { get; set; }

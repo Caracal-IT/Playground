@@ -1,5 +1,5 @@
 namespace Playground.PaymentEngine.Application.UseCases.Allocations.CreateAllocation {
-    public class CreateAllocationResponse {
+    public record CreateAllocationResponse {
         public Allocation? Allocation { get; set; }
     }
 }

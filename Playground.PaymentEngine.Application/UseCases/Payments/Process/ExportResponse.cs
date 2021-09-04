@@ -3,7 +3,7 @@ using Playground.PaymentEngine.Application.UseCases.Shared;
 
 namespace Playground.PaymentEngine.Application.UseCases.Payments.Process {
     [XmlRoot("response")]
-    public class ExportResponse {
+    public record ExportResponse {
         [XmlElement("reference")]
         public string? Reference { get; set; }
         [XmlElement("name")]

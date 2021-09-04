@@ -3,7 +3,7 @@ using Playground.PaymentEngine.Application.UseCases.Shared;
 
 namespace Playground.PaymentEngine.Application.UseCases.Payments.Process {
     [XmlRoot(ElementName = "export-data")]
-    public class ExportData {
+    public record ExportData {
         [XmlIgnore] public List<ExportAllocation> Allocations { get; set; } = new();
         [XmlIgnore] public List<ExportResponse> Response { get; set; } = new();
         

@@ -1,5 +1,5 @@
 namespace Playground.PaymentEngine.Application.UseCases.Allocations {
-    public class Allocation {
+    public record Allocation {
         public long Id { get; set; }
         public long WithdrawalGroupId { get; set; }
         public long AccountId { get; set; }

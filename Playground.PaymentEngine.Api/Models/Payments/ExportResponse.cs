@@ -1,7 +1,7 @@
 using Playground.PaymentEngine.Api.Models.Shared;
 
 namespace Playground.PaymentEngine.Api.Models.Payments {
-    public class ExportResponse {
+    public record ExportResponse {
         public string Reference { get; set; }
         public string Name { get; set; }
         public string Code { get; set; }

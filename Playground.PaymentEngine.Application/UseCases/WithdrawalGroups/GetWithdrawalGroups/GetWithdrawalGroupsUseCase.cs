@@ -8,7 +8,7 @@ namespace Playground.PaymentEngine.Application.UseCases.WithdrawalGroups.GetWith
             _mapper = mapper;
         }
 
-        public async Task<GetWithdrawalGroupsResponse> ExecuteAsync(GetWithdrawalGroupsRequest request, CancellationToken cancellationToken) {
+        public async Task<GetWithdrawalGroupsResponse> ExecuteAsync(CancellationToken cancellationToken) {
             var groups = await _store.GetWithdrawalGroupsAsync(cancellationToken);
             return new GetWithdrawalGroupsResponse {
                 WithdrawalGroups = _mapper.Map<IEnumerable<WithdrawalGroup>>(groups)

@@ -1,5 +1,5 @@
 namespace Playground.PaymentEngine.Api.Models.ApprovalRules {
-    public class ApprovalRuleOutcome {
+    public record ApprovalRuleOutcome {
         public long WithdrawalGroupId { get; set; }
         public string RuleName { get; set; } = string.Empty;
         public bool IsSuccessful { get; set; }

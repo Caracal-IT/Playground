@@ -1,7 +1,7 @@
 using Playground.PaymentEngine.Application.UseCases.Shared;
 
 namespace Playground.PaymentEngine.Application.UseCases.Payments.Process {
-    public class ExportAllocation {
+    public record ExportAllocation {
         public long CustomerId { get; set; }
         public long AccountId { get; set; }
         public long AllocationId { get; set; }

@@ -2,7 +2,7 @@ using System.Xml.Serialization;
 
 namespace Playground.PaymentEngine.Application.UseCases.Shared {
     [XmlRoot(ElementName="meta-data")]
-    public class MetaData {
+    public record MetaData {
         [XmlAttribute(AttributeName="name")]
         public string Name { get; set; } = string.Empty;
 

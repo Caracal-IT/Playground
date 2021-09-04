@@ -2,7 +2,7 @@ using System;
 using Playground.PaymentEngine.Api.Models.Shared;
 
 namespace Playground.PaymentEngine.Api.Models.Deposits {
-    public class Deposit {
+    public record Deposit {
         public long Id { get; set; }
         public long AccountId { get; set; }
         public decimal Amount { get; set; }

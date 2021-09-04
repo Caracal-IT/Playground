@@ -1,5 +1,5 @@
 namespace Playground.PaymentEngine.Application.UseCases.WithdrawalGroups.AppendGroupWithdrawals {
-    public class GroupWithdrawalsResponse {
+    public record GroupWithdrawalsResponse {
         public WithdrawalGroup? WithdrawalGroup { get; set; } 
     }
 }

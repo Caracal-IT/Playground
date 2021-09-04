@@ -26,7 +26,7 @@ namespace Playground.PaymentEngine.Api.Controllers {
         [EnableQuery]
         public async Task<ActionResult<IEnumerable<WithdrawalGroup>>> GetAsync([FromServices] GetWithdrawalGroupsUseCase useCase, CancellationToken cancellationToken) =>
             await ExecuteAsync(async () => {
-                var result = await useCase.ExecuteAsync(new GetWithdrawalGroupsRequest(), cancellationToken);
+                var result = await useCase.ExecuteAsync(cancellationToken);
                 return Ok(_mapper.Map<IEnumerable<WithdrawalGroup>>(result.WithdrawalGroups));
             });
         

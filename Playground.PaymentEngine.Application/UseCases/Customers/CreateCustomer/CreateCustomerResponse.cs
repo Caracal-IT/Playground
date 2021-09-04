@@ -1,5 +1,5 @@
 namespace Playground.PaymentEngine.Application.UseCases.Customers.CreateCustomer {
-    public class CreateCustomerResponse {
+    public record CreateCustomerResponse {
         public Customer? Customer { get; set; } 
     }
 }

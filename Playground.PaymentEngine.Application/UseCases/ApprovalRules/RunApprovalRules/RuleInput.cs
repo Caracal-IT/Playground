@@ -2,7 +2,7 @@ using System.Xml.Serialization;
 
 namespace Playground.PaymentEngine.Application.UseCases.ApprovalRules.RunApprovalRules {
     [XmlRoot("rule-input")]
-    public class RuleInput {
+    public record RuleInput {
         [XmlAttribute("withdrawal-group-id")]
         public long WithdrawalGroupId { get; set; }
         [XmlAttribute("customer-id")]

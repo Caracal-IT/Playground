@@ -11,7 +11,6 @@ namespace Playground.PaymentEngine.Api.Setup.Profiles {
         public CustomerProfile() {
             CreateMap<CreateCustomerRequest, CreateCustomer.CreateCustomerRequest>();
             CreateMap<PaymentEngine.Application.UseCases.Customers.Customer, Customer>();
-            CreateMap<GetCustomers.Customer, Customer>();
             CreateMap<Customers.Customer, Customer>();
             CreateMap<EditCustomerRequest, EditCustomer.EditCustomerRequest>();
             CreateMap<MetaDataUpdate, EditCustomer.MetaDataUpdate>();

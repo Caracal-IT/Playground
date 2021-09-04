@@ -1,5 +1,5 @@
 namespace Playground.PaymentEngine.Application.UseCases.Payments.Callback {
-    public class CallbackResponse {
+    public record CallbackResponse {
         public string Response { get; set; } = "EMPTY";
     }
 }
