@@ -1,7 +1,6 @@
 using System.Text;
 using System.Text.Json;
 using System.Xml.Linq;
-using Playground.PaymentEngine.Api.Models.Payments;
 using Playground.PaymentEngine.Application.UseCases.Payments.Callback;
 using Playground.PaymentEngine.Application.UseCases.Payments.Process;
 using Playground.Xml;

@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using Playground.Router;
 using Playground.Router.Services;
 
 namespace Playground.PaymentEngine.Application.UseCases.Payments.Callback {

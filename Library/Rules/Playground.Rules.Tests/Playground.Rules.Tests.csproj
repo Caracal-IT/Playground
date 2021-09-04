@@ -21,6 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\..\Stores\Playground.PaymentEngine.Rules.Store\Playground.PaymentEngine.Rules.Store.csproj" />
       <ProjectReference Include="..\..\Xml\Playground.Xml\Playground.Xml.csproj" />
       <ProjectReference Include="..\Playground.Rules\Playground.Rules.csproj" />
     </ItemGroup>
