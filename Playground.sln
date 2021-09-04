@@ -28,7 +28,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.PaymentEngine.St
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.PaymentEngine.Store.File", "Stores\Playground.PaymentEngine.Store.File\Playground.PaymentEngine.Store.File.csproj", "{843BBCD2-23D1-44A6-9CBF-4FB4739F8CC1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.PaymentEngine.Application", "Playground.PaymentEngine.Application\Playground.PaymentEngine.Application.csproj", "{FD4E9569-EDC1-4464-8371-3C2233D43980}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.PaymentEngine.Application", "Applications\Playground.PaymentEngine.Application\Playground.PaymentEngine.Application.csproj", "{FD4E9569-EDC1-4464-8371-3C2233D43980}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.PaymentEngine.Rules.Store.File", "Stores\Playground.PaymentEngine.Rules.Store.File\Playground.PaymentEngine.Rules.Store.File.csproj", "{0718EF3D-92AF-4A44-8FB7-5A4C73520C2D}"
 EndProject
