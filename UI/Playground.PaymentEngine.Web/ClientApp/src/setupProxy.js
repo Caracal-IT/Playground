@@ -11,7 +11,7 @@ const context =  [
 module.exports = function(app) {
   const appProxy = createProxyMiddleware(context, {
     target: target,
-    secure: false
+    secure: true
   });
 
   app.use(appProxy);
