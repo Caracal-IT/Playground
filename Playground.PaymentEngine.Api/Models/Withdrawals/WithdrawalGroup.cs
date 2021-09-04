@@ -1,6 +1,7 @@
+using Playground.Core.Model;
+
 namespace Playground.PaymentEngine.Api.Models.Withdrawals {
-    public record WithdrawalGroup {
-        public long Id { get; init; }
+    public record WithdrawalGroup: Entity {
         public long CustomerId { get; init; }
         public List<long> Withdrawals { get; init; }
     }

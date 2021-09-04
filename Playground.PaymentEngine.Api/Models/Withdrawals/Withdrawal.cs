@@ -1,5 +1,11 @@
 using System;
+using Playground.Core.Model;
 
 namespace Playground.PaymentEngine.Api.Models.Withdrawals {
-    public record Withdrawal(long Id, long CustomerId, decimal Amount, long WithdrawalStatusId, DateTime DateRequested);
+    public record Withdrawal: Entity {
+        public long CustomerId { get; init; }
+        public decimal Amount { get; init; }
+        public long WithdrawalStatusId { get; init; }
+        public DateTime DateRequested { get; init; }
+    }
 }
