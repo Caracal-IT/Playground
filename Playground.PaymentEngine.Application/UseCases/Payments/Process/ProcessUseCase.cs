@@ -118,7 +118,7 @@ namespace Playground.PaymentEngine.Application.UseCases.Payments.Process {
             return allocations.Where(a => a.AccountId > 0);
 
             async Task<ExportAllocation> GetExportAllocationAsync(long allocationId) {
-                var allocs = await _allocationStore.GetAllocationAsync(new []{allocationId}, cancellationToken);
+                var allocs = await _allocationStore.GetAllocationsAsync(new []{allocationId}, cancellationToken);
                 var allocation = allocs.FirstOrDefault() ?? new Allocation();
                 
                 var account = await _accountStore.GetAccountAsync(allocation.AccountId, cancellationToken);

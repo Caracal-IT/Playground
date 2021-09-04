@@ -1,7 +1,9 @@
-using Playground.PaymentEngine.Api.Models.Allocations;
 using Playground.PaymentEngine.Application.UseCases.Allocations.AutoAllocate;
+using Playground.PaymentEngine.Application.UseCases.Allocations.CreateAllocation;
+using Playground.PaymentEngine.Application.UseCases.Allocations.DeleteAllocation;
+using Playground.PaymentEngine.Application.UseCases.Allocations.GetAllocation;
 using Playground.PaymentEngine.Application.UseCases.Allocations.GetAllocations;
-using AutoAllocateResult = Playground.PaymentEngine.Api.Models.Allocations.AutoAllocateResult;
+ 
 using ViewModel = Playground.PaymentEngine.Api.Models.Allocations;
 
 namespace Playground.PaymentEngine.Api.Controllers {
@@ -20,12 +22,37 @@ namespace Playground.PaymentEngine.Api.Controllers {
                 var response = await useCase.ExecuteAsync(cancellationToken);
                 return Ok(_mapper.Map<IEnumerable<ViewModel.Allocation>>(response.Allocations));
             });
+
+        [HttpGet("{id:long}")]
+        public async Task<ActionResult<ViewModel.Allocation>> GetAsync([FromServices] GetAllocationUseCase useCase, [FromRoute] long id, CancellationToken cancellationToken) =>
+            await ExecuteAsync<ActionResult<ViewModel.Allocation>>(async () => {
+                var response = await useCase.ExecuteAsync(id, cancellationToken);
+                
+                if (response.Allocation == null)
+                    return NotFound();
+                
+                return Ok(_mapper.Map<ViewModel.Allocation>(response.Allocation));
+            });
+        
+        [HttpPost]
+        public async Task<ActionResult<ViewModel.Allocation>> PostAsync([FromServices] CreateAllocationUseCase useCase, [FromBody] ViewModel.CreateAllocationRequest request, CancellationToken cancellationToken) =>
+            await ExecuteAsync(async () => {
+                var result = await useCase.ExecuteAsync(_mapper.Map<CreateAllocationRequest>(request), cancellationToken);
+                return Ok(_mapper.Map<ViewModel.Allocation>(result.Allocation));
+            });
+        
+        [HttpDelete("{id:long}")]
+        public Task<ActionResult> DeleteAsync([FromServices] DeleteAllocationUseCase useCase, [FromRoute] long id, CancellationToken cancellationToken) =>
+            ExecuteAsync<ActionResult>(async () => {
+                await useCase.ExecuteAsync(id, cancellationToken);
+                return NoContent();
+            });
         
         [HttpPost("auto-allocate")]
-        public async Task<ActionResult<IEnumerable<AutoAllocateResult>>> AutoAllocateAsync([FromServices] AutoAllocateUseCase useCase, AutoAllocateRequest request, CancellationToken cancellationToken) =>
-            await ExecuteAsync<ActionResult<IEnumerable<AutoAllocateResult>>>(async () => {
+        public async Task<ActionResult<IEnumerable<ViewModel.AutoAllocateResult>>> AutoAllocateAsync([FromServices] AutoAllocateUseCase useCase, ViewModel.AutoAllocateRequest request, CancellationToken cancellationToken) =>
+            await ExecuteAsync<ActionResult<IEnumerable<ViewModel.AutoAllocateResult>>>(async () => {
                 var response = await useCase.ExecuteAsync(request.WithdrawalGroups, cancellationToken);
-                return Ok(_mapper.Map<IEnumerable<AutoAllocateResult>>(response.AllocationResults));
+                return Ok(_mapper.Map<IEnumerable<ViewModel.AutoAllocateResult>>(response.AllocationResults));
             });
     }
 }
