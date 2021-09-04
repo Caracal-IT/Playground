@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using Playground.Core;
 using Playground.PaymentEngine.Store.Model;
 
 namespace Playground.PaymentEngine.Store.Deposits.Model {
     [XmlRoot(ElementName="allocation")]
-    public class Deposit {
-        [XmlAttribute("id")]
-        public long Id { get; set; }
+    public class Deposit: Entity {
         [XmlAttribute("account-id")]
         public long AccountId { get; set; }
         [XmlAttribute("amount", DataType="decimal")]

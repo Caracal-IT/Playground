@@ -1,13 +1,11 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using Playground.Core;
 using Playground.PaymentEngine.Store.Model;
 
 namespace Playground.PaymentEngine.Store.Terminals.Model {
     [XmlRoot("terminal")]
-    public class Terminal {
-        [XmlAttribute("id")]
-        public long Id { get; set; }
-        
+    public class Terminal: Entity {
         [XmlAttribute("name")]
         public string? Name { get; set; }
         

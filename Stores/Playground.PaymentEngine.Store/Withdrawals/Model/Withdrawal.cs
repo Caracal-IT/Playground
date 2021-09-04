@@ -1,11 +1,10 @@
 using System;
 using System.Xml.Serialization;
+using Playground.Core;
 
 namespace Playground.PaymentEngine.Store.Withdrawals.Model {
     [XmlRoot("withdrawal")]
-    public class Withdrawal {
-        [XmlAttribute("id")]
-        public long Id { get; set; }
+    public class Withdrawal: Entity {
         [XmlAttribute("customer-id")]
         public long CustomerId { get; set; }
         [XmlAttribute("amount", DataType="decimal")]

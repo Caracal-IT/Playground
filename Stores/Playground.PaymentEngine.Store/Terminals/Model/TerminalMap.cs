@@ -1,11 +1,9 @@
 using System.Xml.Serialization;
+using Playground.Core;
 
 namespace Playground.PaymentEngine.Store.Terminals.Model {
     [XmlRoot("terminal-map")]
-    public class TerminalMap {
-        [XmlAttribute("id")]
-        public long Id { get; set; }
-        
+    public class TerminalMap: Entity {
         [XmlAttribute("account-type-id")]
         public long AccountTypeId { get; set; }
         

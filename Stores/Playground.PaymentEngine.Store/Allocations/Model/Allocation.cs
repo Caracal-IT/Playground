@@ -1,10 +1,9 @@
 using System.Xml.Serialization;
+using Playground.Core;
 
 namespace Playground.PaymentEngine.Store.Allocations.Model {
     [XmlRoot("allocation")]
-    public class Allocation {
-        [XmlAttribute("id")]
-        public long Id { get; set; }
+    public class Allocation: Entity {
         [XmlAttribute("withdrawal-group-id")]
         public long WithdrawalGroupId { get; set; }
         [XmlAttribute("account-id")]
