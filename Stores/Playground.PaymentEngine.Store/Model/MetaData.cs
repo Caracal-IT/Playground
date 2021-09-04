@@ -1,8 +1,9 @@
 using System.Xml.Serialization;
+using Playground.Core;
 
 namespace Playground.PaymentEngine.Store.Model {
     [XmlRoot("meta-data")]
-    public class MetaData {
+    public class MetaData: Entity {
         [XmlAttribute("name")]
         public string Name { get; set; } = string.Empty;
 

@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using Playground.Core;
 using Playground.PaymentEngine.Store.Model;
 
 namespace Playground.PaymentEngine.Store.ApprovalRules.Model {
     [XmlRoot("approval-rule-history")]
-    public class ApprovalRuleHistory {
+    public class ApprovalRuleHistory: Entity {
         [XmlAttribute("withdrawal-group-id")]
         public long WithdrawalGroupId { get; set; }
         [XmlAttribute("transaction-id")]

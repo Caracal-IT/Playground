@@ -1,10 +1,9 @@
 using System.Xml.Serialization;
+using Playground.Core;
 
 namespace Playground.PaymentEngine.Store.Accounts.Model {
     [XmlRoot(ElementName="account-type")]
-    public class AccountType {
-        [XmlAttribute("id")]
-        public long Id { get; set; }
+    public class AccountType: Entity {
         [XmlAttribute("name")]
         public string? Name { get; set; }
         [XmlAttribute("charge")]

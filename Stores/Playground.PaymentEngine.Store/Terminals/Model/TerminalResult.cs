@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using Playground.Core;
 using Playground.PaymentEngine.Store.Model;
 
 namespace Playground.PaymentEngine.Store.Terminals.Model {
     [XmlRoot("terminal-result")]
-    public class TerminalResult {
+    public class TerminalResult: Entity {
         [XmlElement("meta-data")]
         public List<MetaData> MetaData { get; set; } = new();
         
