@@ -8,7 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.XsltTransform", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.XsltTransformTests", "Library\Xml\XSLT\Playground.XsltTransformTests\Playground.XsltTransformTests.csproj", "{AFA0B06F-97F4-4B84-BCFF-F1B411D8B94D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.PaymentEngine.Api", "Playground.PaymentEngine.Api\Playground.PaymentEngine.Api.csproj", "{3345CFCB-61A3-4735-AEE5-9EAFA29FA0F7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.PaymentEngine.Api", "Api\Playground.PaymentEngine.Api\Playground.PaymentEngine.Api.csproj", "{3345CFCB-61A3-4735-AEE5-9EAFA29FA0F7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.Router", "Library\Playground.Router\Playground.Router.csproj", "{7C2C538D-E8EE-432F-8499-9CFEA1DA9846}"
 EndProject
@@ -40,7 +40,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{E5D7D45E-84C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Applications", "Applications", "{77E7D628-3530-40E0-B95D-78831E5BC076}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.PaymentEngine.External.Mock.Api", "Playground.PaymentEngine.External.Mock.Api\Playground.PaymentEngine.External.Mock.Api.csproj", "{D00BD186-63BE-420C-9198-69AA7C9B099D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.PaymentEngine.External.Mock.Api", "Api\Playground.PaymentEngine.External.Mock.Api\Playground.PaymentEngine.External.Mock.Api.csproj", "{D00BD186-63BE-420C-9198-69AA7C9B099D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.PaymentEngine.Store.EF", "Stores\Playground.PaymentEngine.Store.EF\Playground.PaymentEngine.Store.EF.csproj", "{BEA75E11-0277-4ACF-A914-AB67682F4001}"
 EndProject

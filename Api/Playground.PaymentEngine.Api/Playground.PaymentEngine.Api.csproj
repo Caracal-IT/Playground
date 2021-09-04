@@ -13,12 +13,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Applications\Playground.PaymentEngine.Application\Playground.PaymentEngine.Application.csproj" />
-      <ProjectReference Include="..\Library\Rules\Playground.Rules.Tests\Playground.Rules.Tests.csproj" />
-      <ProjectReference Include="..\Library\Xml\XSLT\Playground.XsltTransformTests\Playground.XsltTransformTests.csproj" />
-      <ProjectReference Include="..\Stores\Playground.PaymentEngine.Rules.Store.File\Playground.PaymentEngine.Rules.Store.File.csproj" />
-      <ProjectReference Include="..\Stores\Playground.PaymentEngine.Store.File\Playground.PaymentEngine.Store.File.csproj" />
-      <ProjectReference Include="..\Stores\Playground.PaymentEngine.Store\Playground.PaymentEngine.Store.csproj" />
+      <ProjectReference Include="..\..\Applications\Playground.PaymentEngine.Application\Playground.PaymentEngine.Application.csproj" />
+      <ProjectReference Include="..\..\Stores\Playground.PaymentEngine.Rules.Store.File\Playground.PaymentEngine.Rules.Store.File.csproj" />
+      <ProjectReference Include="..\..\Stores\Playground.PaymentEngine.Store.File\Playground.PaymentEngine.Store.File.csproj" />
+      <ProjectReference Include="..\..\Stores\Playground.PaymentEngine.Store\Playground.PaymentEngine.Store.csproj" />
     </ItemGroup>
 
     <ItemGroup>
