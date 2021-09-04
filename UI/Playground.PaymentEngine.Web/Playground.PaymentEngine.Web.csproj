@@ -23,11 +23,6 @@
         <None Include="ClientApp\tsconfig.json" />
     </ItemGroup>
 
-    <ItemGroup>
-      <_ContentIncludedByDefault Remove="ClientApp\payment-engine\package.json" />
-      <_ContentIncludedByDefault Remove="ClientApp\payment-engine\tsconfig.json" />
-    </ItemGroup>
-
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
         <!-- Ensure Node.js is installed -->
         <Exec Command="node --version" ContinueOnError="true">
