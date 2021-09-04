@@ -1,8 +1,9 @@
 using System.Xml.Serialization;
+using Playground.Core.Model;
 
 namespace Playground.PaymentEngine.Application.UseCases.Shared {
     [XmlRoot("setting")]
-    public record Setting {
+    public record Setting: Entity {
         [XmlAttribute("name")]
         public string Name { get; set; } = string.Empty;
         

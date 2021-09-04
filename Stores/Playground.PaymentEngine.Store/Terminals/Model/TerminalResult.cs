@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 using Playground.Core;
+using Playground.Core.Data;
 using Playground.PaymentEngine.Store.Model;
 
 namespace Playground.PaymentEngine.Store.Terminals.Model {

@@ -1,5 +1,6 @@
 using System.Xml.Serialization;
 using Playground.Core;
+using Playground.Core.Data;
 
 namespace Playground.PaymentEngine.Store.Model {
     [XmlRoot("setting")]
