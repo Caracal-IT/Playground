@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="2e8e1e59-b042-41af-9bcc-7a81feccfc80" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UI/Playground.PaymentEngine.Web/ClientApp/public/components/content.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UI/Playground.PaymentEngine.Web/ClientApp/public/components/footer.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UI/Playground.PaymentEngine.Web/ClientApp/public/components/header.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UI/Playground.PaymentEngine.Web/ClientApp/public/components/loader.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UI/Playground.PaymentEngine.Web/ClientApp/public/components/menu.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UI/Playground.PaymentEngine.Web/ClientApp/public/sirius/dist/caracal_sirius.es.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UI/Playground.PaymentEngine.Web/ClientApp/public/sirius/dist/caracal_sirius.umd.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UI/Playground.PaymentEngine.Web/ClientApp/public/undefined/demo.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UI/Playground.PaymentEngine.Web/ClientApp/public/wf-assets/css/caracal.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UI/Playground.PaymentEngine.Web/ClientApp/public/wf-assets/css/demo/demo.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UI/Playground.PaymentEngine.Web/ClientApp/public/wf-assets/css/demo/home.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UI/Playground.PaymentEngine.Web/ClientApp/public/wf-assets/css/demo/style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UI/Playground.PaymentEngine.Web/ClientApp/public/wf-assets/css/style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UI/Playground.PaymentEngine.Web/ClientApp/public/wf-assets/data/profile.data.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UI/Playground.PaymentEngine.Web/ClientApp/public/wf-assets/data/settings.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UI/Playground.PaymentEngine.Web/ClientApp/public/wf-assets/img/favicon.ico" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UI/Playground.PaymentEngine.Web/ClientApp/public/wf-assets/wf/account.wf.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UI/Playground.PaymentEngine.Web/ClientApp/public/wf-assets/wf/default.wf.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UI/Playground.PaymentEngine.Web/ClientApp/public/wf-assets/wf/demo.wf.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UI/Playground.PaymentEngine.Web/ClientApp/public/wf-assets/wf/home.wf.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UI/Playground.PaymentEngine.Web/ClientApp/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/UI/Playground.PaymentEngine.Web/ClientApp/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UI/Playground.PaymentEngine.Web/ClientApp/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/UI/Playground.PaymentEngine.Web/ClientApp/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UI/Playground.PaymentEngine.Web/ClientApp/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/UI/Playground.PaymentEngine.Web/ClientApp/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UI/Playground.PaymentEngine.Web/Playground.PaymentEngine.Web.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/UI/Playground.PaymentEngine.Web/Playground.PaymentEngine.Web.csproj" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1xi1BpQMi2UMPy5sQAuqcGwA4Cg" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2e8e1e59-b042-41af-9bcc-7a81feccfc80" name="Default Changelist" comment="" />
+      <created>1630822964458</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1630822964458</updated>
+      <workItem from="1630822967280" duration="5000" />
+      <workItem from="1630825041973" duration="3000" />
+      <workItem from="1630825159465" duration="1000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "caracal_sirius": "^1.0.0",
     "vue": "^3.2.6"
   },
   "devDependencies": {

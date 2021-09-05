@@ -5,9 +5,33 @@
     <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite App</title>
+    <script type="module" src="/sirius/dist/caracal_sirius.es.js"></script>
+
+      <link rel="stylesheet" href="/assets/css/demo/demo.css" />
+      <link rel="stylesheet" href="/assets/css/demo/style.css" />
+      <link rel="stylesheet" href="/assets/css/demo/home.css" />
+      
+      <script type="module" src="/components/header.js"></script>
+      <script type="module" src="/components/menu.js"></script>
+      <script type="module" src="/components/content.js"></script>
+      <script type="module" src="/components/loader.js"></script>
+      <script type="module" src="/components/footer.js"></script>
+
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+      <link rel="preconnect" href="https://fonts.gstatic.com">
+      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap" rel="stylesheet">
   </head>
   <body>
+    <!--
     <div id="app"></div>
+    -->
+    <sirius-wf
+            process="demo"
+            shadow="false"
+            url="/assets/data/settings.json">
+    </sirius-wf>
+    
     <script type="module" src="/src/main.ts"></script>
+    
   </body>
 </html>
