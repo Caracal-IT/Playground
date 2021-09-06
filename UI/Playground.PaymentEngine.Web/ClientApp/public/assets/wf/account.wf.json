@@ -39,7 +39,6 @@
             "type": "page-activity",
             "controls": [
                 {"tag": "h1", "innerText": "Confirm Account Details"},
-                {},
                 {"tag": "div", "className": "button-panel", "controls": [
                     {"tag": "button", "innerText": "Edit", "onClick": "ctx.wf.goto('landing')"}
                 ]} 
