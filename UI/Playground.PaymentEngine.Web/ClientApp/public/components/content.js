@@ -30,7 +30,7 @@ export class ContentComponent extends HTMLElement {
     onHashChange() {
         const act = window.location.hash.replace('#', '');
 
-        if(act === 'home' || act === 'account')
+        if(act === 'home' || act === 'account'|| act === 'withdrawals')
             this.wf.setAttribute('process', act);        
     }
 

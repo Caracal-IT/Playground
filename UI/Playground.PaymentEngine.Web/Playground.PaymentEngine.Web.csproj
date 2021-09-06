@@ -24,9 +24,14 @@
         <Content Include="ClientApp\public\assets\wf\default.wf.json" />
         <Content Include="ClientApp\public\assets\wf\demo.wf.json" />
         <Content Include="ClientApp\public\assets\wf\home.wf.json" />
+        <Content Include="ClientApp\public\assets\wf\withdrawals.wf.json" />
         <None Remove="$(SpaRoot)**" />
         <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
         <None Include="ClientApp\tsconfig.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="ClientApp\public\components\widgets" />
     </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

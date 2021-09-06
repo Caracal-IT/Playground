@@ -1,0 +1,29 @@
+{
+  "name": "withdrawals",
+  "activities": [
+    {
+      "name": "start",
+      "type": "api-activity",
+      "next": "landing",
+      "endpoints": [
+        {
+          "url": "/weatherforecast",
+          "method": "GET",
+          "mappings":[
+            {"client": "profile.name", "remote": "name", "direction": "in"}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "landing",
+      "type": "page-activity",
+      "controls": [
+        {
+          "tag": "h1",
+          "innerText": "Withdrawals"
+        }
+      ]
+    }
+  ]
+}

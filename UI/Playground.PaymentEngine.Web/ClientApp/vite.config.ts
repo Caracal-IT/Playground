@@ -6,6 +6,9 @@ export default defineConfig({
   server: {
     port: 7003,
     https: true,
+    proxy: {
+      "/weatherforecast": "https://localhost:7001/weatherforecast"
+    }
   },
   plugins: [vue()]
 })
