@@ -7,10 +7,10 @@
       "next": "landing",
       "endpoints": [
         {
-          "url": "/weatherforecast",
+          "url": "[API]WeatherForecast/1",
           "method": "GET",
           "mappings":[
-            {"client": "profile.name", "remote": "name", "direction": "in"}
+            {"client": "profile.summary", "remote": "summary", "direction": "in"}
           ]
         }
       ]
@@ -19,10 +19,8 @@
       "name": "landing",
       "type": "page-activity",
       "controls": [
-        {
-          "tag": "h1",
-          "innerText": "Withdrawals"
-        }
+        { "tag": "h1", "innerText": "Withdrawals" },
+        { "tag": "h1", "innerText": "{{profile.summary}}" }
       ]
     }
   ]

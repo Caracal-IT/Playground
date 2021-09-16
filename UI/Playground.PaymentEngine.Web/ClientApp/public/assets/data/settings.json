@@ -1,5 +1,6 @@
 {
     "[BASE]": "assets/",
     "[WF]": "[BASE]wf/[SELF].wf.json",
-    "[DATA]": "[BASE]data/[SELF].data.json"
+    "[DATA]": "[BASE]data/[SELF].data.json",
+    "[API]": "https://localhost:7001/[SELF]"
 }

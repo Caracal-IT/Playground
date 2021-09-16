@@ -6,6 +6,7 @@ using Playground.PaymentEngine.Store.Allocations.Model;
 using Playground.PaymentEngine.Store.Terminals.Model;
 using Playground.Router.Services;
 using Playground.Xml;
+
 using static Playground.Core.Hashing;
 using static Playground.Xml.Serialization.Serializer;
 
@@ -61,20 +62,8 @@ namespace Playground.PaymentEngine.Application.UseCases.Payments.Process {
             }
             
             async Task SaveResultsAsync() {
-                var results = items.SelectMany(i => i.Response).Select(MapResults);
+                var results = items.SelectMany(i => i.Response).Select(_mapper.Map<TerminalResult>);
                 await _terminalStore.LogTerminalResultsAsync(results, cancellationToken);
-            }
-
-            TerminalResult MapResults(ExportResponse response) {
-                return new TerminalResult {
-                    Code = response.Code,
-                    Date = DateTime.Now,
-                    Message = response.Message,
-                    Reference = response.Reference,
-                    Success = response.Code == "00",
-                    Terminal = response.Terminal,
-                    MetaData = _mapper.Map<List<Store.Model.MetaData>>(response.MetaData)
-                };
             }
 
             async Task UpdateStatusesAsync() {

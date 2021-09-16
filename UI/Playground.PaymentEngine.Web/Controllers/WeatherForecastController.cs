@@ -28,5 +28,14 @@ namespace Playground.PaymentEngine.Web.Controllers {
                 })
                 .ToArray();
         }
+        
+        [HttpGet("{id}")]
+        public WeatherForecast GetItem(int id) {
+            return new WeatherForecast {
+                    Date = DateTime.Now.AddDays(1),
+                    TemperatureC = Random.Shared.Next(-20, 55),
+                    Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+                };
+        }
     }
 }

@@ -7,7 +7,7 @@
             "next": "landing",
             "endpoints": [
                 {
-                    "url": "[DATA]/profile",
+                    "url": "[DATA]profile",
                     "method": "GET",
                     "mappings":[
                         {"client": "profile.name", "remote": "name", "direction": "in"}
