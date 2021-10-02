@@ -1,10 +1,10 @@
-namespace Playground.PaymentEngine.Application.UseCases.Deposits.DeleteDeposit {
-    public class DeleteDepositUseCase {
-        private readonly DepositStore _store;
+namespace Playground.PaymentEngine.Application.UseCases.Deposits.DeleteDeposit;
 
-        public DeleteDepositUseCase(DepositStore store) => _store = store;
+public class DeleteDepositUseCase {
+    private readonly DepositStore _store;
 
-        public async Task ExecuteAsync(long id, CancellationToken cancellationToken) => 
-            await _store.DeleteDepositsAsync(new []{id}, cancellationToken);
-    }
+    public DeleteDepositUseCase(DepositStore store) => _store = store;
+
+    public async Task ExecuteAsync(long id, CancellationToken cancellationToken) =>
+        await _store.DeleteDepositsAsync(new[] { id }, cancellationToken);
 }

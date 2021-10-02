@@ -1,15 +1,12 @@
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using Playground.Router.Clients;
+namespace Playground.Router;
 
-namespace Playground.Router {
-    public class RouterEngine : Engine {
-        private readonly ClientFactory _factory;
+using Clients;
 
-        public RouterEngine(ClientFactory factory) => _factory = factory;
+public class RouterEngine : Engine {
+    private readonly ClientFactory _factory;
 
-        public async Task<IEnumerable<Response>> ProcessAsync(Request request, CancellationToken cancellationToken) =>
-            await Transaction.ProcessAsync(request,  _factory, cancellationToken);
-    }
+    public RouterEngine(ClientFactory factory) => _factory = factory;
+
+    public async Task<IEnumerable<Response>> ProcessAsync(Request request, CancellationToken cancellationToken) =>
+        await Transaction.ProcessAsync(request,  _factory, cancellationToken);
 }

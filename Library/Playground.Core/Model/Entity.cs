@@ -1,8 +1,6 @@
-using System.Xml.Serialization;
+namespace Playground.Core.Model;
 
-namespace Playground.Core.Model {
-    public record Entity {
-        public long Id { get; set; }
-        public long TenantId { get; set; } = 1;
-    }
+public record Entity {
+    public long Id { get; set; }
+    public long TenantId { get; set; } = 1;
 }

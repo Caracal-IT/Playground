@@ -1,5 +1,5 @@
-namespace Playground.Router.Clients {
-    public interface ClientFactory {
-        Client Create(Terminal terminal);
-    }
+namespace Playground.Router.Clients;
+
+public interface ClientFactory {
+    Client Create(Terminal terminal);
 }

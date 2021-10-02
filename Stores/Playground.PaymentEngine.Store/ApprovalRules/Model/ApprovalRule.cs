@@ -1,15 +1,8 @@
-using System.Xml.Serialization;
-using Playground.Core;
-using Playground.Core.Data;
+namespace Playground.PaymentEngine.Store.ApprovalRules.Model;
 
-namespace Playground.PaymentEngine.Store.ApprovalRules.Model {
-    [XmlRoot("approval-rule")]
-    public class ApprovalRule: Entity {
-        [XmlAttribute("name")]
-        public string RuleName { get; set; } = "Rule1";
-        [XmlAttribute("isSuccessful")]
-        public bool IsSuccessful { get; set; }
-        [XmlAttribute("message")]
-        public string? Message { get; set; }
-    }
+[XmlRoot("approval-rule")]
+public class ApprovalRule : Entity {
+    [XmlAttribute("name")] public string RuleName { get; set; } = "Rule1";
+    [XmlAttribute("isSuccessful")] public bool IsSuccessful { get; set; }
+    [XmlAttribute("message")] public string? Message { get; set; }
 }

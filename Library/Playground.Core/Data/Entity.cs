@@ -1,10 +1,6 @@
-using System.Xml.Serialization;
+namespace Playground.Core.Data;
 
-namespace Playground.Core.Data {
-    public class Entity {
-        [XmlAttribute("id")]
-        public long Id { get; set; }
-        [XmlAttribute("tenant-id")]
-        public long TenantId { get; set; } = 1;
-    }
+public class Entity {
+    [XmlAttribute("id")] public long Id { get; set; }
+    [XmlAttribute("tenant-id")] public long TenantId { get; set; } = 1;
 }

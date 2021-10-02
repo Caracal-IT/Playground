@@ -1,11 +1,8 @@
-using System.IO;
-using System.Threading.Tasks;
+namespace Playground.XsltTransformTests.Extensions;
 
-namespace Playground.XsltTransformTests.Extensions {
-    public static class StringExtensions {
-        public static async Task<string> ReadFromFileAsync(this string path) {
-            using var sr = new StreamReader(path);
-            return await sr.ReadToEndAsync();
-        }
+public static class StringExtensions {
+    public static async Task<string> ReadFromFileAsync(this string path) {
+        using var sr = new StreamReader(path);
+        return await sr.ReadToEndAsync();
     }
 }

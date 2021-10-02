@@ -1,7 +1,5 @@
-using System;
+namespace Playground.PaymentEngine.Application.UseCases.Allocations.GetAllocations;
 
-namespace Playground.PaymentEngine.Application.UseCases.Allocations.GetAllocations {
-    public record GetAllocationsResponse {
-        public IEnumerable<Allocation> Allocations { get; set; } = Array.Empty<Allocation>();
-    }
+public record GetAllocationsResponse {
+    public IEnumerable<Allocation> Allocations { get; set; } = Array.Empty<Allocation>();
 }

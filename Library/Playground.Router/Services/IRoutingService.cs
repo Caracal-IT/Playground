@@ -1,11 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
+namespace Playground.Router.Services;
 
-namespace Playground.Router.Services {
-    public record RoutingRequest(Guid TransactionId, string Name, string Payload, IEnumerable<string> Terminals);
-    public interface IRoutingService {
-        Task<IEnumerable<Response>> SendAsync(RoutingRequest request, CancellationToken cancellationToken);
-    }
+public record RoutingRequest(Guid TransactionId, string Name, string Payload, IEnumerable<string> Terminals);
+
+public interface IRoutingService {
+    Task<IEnumerable<Response>> SendAsync(RoutingRequest request, CancellationToken cancellationToken);
 }

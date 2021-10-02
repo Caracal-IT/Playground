@@ -1,11 +1,11 @@
-namespace Playground.PaymentEngine.Application.UseCases.Withdrawals.ChangeWithdrawalStatus {
-    public class ChangeWithdrawalStatusUseCase {
-        private readonly WithdrawalStore _store;    
-        
-        public ChangeWithdrawalStatusUseCase(WithdrawalStore store) => 
-            _store = store;
+namespace Playground.PaymentEngine.Application.UseCases.Withdrawals.ChangeWithdrawalStatus;
 
-        public async Task ExecuteAsync(long id, long statusId, CancellationToken cancellationToken) =>
-            await _store.UpdateWithdrawalStatusAsync(new []{id}, statusId, cancellationToken);
-    }
+public class ChangeWithdrawalStatusUseCase {
+    private readonly WithdrawalStore _store;
+
+    public ChangeWithdrawalStatusUseCase(WithdrawalStore store) =>
+        _store = store;
+
+    public async Task ExecuteAsync(long id, long statusId, CancellationToken cancellationToken) =>
+        await _store.UpdateWithdrawalStatusAsync(new[] { id }, statusId, cancellationToken);
 }

@@ -1,19 +1,19 @@
 using Playground.Router.Clients.File;
 
-namespace Playground.Router.Clients {
-    public class DefaultClientFactory: ClientFactory {
-        private readonly HttpTerminalClient _httpClient;
-        private readonly FileTerminalClient _fileClient;
+namespace Playground.Router.Clients;
 
-        public DefaultClientFactory(HttpTerminalClient httpClient, FileTerminalClient fileClient) {
-            _httpClient = httpClient;
-            _fileClient = fileClient;
-        }
+public class DefaultClientFactory: ClientFactory {
+    private readonly HttpTerminalClient _httpClient;
+    private readonly FileTerminalClient _fileClient;
 
-        public Client Create(Terminal terminal) => terminal.Type.ToLower() switch {
-            "http" => _httpClient,
-            "stream" => _fileClient,
-            _ => _httpClient
-        };
+    public DefaultClientFactory(HttpTerminalClient httpClient, FileTerminalClient fileClient) {
+        _httpClient = httpClient;
+        _fileClient = fileClient;
     }
+
+    public Client Create(Terminal terminal) => terminal.Type.ToLower() switch {
+        "http" => _httpClient,
+        "stream" => _fileClient,
+        _ => _httpClient
+    };
 }

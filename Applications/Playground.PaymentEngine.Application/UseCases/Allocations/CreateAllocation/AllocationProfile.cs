@@ -1,9 +1,9 @@
+namespace Playground.PaymentEngine.Application.UseCases.Allocations.CreateAllocation;
+
 using Data = Playground.PaymentEngine.Store.Allocations.Model;
 
-namespace Playground.PaymentEngine.Application.UseCases.Allocations.CreateAllocation {
-    public class AllocationProfile: Profile {
-        public AllocationProfile() {
-            CreateMap<CreateAllocationRequest, Data.Allocation>();
-        }
+public class AllocationProfile: Profile {
+    public AllocationProfile() {
+        CreateMap<CreateAllocationRequest, Data.Allocation>();
     }
 }
