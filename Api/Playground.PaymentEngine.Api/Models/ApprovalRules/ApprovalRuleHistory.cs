@@ -1,13 +1,9 @@
-using System;
-using Playground.Core.Model;
-using Playground.PaymentEngine.Api.Models.Shared;
+namespace Playground.PaymentEngine.Api.Models.ApprovalRules;
 
-namespace Playground.PaymentEngine.Api.Models.ApprovalRules {
-    public record ApprovalRuleHistory: Entity {
-        public long WithdrawalGroupId { get; set; }
-        public Guid TransactionId { get; set; }
-        public DateTime TransactionDate { get; set; }
-        public List<MetaData> Metadata { get; set; } = new();
-        public List<ApprovalRule> Rules { get; set; } = new();
-    }
+public record ApprovalRuleHistory: Entity {
+    public long WithdrawalGroupId { get; set; }
+    public Guid TransactionId { get; set; }
+    public DateTime TransactionDate { get; set; }
+    public List<MetaData> Metadata { get; set; } = new();
+    public List<ApprovalRule> Rules { get; set; } = new();
 }

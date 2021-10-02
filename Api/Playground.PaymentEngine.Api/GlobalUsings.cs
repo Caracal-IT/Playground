@@ -1,3 +1,4 @@
+global using System;
 global using System.IO;
 global using Microsoft.AspNetCore.Builder;
 global using Microsoft.Extensions.FileProviders;

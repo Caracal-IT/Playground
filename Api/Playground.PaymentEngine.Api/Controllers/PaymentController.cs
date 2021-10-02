@@ -1,60 +1,60 @@
+namespace Playground.PaymentEngine.Api.Controllers; 
+
 using System.Text;
 using System.Text.Json;
 using System.Xml.Linq;
-using Playground.PaymentEngine.Application.UseCases.Payments.Callback;
-using Playground.PaymentEngine.Application.UseCases.Payments.Process;
-using Playground.Xml;
-using ExportResponse = Playground.PaymentEngine.Api.Models.Payments.ExportResponse;
-using ProcessRequest = Playground.PaymentEngine.Application.UseCases.Payments.Process.ProcessRequest;
-using ViewModel = Playground.PaymentEngine.Api.Models.Payments;
+using Application.UseCases.Payments.Callback;
+using Application.UseCases.Payments.Process;
+using Xml;
 
-namespace Playground.PaymentEngine.Api.Controllers {
-    [ApiController]
-    [Route("payments")]
-    public class PaymentController: ControllerBase {
-        private readonly IMapper _mapper;
-        
-        public PaymentController(IMapper mapper) => 
-            _mapper = mapper;
-        
-        [HttpPost("process")]
-        public async Task<ActionResult<IEnumerable<ExportResponse>>> ProcessAsync([FromServices] ProcessUseCase useCase, ProcessRequest request, CancellationToken cancellationToken) => 
-            await ExecuteAsync<ActionResult<IEnumerable<ExportResponse>>>(async () => {
-                var response = await useCase.ExecuteAsync(request, cancellationToken);
-                return Ok(_mapper.Map<IEnumerable<ExportResponse>>(response));
-            });
+using ExportResponse = Models.Payments.ExportResponse;
+using ProcessRequest = Application.UseCases.Payments.Process.ProcessRequest;
+using ViewModel = Models.Payments;
 
-        [HttpPost("process/xml/{method}/{reference}")]
-        [Produces("application/xml")]
-        public async Task<ActionResult<object>> ProcessXmlCallback([FromServices] CallbackUseCase useCase, [FromRoute] string method, [FromRoute] string reference, CancellationToken cancellationToken) =>
-            await ExecuteAsync(async () => {
-                using var reader = new StreamReader(Request.Body, Encoding.UTF8);
-                var body = await reader.ReadToEndAsync();
+[ApiController]
+[Route("payments")]
+public class PaymentController: ControllerBase {
+    private readonly IMapper _mapper;
+    
+    public PaymentController(IMapper mapper) => 
+        _mapper = mapper;
+    
+    [HttpPost("process")]
+    public async Task<ActionResult<IEnumerable<ExportResponse>>> ProcessAsync([FromServices] ProcessUseCase useCase, ProcessRequest request, CancellationToken cancellationToken) => 
+        await ExecuteAsync<ActionResult<IEnumerable<ExportResponse>>>(async () => {
+            var response = await useCase.ExecuteAsync(request, cancellationToken);
+            return Ok(_mapper.Map<IEnumerable<ExportResponse>>(response));
+        });
 
-                var request = new CallbackRequest {
-                    Action = method.ToLower(),
-                    Data = body.Trim().ReplaceLineEndings(string.Empty),
-                    Reference = reference
-                };
+    [HttpPost("process/xml/{method}/{reference}")]
+    [Produces("application/xml")]
+    public async Task<ActionResult<object>> ProcessXmlCallback([FromServices] CallbackUseCase useCase, [FromRoute] string method, [FromRoute] string reference, CancellationToken cancellationToken) =>
+        await ExecuteAsync(async () => {
+            using var reader = new StreamReader(Request.Body, Encoding.UTF8);
+            var body = await reader.ReadToEndAsync();
 
-                var response = await useCase.ExecuteAsync(request, cancellationToken);
-                return Ok(string.IsNullOrWhiteSpace(response.Response) ? null : XDocument.Parse(response.Response).Root);
-            });
+            var request = new CallbackRequest {
+                Action = method.ToLower(),
+                Data = body.Trim().ReplaceLineEndings(string.Empty),
+                Reference = reference
+            };
 
-        [HttpPost("process/json/{method}/{reference}")]
-        public async Task<ActionResult<object>> ProcessCallback([FromServices] CallbackUseCase useCase, [FromRoute] string method,
-            [FromRoute] string reference, [FromBody] JsonElement payload, CancellationToken cancellationToken) =>
-            await ExecuteAsync(async () => {
-                var xml = payload.GetRawText().ToXml("root");
+            var response = await useCase.ExecuteAsync(request, cancellationToken);
+            return Ok(string.IsNullOrWhiteSpace(response.Response) ? null : XDocument.Parse(response.Response).Root);
+        });
 
-                var request = new CallbackRequest {
-                    Action = method.ToLower(),
-                    Data = xml.Substring(6, xml.Length - 13),
-                    Reference = reference
-                };
+    [HttpPost("process/json/{method}/{reference}")]
+    public async Task<ActionResult<object>> ProcessCallback([FromServices] CallbackUseCase useCase, [FromRoute] string method, [FromRoute] string reference, [FromBody] JsonElement payload, CancellationToken cancellationToken) =>
+        await ExecuteAsync(async () => {
+            var xml = payload.GetRawText().ToXml("root");
 
-                var response = await useCase.ExecuteAsync(request, cancellationToken);
-                return response.Response.ToJson();
-            });
-    }
+            var request = new CallbackRequest {
+                Action = method.ToLower(),
+                Data = xml.Substring(6, xml.Length - 13),
+                Reference = reference
+            };
+
+            var response = await useCase.ExecuteAsync(request, cancellationToken);
+            return response.Response.ToJson();
+        });
 }

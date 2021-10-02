@@ -1,7 +1,5 @@
-using Playground.PaymentEngine.Api.Models.Shared;
+namespace Playground.PaymentEngine.Api.Models.Customers;
 
-namespace Playground.PaymentEngine.Api.Models.Customers {
-    public record CreateCustomerRequest(decimal Balance) {
-        public List<MetaData> MetaData { get; set; } = new();
-    }
+public record CreateCustomerRequest(decimal Balance) {
+    public List<MetaData> MetaData { get; set; } = new();
 }

@@ -1,8 +1,7 @@
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.OData;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Playground.PaymentEngine.Application.UseCases.Shared;
+using SharedProfile = Playground.PaymentEngine.Application.UseCases.Shared.SharedProfile;
 
 var builder = WebApplication.CreateBuilder(args);
 

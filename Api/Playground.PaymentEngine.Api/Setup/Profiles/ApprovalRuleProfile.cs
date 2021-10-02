@@ -1,15 +1,14 @@
-using Playground.PaymentEngine.Api.Models.ApprovalRules;
+namespace Playground.PaymentEngine.Api.Setup.Profiles;
+
 using ApprovalRules = Playground.PaymentEngine.Application.UseCases.ApprovalRules;
 using RunApprovalRules = Playground.PaymentEngine.Application.UseCases.ApprovalRules.RunApprovalRules;
 
-using ViewModel = Playground.PaymentEngine.Api.Models.ApprovalRules;
+using ViewModel = Models.ApprovalRules;
 
-namespace Playground.PaymentEngine.Api.Setup.Profiles {
-    public class ApprovalRuleProfile: Profile {
-        public ApprovalRuleProfile() {
-            CreateMap<RunApprovalRules.ApprovalRuleOutcome, ApprovalRuleOutcome>();
-            CreateMap<ApprovalRules.ApprovalRuleHistory, ApprovalRuleHistory>();
-            CreateMap<ApprovalRules.ApprovalRule, ApprovalRule>();
-        }
+public class ApprovalRuleProfile: Profile {
+    public ApprovalRuleProfile() {
+        CreateMap<RunApprovalRules.ApprovalRuleOutcome, ViewModel.ApprovalRuleOutcome>();
+        CreateMap<ApprovalRules.ApprovalRuleHistory, ViewModel.ApprovalRuleHistory>();
+        CreateMap<ApprovalRules.ApprovalRule, ViewModel.ApprovalRule>();
     }
 }

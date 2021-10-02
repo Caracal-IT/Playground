@@ -1,14 +1,12 @@
-using System.Text.Json.Serialization;
+namespace Playground.PaymentEngine.External.Mock.Api.Rebilly;
 
-namespace Playground.PaymentEngine.External.Mock.Api.Rebilly {
-    public class RBCallbackResponse {
-        [JsonPropertyName("name")] 
-        public string Name { get; set; }
-        
-        [JsonPropertyName("reference")]
-        public string Reference { get; set; }
+public class RBCallbackResponse {
+    [JsonPropertyName("name")] 
+    public string Name { get; set; }
+    
+    [JsonPropertyName("reference")]
+    public string Reference { get; set; }
 
-        [JsonPropertyName("code")]
-        public string Code { get; set; }
-    }
+    [JsonPropertyName("code")]
+    public string Code { get; set; }
 }

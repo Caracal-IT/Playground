@@ -1,7 +1,5 @@
-using System.Collections.Generic;
+namespace Playground.PaymentEngine.Api.Terminals.Functions;
 
-namespace Playground.PaymentEngine.Api.Terminals.Functions {
-    public interface XsltExtensions {
-        Dictionary<string, object> GetExtensions();
-    }
+public interface XsltExtensions {
+    Dictionary<string, object> GetExtensions();
 }

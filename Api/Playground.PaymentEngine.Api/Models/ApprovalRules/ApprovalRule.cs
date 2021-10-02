@@ -1,9 +1,7 @@
-using Playground.Core.Model;
+namespace Playground.PaymentEngine.Api.Models.ApprovalRules;
 
-namespace Playground.PaymentEngine.Api.Models.ApprovalRules {
-    public record ApprovalRule: Entity {
-        public string RuleName { get; set; }
-        public bool IsSuccessful { get; set; }
-        public string Message { get; set; }
-    }
+public record ApprovalRule: Entity {
+    public string RuleName { get; set; }
+    public bool IsSuccessful { get; set; }
+    public string Message { get; set; }
 }
