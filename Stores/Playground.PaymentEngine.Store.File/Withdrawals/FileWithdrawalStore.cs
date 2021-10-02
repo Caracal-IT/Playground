@@ -24,12 +24,12 @@ public class FileWithdrawalStore : FileStore, WithdrawalStore {
         return Task.FromResult(withdrawal);
     }
 
-    public Task<IEnumerable<Withdrawal>> GetWithdrawalsAsync(CancellationToken cancellationToken) =>
-        Task.FromResult(_data.Withdrawals.Where(w => !w.IsDeleted).AsEnumerable());
+    public Task<IQueryable<Withdrawal>> GetWithdrawalsAsync(CancellationToken cancellationToken) =>
+        Task.FromResult(_data.Withdrawals.Where(w => !w.IsDeleted).AsQueryable());
 
-    public async Task<IEnumerable<Withdrawal>> GetWithdrawalsAsync(IEnumerable<long> withdrawalIds, CancellationToken cancellationToken) {
+    public async Task<IQueryable<Withdrawal>> GetWithdrawalsAsync(IEnumerable<long> withdrawalIds, CancellationToken cancellationToken) {
         var result = await GetWithdrawalsAsync(cancellationToken);
-        return result.Where(w => withdrawalIds.Contains(w.Id));
+        return result.Where(w => withdrawalIds.Contains(w.Id)).AsQueryable();
     }
 
     public async Task DeleteWithdrawalsAsync(IEnumerable<long> withdrawalIds, CancellationToken cancellationToken) {

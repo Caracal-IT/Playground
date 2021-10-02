@@ -24,7 +24,7 @@ public class WithdrawalController: ControllerBase {
     public async Task<ActionResult<IEnumerable<Withdrawal>>> GetAsync([FromServices] GetWithdrawalsUseCase useCase, CancellationToken cancellationToken) =>
         await ExecuteAsync(async () => {
             var result = await useCase.ExecuteAsync(cancellationToken);
-            return Ok(_mapper.Map<IEnumerable<Withdrawal>>(result.Withdrawals));
+            return Ok(_mapper.ProjectTo<Withdrawal>(result.Withdrawals));
         });
     
     [HttpPost]

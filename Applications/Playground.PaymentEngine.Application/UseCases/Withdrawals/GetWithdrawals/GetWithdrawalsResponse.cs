@@ -3,5 +3,5 @@ namespace Playground.PaymentEngine.Application.UseCases.Withdrawals.GetWithdrawa
 using static System.Array;
 
 public record GetWithdrawalsResponse {
-    public IEnumerable<Withdrawal> Withdrawals { get; set; } = Empty<Withdrawal>();
+    public IQueryable<Withdrawal> Withdrawals { get; set; } = Empty<Withdrawal>().AsQueryable();
 }

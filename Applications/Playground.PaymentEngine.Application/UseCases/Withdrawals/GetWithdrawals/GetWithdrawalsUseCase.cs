@@ -11,6 +11,6 @@ public class GetWithdrawalsUseCase {
     
     public async Task<GetWithdrawalsResponse> ExecuteAsync(CancellationToken cancellationToken) {
         var withdrawals = await _store.GetWithdrawalsAsync(cancellationToken);
-        return new GetWithdrawalsResponse { Withdrawals = _mapper.Map<IEnumerable<Withdrawal>>(withdrawals)};
+        return new GetWithdrawalsResponse { Withdrawals = _mapper.ProjectTo<Withdrawal>(withdrawals)};
     }
 }
