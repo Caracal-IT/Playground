@@ -32,6 +32,7 @@
 
     <ItemGroup>
       <Folder Include="ClientApp\public\components\widgets" />
+      <Folder Include="ClientApp\src\plugins" />
     </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
