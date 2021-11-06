@@ -5,6 +5,8 @@ Content-Type: application/json
 >> responses/allocations.json
 
 > {%
+    client.log(response.body)
+    
     client.global.set("allocation-id", response.body[1].id);
     
     client.test("Request executed successfully", function() {
