@@ -1,0 +1,10 @@
+### Process the payments
+POST {{baseUrl}}/payments/process
+Content-Type: application/json
+
+{
+  "consolidate": true,
+  "allocations": [ 189, 190, 200, 201, 202, 203 ]
+}
+
+>> responses/payments_process.json

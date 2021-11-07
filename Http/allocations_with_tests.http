@@ -1,0 +1,37 @@
+### Get a list of all the allocations
+GET {{baseUrl}}/allocations
+Content-Type: application/json
+
+>> responses/allocations.json
+
+> {%
+    client.log(response.body)
+    
+    client.global.set("allocation-id", response.body[1].id);
+    
+    client.test("Request executed successfully", function() {
+       client.assert(response.status === 200, "Response status is not 200");
+    });
+    
+    client.test("Second allocation id is 190", function() {
+       client.assert(response.body[1].id === 190, "allocation id is not 190");
+    });
+%}
+
+### Get request {{allocation-id}}
+GET {{baseUrl}}/allocations/{{allocation-id}}
+Content-Type: application/json
+
+>> responses/allocations_190.json
+
+> {%
+    client.test("Request executed successfully", function() {
+       client.assert(response.status === 200, "Response status is not 200");
+    });
+    
+    client.test("Second allocation id is 190", function() {
+       client.assert(response.body.id === 190, "allocation id is not 190");
+    });
+%}
+
+

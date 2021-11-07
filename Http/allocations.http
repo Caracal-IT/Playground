@@ -4,34 +4,37 @@ Content-Type: application/json
 
 >> responses/allocations.json
 
-> {%
-    client.log(response.body)
-    
-    client.global.set("allocation-id", response.body[1].id);
-    
-    client.test("Request executed successfully", function() {
-       client.assert(response.status === 200, "Response status is not 200");
-    });
-    
-    client.test("Second allocation id is 190", function() {
-       client.assert(response.body[1].id === 190, "allocation id is not 190");
-    });
-%}
-
-### Get request {{allocation-id}}
-GET {{baseUrl}}/allocations/{{allocation-id}}
+### Get request 190
+GET {{baseUrl}}/allocations/190
 Content-Type: application/json
 
 >> responses/allocations_190.json
 
-> {%
-    client.test("Request executed successfully", function() {
-       client.assert(response.status === 200, "Response status is not 200");
-    });
-    
-    client.test("Second allocation id is 190", function() {
-       client.assert(response.body.id === 190, "allocation id is not 190");
-    });
-%}
+### Create Allocations
+POST {{baseUrl}}/allocations
+Content-Type: application/json
 
+{
+  "withdrawalGroupId": 1,
+  "accountId": 267,
+  "amount": 13.00,
+  "charge": 0.00
+}
 
+>> responses/allocations_new.json
+
+### Delete Allocation 189
+DELETE {{baseUrl}}/allocations/189
+Content-Type: application/json
+
+>> responses/allocations_delete.json
+
+### Auto Allocate
+POST {{baseUrl}}/allocations/auto-allocate
+Content-Type: application/json
+
+{
+  "withdrawalGroups": [ 1, 2 ]
+}
+
+>> responses/allocations_auto_allocate.json

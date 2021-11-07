@@ -1,0 +1,21 @@
+### Run the approval rules
+POST {{baseUrl}}/approval-rules/run
+Content-Type: application/json
+
+{
+  "withdrawalGroups": [ 1, 2 ]
+}
+
+>> responses//approval-rules_run.json
+
+### Get Approval Rule Histories
+GET {{baseUrl}}/approval-rules/history
+Content-Type: application/json
+
+>> responses//approval-rules.json
+
+### Get Last Run Approval Rule
+GET {{baseUrl}}/approval-rules/history/last-run
+Content-Type: application/json
+
+>> responses//approval-rules-last.json
