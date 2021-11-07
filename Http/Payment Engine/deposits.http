@@ -1,0 +1,41 @@
+### Get the deposits
+GET {{baseUrl}}/deposits
+Content-Type: application/json
+
+>> responses/deposits.json
+
+### Get the filtered deposits
+GET {{baseUrl}}/deposits?filter=Amount gt 50 and Id eq 3&select=Id,Amount&orderby=Amount
+Content-Type: application/json
+
+>> responses/deposits_filter.json
+
+### Get the deposits with id 2
+GET {{baseUrl}}/deposits/2
+Content-Type: application/json
+
+>> responses/deposits_2.json
+
+### Create new deposit
+POST {{baseUrl}}/deposits
+Content-Type: application/json
+
+{
+  "accountId": 267,
+  "amount": 70.00,
+  "depositDate": "2020-01-11T00:00:00",
+  "metaData": [
+    {
+      "name": "Country",
+      "value": "Germany"
+    }
+  ]
+}
+
+>> responses/deposits_new.json
+
+### Delete deposit
+DELETE {{baseUrl}}/deposits/2
+Content-Type: application/json
+
+>> responses/deposits_2_delete.json

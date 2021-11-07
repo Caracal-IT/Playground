@@ -1,0 +1,21 @@
+### Get the withdrawal groups
+GET {{baseUrl}}/withdrawals/groups
+Content-Type: application/json
+
+>> responses/withdrawal_groups.json
+
+### UnGroup Withdrawals
+DELETE {{baseUrl}}/withdrawals/groups/3
+Content-Type: application/json
+
+>> responses/withdrawal_groups_undo.json
+
+### Group Withdrawals
+POST {{baseUrl}}/withdrawals/groups
+Content-Type: application/json
+
+{
+  "Withdrawals": [4, 5]
+}
+
+>> responses/withdrawal_groups_new.json

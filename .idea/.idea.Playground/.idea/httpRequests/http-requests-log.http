@@ -1,0 +1,423 @@
+GET https://localhost:5001/deposits?filter=Amount gt 50 and Id eq 3&select=Id,Amount&orderby=Amount
+Content-Type: application/json
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/Payment Engine/responses/deposits_filter.json
+
+###
+
+GET https://localhost:5001/deposits?filter=Amount gt 50 and Id eq 3&select=Id,Amount&orderby=Amount
+Content-Type: application/json
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/Payment Engine/responses/deposits-1.json
+
+###
+
+GET https://localhost:5001/withdrawals?filter=Amount gt 50 and Id eq 3&select=Id,Balance&orderby=Balance
+Content-Type: application/json
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/Payment Engine/responses/withdrawals.json
+
+###
+
+GET https://localhost:5001/deposits?filter=Amount gt 50 and Id eq 3&select=Id,Balance&orderby=Balance
+Content-Type: application/json
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/Payment Engine/responses/deposits.json
+
+###
+
+GET https://localhost:5001/customers?filter=Amount gt 50 and Id eq 3&select=Id,Balance&orderby=Balance
+Content-Type: application/json
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/Payment Engine/responses/customers-3.json
+
+###
+
+GET https://localhost:5001/customers
+Content-Type: application/json
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/Payment Engine/responses/customers-2.json
+
+###
+
+GET https://localhost:5001/customers/44
+Content-Type: application/json
+
+###
+
+DELETE https://localhost:5001/customers/44
+Content-Type: application/json
+
+###
+
+PATCH https://localhost:5001/customers/44
+Content-Type: application/json
+
+{
+  "balance": null,
+  "metaData": [
+    {
+      "name": "ProductId",
+      "value": "5001",
+      "remove": false
+    }
+  ]
+}
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/Payment Engine/responses/customers_44_update.json
+
+###
+
+GET https://localhost:5001/customers
+Content-Type: application/json
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/Payment Engine/responses/customers-1.json
+
+###
+
+POST https://localhost:5001/customers
+Content-Type: application/json
+
+{    
+    "metaData": [
+        {
+            "name": "firstName",
+            "value": "Joe"
+        },
+        {
+            "name": "lastName",
+            "value": "Soap"
+        },
+        {
+            "name": "hasKYC",
+            "value": "true"
+        }
+    ]
+}
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/Payment Engine/responses/customers_new.json
+
+###
+
+GET https://localhost:5001/customers/44
+Content-Type: application/json
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/Payment Engine/responses/customers_44.json
+
+###
+
+GET https://localhost:5001/customers
+Content-Type: application/json
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/Payment Engine/responses/customers.json
+
+###
+
+GET https://localhost:5001/deposits
+Content-Type: application/json
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/responses/deposits-3.json
+
+###
+
+DELETE https://localhost:5001/deposits/2
+Content-Type: application/json
+
+###
+
+GET https://localhost:5001/deposits
+Content-Type: application/json
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/responses/deposits-2.json
+
+###
+
+POST https://localhost:5001/deposits
+Content-Type: application/json
+
+{
+  "accountId": 267,
+  "amount": 70.00,
+  "depositDate": "2020-01-11T00:00:00",
+  "metaData": [
+    {
+      "name": "Country",
+      "value": "Germany"
+    }
+  ]
+}
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/responses/deposits_2.json
+
+###
+
+GET https://localhost:5001/deposits/2
+Content-Type: application/json
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/responses/deposits-1.json
+
+###
+
+GET https://localhost:5001/deposits
+Content-Type: application/json
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/responses/deposits.json
+
+###
+
+GET https://localhost:5001/withdrawals
+Content-Type: application/json
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/responses/withdrawals-3.json
+
+###
+
+POST https://localhost:5001/withdrawals
+Content-Type: application/json
+
+{
+  "customerId": 45,
+  "amount": 70.00
+}
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/responses/withdrawals_new.json
+
+###
+
+GET https://localhost:5001/withdrawals
+Content-Type: application/json
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/responses/withdrawals-2.json
+
+###
+
+DELETE https://localhost:5001/withdrawals/2
+Content-Type: application/json
+
+###
+
+GET https://localhost:5001/withdrawals/2
+Content-Type: application/json
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/responses/withdrawals-1.json
+
+###
+
+GET https://localhost:5001/withdrawals
+Content-Type: application/json
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/responses/withdrawals.json
+
+###
+
+GET https://localhost:5001/withdrawals/groups
+Content-Type: application/json
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/responses/withdrawal_groups-1.json
+
+###
+
+POST https://localhost:5001/withdrawals/groups
+Content-Type: application/json
+
+{
+  "Withdrawals": [4, 5]
+}
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/responses/withdrawal_groups_new.json
+
+###
+
+DELETE https://localhost:5001/withdrawals/groups/3
+Content-Type: application/json
+
+###
+
+GET https://localhost:5001/withdrawals/groups
+Content-Type: application/json
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/responses/withdrawal_groups.json
+
+###
+
+GET https://localhost:5001/approval-rules/history/last-run
+Content-Type: application/json
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/responses/approval-rules-last.json
+
+###
+
+GET https://localhost:5001/approval-rules/history
+Content-Type: application/json
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/responses/approval-rules.json
+
+###
+
+GET https://localhost:5001/approval-rules/run
+Content-Type: application/json
+
+###
+
+POST https://localhost:5001/approval-rules/run
+Content-Type: application/json
+
+{
+  "withdrawalGroups": [ 1, 2 ]
+}
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/responses/approval-rules_run.json
+
+###
+
+POST https://localhost:5001/payments/process
+Content-Type: application/json
+
+{
+  "consolidate": true,
+  "allocations": [ 189, 190, 200, 201, 202, 203 ]
+}
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/responses/payments_process.json
+
+###
+
+POST https://localhost:5001/allocations/auto-allocate
+Content-Type: application/json
+
+{
+  "withdrawalGroups": [ 1, 2 ]
+}
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/responses/allocations_auto_allocate-2.json
+
+###
+
+POST https://localhost:5001/payments/process
+Content-Type: application/json
+
+{
+  "consolidate": true,
+  "allocations": [ 189, 190, 200, 201, 202, 203 ]
+}
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/responses/payments.json
+
+###
+
+GET https://localhost:5001/payments/process
+Content-Type: application/json
+
+{
+  "consolidate": true,
+  "allocations": [ 189, 190, 200, 201, 202, 203 ]
+}
+
+###
+
+POST https://localhost:5001/allocations/auto-allocate
+Content-Type: application/json
+
+{
+  "withdrawalGroups": [ 1, 2 ]
+}
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/responses/allocations_auto_allocate-1.json
+
+###
+
+POST https://localhost:5001/allocations/auto-allocate
+Content-Type: application/json
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/responses/allocations_auto_allocate.json
+
+###
+
+POST https://localhost:5001/allocations/auto-allocate
+Content-Type: application/json
+
+###
+
+POST https://localhost:5001/allocations/auto-allocate
+Content-Type: application/json
+
+###
+
+DELETE https://localhost:5001/allocations/189
+Content-Type: application/json
+
+###
+
+GET https://localhost:5001/allocations
+Content-Type: application/json
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/responses/allocations-2.json
+
+###
+
+DELETE https://localhost:5001/allocations/189
+Content-Type: application/json
+
+###
+
+GET https://localhost:5001/allocations
+Content-Type: application/json
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/responses/allocations-1.json
+
+###
+
+DELETE https://localhost:5001/allocations/190
+Content-Type: application/json
+
+###
+
+GET https://localhost:5001/allocations
+Content-Type: application/json
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/responses/allocations.json
+
+###
+
+POST https://localhost:5001/allocations
+Content-Type: application/json
+
+{
+  "withdrawalGroupId": 1,
+  "accountId": 267,
+  "amount": 13.00,
+  "charge": 0.00
+}
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/responses/allocations_new.json
+
+###
+
+POST https://localhost:5001/allocations
+Content-Type: application/json
+
+{
+  "withdrawalGroupId": 1,
+  "accountId": 267,
+  "amount": 13.00,
+  "charge": 0.00
+}
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/responses/allocations_new.json
+
+###
+
+POST https://localhost:5001/allocations
+Content-Type: application/json
+
+{
+  "withdrawalGroupId": 1,
+  "accountId": 267,
+  "amount": 13.00,
+  "charge": 0.00
+}
+
+<> 2021-11-07T083745.200.json
+
+###
+

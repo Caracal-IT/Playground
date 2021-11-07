@@ -1,0 +1,57 @@
+### Get the customers
+GET {{baseUrl}}/customers
+Content-Type: application/json
+
+>> responses/customers.json
+
+### Get the customer 44
+GET {{baseUrl}}/customers/44
+Content-Type: application/json
+
+>> responses/customers_44.json
+
+### Create a new customer
+POST {{baseUrl}}/customers
+Content-Type: application/json
+
+{    
+    "metaData": [
+        {
+            "name": "firstName",
+            "value": "Joe"
+        },
+        {
+            "name": "lastName",
+            "value": "Soap"
+        },
+        {
+            "name": "hasKYC",
+            "value": "true"
+        }
+    ]
+}
+
+>> responses/customers_new.json
+
+### Update customer 44
+PATCH {{baseUrl}}/customers/44
+Content-Type: application/json
+
+{
+  "balance": null,
+  "metaData": [
+    {
+      "name": "ProductId",
+      "value": "5001",
+      "remove": false
+    }
+  ]
+}
+
+>> responses/customers_44_update.json
+
+### Delete Customer 44
+DELETE {{baseUrl}}/customers/44
+Content-Type: application/json
+
+>> responses/customers_44_delete.json

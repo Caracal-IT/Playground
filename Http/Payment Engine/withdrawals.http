@@ -1,0 +1,28 @@
+### Get the withdrawals
+GET {{baseUrl}}/withdrawals
+Content-Type: application/json
+
+>> responses/withdrawals.json
+
+### Get withdrawal 2
+GET {{baseUrl}}/withdrawals/2
+Content-Type: application/json
+
+>> responses/withdrawals_2.json
+
+### Delete withdrawal 2
+DELETE {{baseUrl}}/withdrawals/2
+Content-Type: application/json
+
+>> responses/withdrawals_2_delete.json
+
+### Create new withdrawal
+POST {{baseUrl}}/withdrawals
+Content-Type: application/json
+
+{
+  "customerId": 45,
+  "amount": 70.00
+}
+
+>> responses/withdrawals_new.json
