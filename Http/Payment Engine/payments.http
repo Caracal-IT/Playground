@@ -1,0 +1,34 @@
+### Process the payments
+POST {{baseUrl}}/payments/process
+Content-Type: application/json
+
+{
+  "consolidate": true,
+  "allocations": [ 189, 190, 200, 201, 202, 203 ]
+}
+
+>> responses/payments_process.json
+
+### Payment Callback Xml
+POST {{baseUrl}}/payments/process/xml/callback/7af9c4945a2e250aadede96cd207b285
+Content-Type: application/xml
+
+<callback>
+    <ref>Kate</ref>
+    <status>00</status>
+</callback>
+
+>> responses/payments_callback_xml.json
+
+### Payment Callback Json
+POST {{baseUrl}}/payments/process/json/callback/7af9c4945a2e250aadede96cd207b285
+Content-Type: application/json
+
+{   
+  "callback" : {
+    "ref" : "Ettiene",
+    "status": "00"
+  }
+}
+
+>> responses/payments_callback_json.json
