@@ -1,3 +1,15 @@
+GET https://localhost:5001/allocations/190
+Content-Type: application/json
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/Payment Engine/responses/allocations_190.json
+
+###
+
+GET https://localhost:5001/allocations/190
+Content-Type: application/json
+
+###
+
 GET https://localhost:5001/deposits?filter=Amount gt 50 and Id eq 3&select=Id,Amount&orderby=Amount
 Content-Type: application/json
 
@@ -390,34 +402,6 @@ Content-Type: application/json
 }
 
 <> /Users/ettienemare/Documents/Development/CS/Playground/Http/responses/allocations_new.json
-
-###
-
-POST https://localhost:5001/allocations
-Content-Type: application/json
-
-{
-  "withdrawalGroupId": 1,
-  "accountId": 267,
-  "amount": 13.00,
-  "charge": 0.00
-}
-
-<> /Users/ettienemare/Documents/Development/CS/Playground/Http/responses/allocations_new.json
-
-###
-
-POST https://localhost:5001/allocations
-Content-Type: application/json
-
-{
-  "withdrawalGroupId": 1,
-  "accountId": 267,
-  "amount": 13.00,
-  "charge": 0.00
-}
-
-<> 2021-11-07T083745.200.json
 
 ###
 

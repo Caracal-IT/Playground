@@ -9,10 +9,10 @@ using Playground.PaymentEngine.Application.UseCases.Allocations.GetAllocations;
 
 public static class AllocationSetup {
     public static void Setup(WebApplicationBuilder builder) {
-        builder.Services.AddSingleton<AutoAllocateUseCase>();
-        builder.Services.AddSingleton<GetAllocationsUseCase>();
-        builder.Services.AddSingleton<GetAllocationUseCase>();
-        builder.Services.AddSingleton<CreateAllocationUseCase>();
-        builder.Services.AddSingleton<DeleteAllocationUseCase>();
+        builder.Services.AddTransient<AutoAllocateUseCase>();
+        builder.Services.AddTransient<GetAllocationsUseCase>();
+        builder.Services.AddTransient<GetAllocationUseCase>();
+        builder.Services.AddTransient<CreateAllocationUseCase>();
+        builder.Services.AddTransient<DeleteAllocationUseCase>();
     }
 }

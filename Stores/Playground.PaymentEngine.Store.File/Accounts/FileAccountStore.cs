@@ -11,6 +11,11 @@ public class FileAccountStore : FileStore, AccountStore {
         _cacheService = cacheService;
         _data = GetRepository<AccountData>();
     }
+    
+    public AccountStore Clone()
+    {
+        return this;
+    }
 
     public Task<Account> GetAccountAsync(long id, CancellationToken cancellationToken) {
         var result = _cacheService.GetValue(
@@ -35,4 +40,6 @@ public class FileAccountStore : FileStore, AccountStore {
 
         return Task.FromResult(result);
     }
+
+    public void Dispose() { }
 }

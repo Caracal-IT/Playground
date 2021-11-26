@@ -6,7 +6,7 @@ using Playground.PaymentEngine.Application.UseCases.Payments.Process;
 
 public static class PaymentSetup {
     public static void Setup(WebApplicationBuilder builder) {
-        builder.Services.AddSingleton<ProcessUseCase>();
-        builder.Services.AddSingleton<CallbackUseCase>();
+        builder.Services.AddTransient<ProcessUseCase>();
+        builder.Services.AddTransient<CallbackUseCase>();
     }
 }

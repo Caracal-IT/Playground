@@ -101,6 +101,7 @@ public class ProcessUseCase {
             });
     }
 
+    private object _lockObj = new();
     private async Task<IEnumerable<ExportAllocation>> GetExportAllocationsAsync(IEnumerable<long> allocationIds, CancellationToken cancellationToken) {
         var allocations = await allocationIds.Select(GetExportAllocationAsync).WhenAll(50);
         return allocations.Where(a => a.AccountId > 0);
@@ -109,9 +110,11 @@ public class ProcessUseCase {
             var allocs = await _allocationStore.GetAllocationsAsync(new[] { allocationId }, cancellationToken);
             var allocation = allocs.FirstOrDefault() ?? new Allocation();
 
-            var account = await _accountStore.GetAccountAsync(allocation.AccountId, cancellationToken);
-
-            return new ExportAllocation {
+            using var store = _accountStore.Clone();
+            var account = await store.GetAccountAsync(allocation.AccountId, cancellationToken);
+            
+            return new ExportAllocation
+            {
                 AllocationId = allocation.Id,
                 Amount = allocation.Amount + allocation.Charge,
                 AccountId = account.Id,

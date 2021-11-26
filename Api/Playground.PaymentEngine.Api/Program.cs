@@ -1,6 +1,10 @@
 using Microsoft.AspNetCore.OData;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Playground.PaymentEngine.Store.EF.Accounts;
+using Playground.Router;
 using SharedProfile = Playground.PaymentEngine.Application.UseCases.Shared.SharedProfile;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +24,11 @@ builder.Services.AddControllers()
 builder.Services.AddMvc()
                 .AddXmlSerializerFormatters()
                 .AddXmlDataContractSerializerFormatters();
+
+builder.Services.AddDbContext<EFAccountStore>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")),
+    ServiceLifetime.Singleton
+);
 
 builder.Services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "Playground PaymentEngine Api", Version = "v1" }); });
 

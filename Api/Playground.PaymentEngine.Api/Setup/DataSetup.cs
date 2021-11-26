@@ -1,3 +1,5 @@
+using Playground.PaymentEngine.Store.EF.Accounts;
+
 namespace Playground.PaymentEngine.Api.Setup;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -19,7 +21,7 @@ using Store.Withdrawals;
 public static class DataSetup {
     public static void Setup(WebApplicationBuilder builder) {
         builder.Services.AddSingleton<WithdrawalStore, FileWithdrawalStore>();
-        builder.Services.AddSingleton<AccountStore, FileAccountStore>();
+        builder.Services.AddTransient<AccountStore, EFAccountStore>(); //FileAccountStore
         builder.Services.AddSingleton<AllocationStore, FileAllocationStore>();
         builder.Services.AddSingleton<ApprovalRuleStore, FileApprovalRuleStore>();
         builder.Services.AddSingleton<CustomerStore, FileCustomerStore>();
