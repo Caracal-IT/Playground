@@ -12,8 +12,8 @@ using Playground.PaymentEngine.Store.EF.Accounts;
 namespace Playground.PaymentEngine.Store.EF.Migrations
 {
     [DbContext(typeof(EFAccountStore))]
-    [Migration("20211125224048_setup")]
-    partial class setup
+    [Migration("20211127050352_account_setup")]
+    partial class account_setup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -56,11 +56,38 @@ namespace Playground.PaymentEngine.Store.EF.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1L,
-                            AccountTypeId = 1L,
+                            Id = 267L,
+                            AccountTypeId = 88L,
                             CustomerId = 2L,
                             Exposure = 30.0m,
+                            IsPreferredAccount = false,
+                            TenantId = 1L
+                        },
+                        new
+                        {
+                            Id = 300L,
+                            AccountTypeId = 90L,
+                            CustomerId = 44L,
+                            Exposure = 132.0m,
                             IsPreferredAccount = true,
+                            TenantId = 1L
+                        },
+                        new
+                        {
+                            Id = 567L,
+                            AccountTypeId = 98L,
+                            CustomerId = 44L,
+                            Exposure = 3.0m,
+                            IsPreferredAccount = false,
+                            TenantId = 1L
+                        },
+                        new
+                        {
+                            Id = 747L,
+                            AccountTypeId = 88L,
+                            CustomerId = 74L,
+                            Exposure = 0m,
+                            IsPreferredAccount = false,
                             TenantId = 1L
                         });
                 });
@@ -95,10 +122,28 @@ namespace Playground.PaymentEngine.Store.EF.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1L,
+                            Id = 88L,
                             Charge = 0m,
                             Name = "Visa",
                             ProcessOrder = 0,
+                            TenantId = 1L,
+                            Threshold = 0m
+                        },
+                        new
+                        {
+                            Id = 90L,
+                            Charge = 0m,
+                            Name = "MasterCard",
+                            ProcessOrder = 1,
+                            TenantId = 1L,
+                            Threshold = 0m
+                        },
+                        new
+                        {
+                            Id = 98L,
+                            Charge = 0m,
+                            Name = "PayPal",
+                            ProcessOrder = 2,
                             TenantId = 1L,
                             Threshold = 0m
                         });
@@ -136,10 +181,90 @@ namespace Playground.PaymentEngine.Store.EF.Migrations
                         new
                         {
                             Id = 1L,
-                            AccountId = 1L,
-                            Name = "AccountHolder",
+                            AccountId = 267L,
+                            Name = "account-holder",
                             TenantId = 1L,
-                            Value = "Kate"
+                            Value = "E.L. Marè"
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            AccountId = 267L,
+                            Name = "card-number",
+                            TenantId = 1L,
+                            Value = "123556456"
+                        },
+                        new
+                        {
+                            Id = 3L,
+                            AccountId = 267L,
+                            Name = "cvc",
+                            TenantId = 1L,
+                            Value = "547"
+                        },
+                        new
+                        {
+                            Id = 4L,
+                            AccountId = 300L,
+                            Name = "account-holder",
+                            TenantId = 1L,
+                            Value = "Kate Summers"
+                        },
+                        new
+                        {
+                            Id = 5L,
+                            AccountId = 300L,
+                            Name = "card-number",
+                            TenantId = 1L,
+                            Value = "556688112"
+                        },
+                        new
+                        {
+                            Id = 6L,
+                            AccountId = 300L,
+                            Name = "cvc",
+                            TenantId = 1L,
+                            Value = "556"
+                        },
+                        new
+                        {
+                            Id = 7L,
+                            AccountId = 567L,
+                            Name = "account",
+                            TenantId = 1L,
+                            Value = "ettiene@test.com"
+                        },
+                        new
+                        {
+                            Id = 8L,
+                            AccountId = 567L,
+                            Name = "sub-account",
+                            TenantId = 1L,
+                            Value = "savings"
+                        },
+                        new
+                        {
+                            Id = 9L,
+                            AccountId = 747L,
+                            Name = "account-holder",
+                            TenantId = 1L,
+                            Value = "Kate Moss"
+                        },
+                        new
+                        {
+                            Id = 10L,
+                            AccountId = 747L,
+                            Name = "card-number",
+                            TenantId = 1L,
+                            Value = "8675894885776"
+                        },
+                        new
+                        {
+                            Id = 11L,
+                            AccountId = 747L,
+                            Name = "cvc",
+                            TenantId = 1L,
+                            Value = "101"
                         });
                 });
 

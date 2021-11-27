@@ -16,8 +16,13 @@ public class ProcessUseCase {
     private readonly AccountStore _accountStore;
     private readonly IMapper _mapper;
 
-    public ProcessUseCase(AllocationStore allocationStore, AccountStore accountStore, TerminalStore terminalStore, IRoutingService routingService,
-        IMapper mapper) {
+    public ProcessUseCase(
+        AllocationStore allocationStore, 
+        AccountStore accountStore, 
+        TerminalStore terminalStore, 
+        IRoutingService routingService,
+        IMapper mapper) 
+    {
         _accountStore = accountStore;
         _allocationStore = allocationStore;
         _terminalStore = terminalStore;
@@ -66,7 +71,7 @@ public class ProcessUseCase {
         }
 
         async Task UpdateStatusesAsync() {
-            await items.Select(SetStatusAsync).WhenAll(50);
+            await items.Select(SetStatusAsync).WhenAll(maxConcurrentRequests: 50);
 
             async Task SetStatusAsync(ExportData data) {
                 var response = data.Response.FirstOrDefault(i => i.Code == "00") ?? new ExportResponse();
@@ -103,15 +108,15 @@ public class ProcessUseCase {
 
     private object _lockObj = new();
     private async Task<IEnumerable<ExportAllocation>> GetExportAllocationsAsync(IEnumerable<long> allocationIds, CancellationToken cancellationToken) {
-        var allocations = await allocationIds.Select(GetExportAllocationAsync).WhenAll(50);
-        return allocations.Where(a => a.AccountId > 0);
+        var accounts = _accountStore.GetAccounts();
+        var exportAllocations = await allocationIds.Select(GetExportAllocationAsync).WhenAll(maxConcurrentRequests: 50);
+        return exportAllocations.Where(a => a.AccountId > 0);
 
         async Task<ExportAllocation> GetExportAllocationAsync(long allocationId) {
-            var allocs = await _allocationStore.GetAllocationsAsync(new[] { allocationId }, cancellationToken);
-            var allocation = allocs.FirstOrDefault() ?? new Allocation();
+            var allocations = await _allocationStore.GetAllocationsAsync(new[] { allocationId }, cancellationToken);
+            var allocation = allocations.FirstOrDefault() ?? new Allocation();
 
-            using var store = _accountStore.Clone();
-            var account = await store.GetAccountAsync(allocation.AccountId, cancellationToken);
+            var account = accounts.First(a => a.Id == allocation.AccountId);
             
             return new ExportAllocation
             {

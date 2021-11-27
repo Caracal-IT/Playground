@@ -4,7 +4,7 @@ using Model;
 
 public interface AccountStore: IDisposable
 {
-    AccountStore Clone();
+    IQueryable<Account> GetAccounts();
     Task<Account> GetAccountAsync(long id, CancellationToken cancellationToken);
     Task<IEnumerable<Account>> GetCustomerAccountsAsync(long id, CancellationToken cancellationToken);
     Task<IEnumerable<AccountType>> GetAccountTypesAsync(IEnumerable<long> accountTypeIds, CancellationToken cancellationToken);

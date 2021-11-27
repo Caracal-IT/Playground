@@ -12,10 +12,8 @@ public class FileAccountStore : FileStore, AccountStore {
         _data = GetRepository<AccountData>();
     }
     
-    public AccountStore Clone()
-    {
-        return this;
-    }
+    public IQueryable<Account> GetAccounts() => 
+        _data.Accounts.AsQueryable();
 
     public Task<Account> GetAccountAsync(long id, CancellationToken cancellationToken) {
         var result = _cacheService.GetValue(

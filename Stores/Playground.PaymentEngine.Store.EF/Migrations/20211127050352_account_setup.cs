@@ -5,7 +5,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Playground.PaymentEngine.Store.EF.Migrations
 {
-    public partial class setup : Migration
+    public partial class account_setup : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -82,19 +82,43 @@ namespace Playground.PaymentEngine.Store.EF.Migrations
                 schema: "accounts",
                 table: "AccountType",
                 columns: new[] { "Id", "Charge", "Name", "ProcessOrder", "TenantId", "Threshold" },
-                values: new object[] { 1L, 0m, "Visa", 0, 1L, 0m });
+                values: new object[,]
+                {
+                    { 88L, 0m, "Visa", 0, 1L, 0m },
+                    { 90L, 0m, "MasterCard", 1, 1L, 0m },
+                    { 98L, 0m, "PayPal", 2, 1L, 0m }
+                });
 
             migrationBuilder.InsertData(
                 schema: "accounts",
                 table: "Account",
                 columns: new[] { "Id", "AccountTypeId", "CustomerId", "Exposure", "IsPreferredAccount", "TenantId" },
-                values: new object[] { 1L, 1L, 2L, 30.0m, true, 1L });
+                values: new object[,]
+                {
+                    { 267L, 88L, 2L, 30.0m, false, 1L },
+                    { 300L, 90L, 44L, 132.0m, true, 1L },
+                    { 567L, 98L, 44L, 3.0m, false, 1L },
+                    { 747L, 88L, 74L, 0m, false, 1L }
+                });
 
             migrationBuilder.InsertData(
                 schema: "accounts",
                 table: "MetaData",
                 columns: new[] { "Id", "AccountId", "Name", "TenantId", "Value" },
-                values: new object[] { 1L, 1L, "AccountHolder", 1L, "Kate" });
+                values: new object[,]
+                {
+                    { 1L, 267L, "account-holder", 1L, "E.L. Marè" },
+                    { 2L, 267L, "card-number", 1L, "123556456" },
+                    { 3L, 267L, "cvc", 1L, "547" },
+                    { 4L, 300L, "account-holder", 1L, "Kate Summers" },
+                    { 5L, 300L, "card-number", 1L, "556688112" },
+                    { 6L, 300L, "cvc", 1L, "556" },
+                    { 7L, 567L, "account", 1L, "ettiene@test.com" },
+                    { 8L, 567L, "sub-account", 1L, "savings" },
+                    { 9L, 747L, "account-holder", 1L, "Kate Moss" },
+                    { 10L, 747L, "card-number", 1L, "8675894885776" },
+                    { 11L, 747L, "cvc", 1L, "101" }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Account_AccountTypeId",
