@@ -3,10 +3,16 @@ namespace Playground.PaymentEngine.Store.EF.Accounts;
 
 public partial class EFAccountStore {
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseNpgsql(
-            "Server=127.0.0.1;Port=5433;Database=playground;User Id=postgres;Password=postgress;");
+        => optionsBuilder.UseNpgsql("Server=127.0.0.1;Port=5433;Database=playground;User Id=postgres;Password=postgress;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
+        CreateModel(modelBuilder);
+        CreateDefaults(modelBuilder);
+
+        base.OnModelCreating(modelBuilder);
+    }
+
+    private static void CreateModel(ModelBuilder modelBuilder) {
         modelBuilder
             .Entity<AccountType>()
             .ToTable("AccountType", "accounts");
@@ -19,12 +25,12 @@ public partial class EFAccountStore {
         modelBuilder
             .Entity<MetaData>()
             .ToTable("MetaData", "accounts");
+    }
 
+    private static void CreateDefaults(ModelBuilder modelBuilder) {
         modelBuilder.Entity<AccountType>().HasData(DefaultAccountTypes);
         modelBuilder.Entity<Account>().HasData(DefaultAccounts);
         modelBuilder.Entity<MetaData>().HasData(DefaultMetadata);
-
-        base.OnModelCreating(modelBuilder);
     }
 
     private static object[] DefaultAccountTypes => new object[] {
