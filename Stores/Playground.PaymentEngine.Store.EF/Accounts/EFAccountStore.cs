@@ -73,9 +73,9 @@ public class EFAccountStore: DbContext, AccountStore
     }
 
     private object[] GetDefaultAccountTypes() => new object[] {
-        new AccountType {Id = 88, Name = "Visa",       ProcessOrder = 0, TenantId = 1},
-        new AccountType {Id = 90, Name = "MasterCard", ProcessOrder = 1, TenantId = 1},
-        new AccountType {Id = 98, Name = "PayPal",     ProcessOrder = 2, TenantId = 1}
+        new AccountType {Id = 88, Name = "Visa",       Threshold = 500, ProcessOrder = 0, TenantId = 1},
+        new AccountType {Id = 90, Name = "MasterCard", Threshold = 500, ProcessOrder = 1, TenantId = 1},
+        new AccountType {Id = 98, Name = "PayPal",     Threshold = 0,   ProcessOrder = 2, TenantId = 1}
     };
     
     private object[] GetDefaultAccounts() => new object[] {

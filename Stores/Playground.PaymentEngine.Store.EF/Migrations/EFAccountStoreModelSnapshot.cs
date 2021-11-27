@@ -125,7 +125,7 @@ namespace Playground.PaymentEngine.Store.EF.Migrations
                             Name = "Visa",
                             ProcessOrder = 0,
                             TenantId = 1L,
-                            Threshold = 0m
+                            Threshold = 500m
                         },
                         new
                         {
@@ -134,7 +134,7 @@ namespace Playground.PaymentEngine.Store.EF.Migrations
                             Name = "MasterCard",
                             ProcessOrder = 1,
                             TenantId = 1L,
-                            Threshold = 0m
+                            Threshold = 500m
                         },
                         new
                         {

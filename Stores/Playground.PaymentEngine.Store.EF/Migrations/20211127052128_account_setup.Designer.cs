@@ -12,7 +12,7 @@ using Playground.PaymentEngine.Store.EF.Accounts;
 namespace Playground.PaymentEngine.Store.EF.Migrations
 {
     [DbContext(typeof(EFAccountStore))]
-    [Migration("20211127050352_account_setup")]
+    [Migration("20211127052128_account_setup")]
     partial class account_setup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -127,7 +127,7 @@ namespace Playground.PaymentEngine.Store.EF.Migrations
                             Name = "Visa",
                             ProcessOrder = 0,
                             TenantId = 1L,
-                            Threshold = 0m
+                            Threshold = 500m
                         },
                         new
                         {
@@ -136,7 +136,7 @@ namespace Playground.PaymentEngine.Store.EF.Migrations
                             Name = "MasterCard",
                             ProcessOrder = 1,
                             TenantId = 1L,
-                            Threshold = 0m
+                            Threshold = 500m
                         },
                         new
                         {

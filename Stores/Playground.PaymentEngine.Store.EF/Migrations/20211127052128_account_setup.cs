@@ -84,8 +84,8 @@ namespace Playground.PaymentEngine.Store.EF.Migrations
                 columns: new[] { "Id", "Charge", "Name", "ProcessOrder", "TenantId", "Threshold" },
                 values: new object[,]
                 {
-                    { 88L, 0m, "Visa", 0, 1L, 0m },
-                    { 90L, 0m, "MasterCard", 1, 1L, 0m },
+                    { 88L, 0m, "Visa", 0, 1L, 500m },
+                    { 90L, 0m, "MasterCard", 1, 1L, 500m },
                     { 98L, 0m, "PayPal", 2, 1L, 0m }
                 });
 
