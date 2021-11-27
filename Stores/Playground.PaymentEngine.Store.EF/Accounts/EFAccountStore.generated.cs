@@ -2,6 +2,12 @@
 namespace Playground.PaymentEngine.Store.EF.Accounts;
 
 public partial class EFAccountStore {
+    public EFAccountStore() { }
+
+    public EFAccountStore(DbContextOptions<EFAccountStore> options) : base(options) { }
+
+    protected EFAccountStore(DbContextOptions contextOptions) : base(contextOptions) { }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseNpgsql("Server=127.0.0.1;Port=5433;Database=playground;User Id=postgres;Password=postgress;");
 
