@@ -16,12 +16,7 @@ public class ProcessUseCase {
     private readonly AccountStore _accountStore;
     private readonly IMapper _mapper;
 
-    public ProcessUseCase(
-        AllocationStore allocationStore, 
-        AccountStore accountStore, 
-        TerminalStore terminalStore, 
-        IRoutingService routingService,
-        IMapper mapper) 
+    public ProcessUseCase(AllocationStore allocationStore, AccountStore accountStore, TerminalStore terminalStore, IRoutingService routingService, IMapper mapper) 
     {
         _accountStore = accountStore;
         _allocationStore = allocationStore;
@@ -78,7 +73,7 @@ public class ProcessUseCase {
                 var statusId = response.Code == "00" ? 4 : 5;
                 var terminal = response.Terminal;
 
-                await data.Allocations.Select(SetAllocationStatusAsync).WhenAll(50);
+                await data.Allocations.Select(SetAllocationStatusAsync).WhenAll(maxConcurrentRequests: 50);
 
                 async Task SetAllocationStatusAsync(ExportAllocation ea) =>
                     await _allocationStore.SetAllocationStatusAsync(ea.AllocationId, statusId, terminal!, data.Reference, cancellationToken);
@@ -105,8 +100,7 @@ public class ProcessUseCase {
                 MetaData = a.MetaData
             });
     }
-
-    private object _lockObj = new();
+    
     private async Task<IEnumerable<ExportAllocation>> GetExportAllocationsAsync(IEnumerable<long> allocationIds, CancellationToken cancellationToken) {
         var accounts = _accountStore.GetAccounts();
         var exportAllocations = await allocationIds.Select(GetExportAllocationAsync).WhenAll(maxConcurrentRequests: 50);
