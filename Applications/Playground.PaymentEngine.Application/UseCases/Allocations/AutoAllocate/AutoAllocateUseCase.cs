@@ -51,7 +51,8 @@ public class AutoAllocateUseCase {
         var accounts = accountEnum.ToList();
         var accountTypes = await _accountStore.GetAccountTypesAsync(accounts.Select(a => a.AccountTypeId), cancellationToken);
 
-        var orderedAccounts = accounts.Join(
+        var orderedAccounts = accounts
+            .Join(
                 accountTypes, 
                 a => a.AccountTypeId, 
                 t => t.Id, 
