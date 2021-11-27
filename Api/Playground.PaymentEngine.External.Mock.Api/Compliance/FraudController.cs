@@ -5,7 +5,7 @@ namespace Playground.PaymentEngine.External.Mock.Api.Compliance;
 public class FraudController: ControllerBase {
     [HttpPost("Validate")]
     public ValidateCustomerResponse ValidateCustomer(ValidateCustomerRequest request, CancellationToken cancellationToken) =>
-        new ValidateCustomerResponse {
+        new() {
             IsValid = request.CustomerId != 74
         };
 }

@@ -1,11 +1,11 @@
-namespace Playground.Rules.CustomActions.Terminal;
-
 using Playground.Router.Services;
 using Playground.Xml;
 using RulesEngine.Actions;
 using RulesEngine.Models;
 
 using static Playground.Xml.Serialization.Serializer;
+
+namespace Playground.Rules.CustomActions.Terminal;
 
 public class TerminalAction : ActionBase {
     private readonly IRoutingService _routingService;

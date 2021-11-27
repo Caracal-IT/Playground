@@ -6,6 +6,8 @@ using Store.Accounts.Model;
 using Data = Playground.PaymentEngine.Store.Allocations.Model;
 
 public class AutoAllocateUseCase {
+    private const short MaxConcurrentRequests = 50;
+    
     private readonly IMapper _mapper;
     private readonly AccountStore _accountStore;
     private readonly WithdrawalStore _withdrawalStore;
@@ -22,9 +24,12 @@ public class AutoAllocateUseCase {
 
     public async Task<AutoAllocateResponse> ExecuteAsync(IEnumerable<long> withdrawalGroups, CancellationToken cancellationToken) {
         var groups = withdrawalGroups.ToList();
-        await groups.Select(RemoveAllocationsAsync).WhenAll(50);
+        await groups.Select(RemoveAllocationsAsync)
+                    .WhenAll(MaxConcurrentRequests);
         
-        var results = await groups.Select(w => AllocateFundsAsync(w, cancellationToken)).WhenAll(50);
+        var results = await groups.Select(w => AllocateFundsAsync(w, cancellationToken))
+                                  .WhenAll(MaxConcurrentRequests);
+        
         return new AutoAllocateResponse { AllocationResults = results.SelectMany(a => a).ToList() };
 
         async Task RemoveAllocationsAsync(long withdrawalGroupId) =>

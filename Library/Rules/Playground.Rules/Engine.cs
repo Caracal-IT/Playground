@@ -1,10 +1,10 @@
-﻿namespace Playground.Rules;
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Playground.PaymentEngine.Rules.Store;
 using Playground.Rules.CustomActions.Terminal;
 using RulesEngine.Actions;
 using RulesEngine.Models;
+
+namespace Playground.Rules;
 
 public class Engine {
     private readonly RuleStore _ruleStore;
@@ -16,13 +16,6 @@ public class Engine {
         _terminalAction = terminalAction;
         _customActions = GetCustomActions();
     }
-
-    public Task<IEnumerable<Result>> ExecuteAsync<T>(
-        string workflowName, 
-        T request, 
-        Dictionary<string, Func<ActionBase>> customActions, 
-        CancellationToken cancellationToken) 
-        => ExecuteAsync(workflowName, request, cancellationToken, null, customActions);
     
     public Task<IEnumerable<Result>> ExecuteAsync<T>(
         string workflowName, 
