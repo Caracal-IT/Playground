@@ -10,7 +10,7 @@ using static Core.Hashing;
 using static Xml.Serialization.Serializer;
 
 public class ProcessUseCase {
-    private const short MaxConcurrentRequests = 1;
+    private const short MaxConcurrentRequests = 50;
     
     private readonly TerminalStore _terminalStore;
     private readonly IRoutingService _routingService;
