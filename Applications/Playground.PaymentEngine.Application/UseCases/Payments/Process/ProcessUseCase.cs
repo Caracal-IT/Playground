@@ -10,6 +10,8 @@ using static Core.Hashing;
 using static Xml.Serialization.Serializer;
 
 public class ProcessUseCase {
+    private const short MaxConcurrentRequests = 50;
+    
     private readonly TerminalStore _terminalStore;
     private readonly IRoutingService _routingService;
     private readonly AllocationStore _allocationStore;
@@ -30,7 +32,7 @@ public class ProcessUseCase {
         var allocations = await GetExportAllocationsAsync(request.Allocations, cancellationToken);
         var items = (request.Consolidate ? GetConsolidated() : GetExportData()).ToList();
 
-        await items.Select(ExportAsync).WhenAll(maxConcurrentRequests: 50);
+        await items.Select(ExportAsync).WhenAll(MaxConcurrentRequests);
 
         await UpdateStatusesAsync();
         await SaveResultsAsync();
@@ -66,14 +68,14 @@ public class ProcessUseCase {
         }
 
         async Task UpdateStatusesAsync() {
-            await items.Select(SetStatusAsync).WhenAll(maxConcurrentRequests: 50);
+            await items.Select(SetStatusAsync).WhenAll(MaxConcurrentRequests);
 
             async Task SetStatusAsync(ExportData data) {
                 var response = data.Response.FirstOrDefault(i => i.Code == "00") ?? new ExportResponse();
                 var statusId = response.Code == "00" ? 4 : 5;
                 var terminal = response.Terminal;
 
-                await data.Allocations.Select(SetAllocationStatusAsync).WhenAll(maxConcurrentRequests: 50);
+                await data.Allocations.Select(SetAllocationStatusAsync).WhenAll(MaxConcurrentRequests);
 
                 async Task SetAllocationStatusAsync(ExportAllocation ea) =>
                     await _allocationStore.SetAllocationStatusAsync(ea.AllocationId, statusId, terminal!, data.Reference, cancellationToken);
@@ -103,7 +105,7 @@ public class ProcessUseCase {
     
     private async Task<IEnumerable<ExportAllocation>> GetExportAllocationsAsync(IEnumerable<long> allocationIds, CancellationToken cancellationToken) {
         var accounts = _accountStore.GetAccounts();
-        var exportAllocations = await allocationIds.Select(GetExportAllocationAsync).WhenAll(maxConcurrentRequests: 50);
+        var exportAllocations = await allocationIds.Select(GetExportAllocationAsync).WhenAll(MaxConcurrentRequests);
         return exportAllocations.Where(a => a.AccountId > 0);
 
         async Task<ExportAllocation> GetExportAllocationAsync(long allocationId) {
