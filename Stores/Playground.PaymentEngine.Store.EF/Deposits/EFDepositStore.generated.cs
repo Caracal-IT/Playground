@@ -24,7 +24,7 @@ public partial class EFDepositStore {
             .Entity<Deposit>()
             .ToTable("Deposit", "deposits")
             .Property(e => e.DepositDate)
-            .HasConversion(v => v, v => DateTime.SpecifyKind(v, DateTimeKind.Utc));;
+            .HasConversion(v => v, v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
         
         modelBuilder
             .Entity<MetaData>()
@@ -36,10 +36,10 @@ public partial class EFDepositStore {
     }
 
     private static object[] DefaultDeposits => new object[] {
-        new Deposit{Id = 2, AccountId = 267, Amount = 220.0M, TenantId = 1, DepositDate = new DateTime(2021, 02, 10, 0, 0, 0, 0, DateTimeKind.Utc)},
-        new Deposit{Id = 3, AccountId = 267, Amount = 110.0M, TenantId = 1, DepositDate = new DateTime(2021, 02, 11, 0, 0, 0, 0, DateTimeKind.Utc)},
-        new Deposit{Id = 4, AccountId = 300, Amount = 200.0M, TenantId = 1, DepositDate = new DateTime(2021, 06, 15, 0, 0, 0, 0, DateTimeKind.Utc)},
-        new Deposit{Id = 5, AccountId = 567, Amount = 30.0M,  TenantId = 1, DepositDate = new DateTime(2021, 06, 17, 0, 0, 0, 0, DateTimeKind.Utc)},
-        new Deposit{Id = 6, AccountId = 747, Amount = 670.0M, TenantId = 1, DepositDate = new DateTime(2021, 07, 15, 0, 0, 0, 0, DateTimeKind.Utc)}
+        new {Id = 2L, AccountId = 267L, Amount = 220.0M, TenantId = 1L, DepositDate = new DateTime(2021, 02, 10, 0, 0, 0, 0, DateTimeKind.Utc)},
+        new {Id = 3L, AccountId = 267L, Amount = 110.0M, TenantId = 1L, DepositDate = new DateTime(2021, 02, 11, 0, 0, 0, 0, DateTimeKind.Utc)},
+        new {Id = 4L, AccountId = 300L, Amount = 200.0M, TenantId = 1L, DepositDate = new DateTime(2021, 06, 15, 0, 0, 0, 0, DateTimeKind.Utc)},
+        new {Id = 5L, AccountId = 567L, Amount = 30.0M,  TenantId = 1L, DepositDate = new DateTime(2021, 06, 17, 0, 0, 0, 0, DateTimeKind.Utc)},
+        new {Id = 6L, AccountId = 747L, Amount = 670.0M, TenantId = 1L, DepositDate = new DateTime(2021, 07, 15, 0, 0, 0, 0, DateTimeKind.Utc)}
     };
 }

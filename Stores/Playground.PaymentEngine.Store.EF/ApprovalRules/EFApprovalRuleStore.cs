@@ -2,15 +2,24 @@
 namespace Playground.PaymentEngine.Store.EF.ApprovalRules;
 
 public partial class EFApprovalRuleStore: DbContext, ApprovalRuleStore {
-    public Task<IEnumerable<ApprovalRuleHistory>> GetRuleHistoriesAsync(CancellationToken cancellationToken) {
-        throw new System.NotImplementedException();
-    }
+    private DbSet<ApprovalRuleHistory> ApprovalRuleHistories { get; set; } = null!;
 
-    public Task<IEnumerable<ApprovalRuleHistory>> GetLastRunApprovalRulesAsync(CancellationToken cancellationToken) {
-        throw new System.NotImplementedException();
-    }
+    public async Task<IEnumerable<ApprovalRuleHistory>> GetRuleHistoriesAsync(CancellationToken cancellationToken) =>
+        await ApprovalRuleHistories.Include(a => a.Rules)
+                                   .Include(a => a.Metadata)
+                                   .ToListAsync(cancellationToken);
 
-    public Task AddRuleHistoriesAsync(IEnumerable<ApprovalRuleHistory> histories, CancellationToken cancellationToken) {
-        throw new System.NotImplementedException();
+    public async Task<IEnumerable<ApprovalRuleHistory>> GetLastRunApprovalRulesAsync(CancellationToken cancellationToken) =>
+        await ApprovalRuleHistories.Include(a => a.Rules)
+                                   .Include(a => a.Metadata)
+                                   .GroupBy(
+                                       r => r.WithdrawalGroupId, 
+                                       (_, h) => h.OrderByDescending(i => i.TransactionDate)
+                                                  .First())
+                                   .ToListAsync(cancellationToken);
+    
+    public async Task AddRuleHistoriesAsync(IEnumerable<ApprovalRuleHistory> histories, CancellationToken cancellationToken) {
+        ApprovalRuleHistories.AddRange(histories);
+        await SaveChangesAsync(cancellationToken);
     }
 }

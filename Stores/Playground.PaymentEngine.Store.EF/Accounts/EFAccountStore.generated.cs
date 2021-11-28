@@ -40,32 +40,32 @@ public partial class EFAccountStore {
     }
 
     private static object[] DefaultAccountTypes => new object[] {
-        new AccountType {Id = 88, Name = "Visa",       Threshold = 500, ProcessOrder = 0, TenantId = 1},
-        new AccountType {Id = 90, Name = "MasterCard", Threshold = 500, ProcessOrder = 1, TenantId = 1},
-        new AccountType {Id = 98, Name = "PayPal",     Threshold = 0,   ProcessOrder = 2, TenantId = 1}
+        new {Id = 88L, Name = "Visa",       Charge = 0M, Threshold = 500M, ProcessOrder = 0, TenantId = 1L},
+        new {Id = 90L, Name = "MasterCard", Charge = 0M, Threshold = 500M, ProcessOrder = 1, TenantId = 1L},
+        new {Id = 98L, Name = "PayPal",     Charge = 0M, Threshold = 0M,   ProcessOrder = 2, TenantId = 1L}
     };
 
     private static object[] DefaultAccounts => new object[] {
-        new Account {Id = 267, AccountTypeId = 88, CustomerId = 2,  Exposure = 30.0M,  IsPreferredAccount = false, TenantId = 1},
-        new Account {Id = 300, AccountTypeId = 90, CustomerId = 44, Exposure = 132.0M, IsPreferredAccount = true,  TenantId = 1},
-        new Account {Id = 567, AccountTypeId = 98, CustomerId = 44, Exposure = 3.0M,   IsPreferredAccount = false, TenantId = 1},
-        new Account {Id = 747, AccountTypeId = 88, CustomerId = 74, Exposure = 0M,     IsPreferredAccount = false, TenantId = 1}
+        new {Id = 267L, AccountTypeId = 88L, CustomerId = 2L,  Exposure = 30.0M,  IsPreferredAccount = false, TenantId = 1L},
+        new {Id = 300L, AccountTypeId = 90L, CustomerId = 44L, Exposure = 132.0M, IsPreferredAccount = true,  TenantId = 1L},
+        new {Id = 567L, AccountTypeId = 98L, CustomerId = 44L, Exposure = 3.0M,   IsPreferredAccount = false, TenantId = 1L},
+        new {Id = 747L, AccountTypeId = 88L, CustomerId = 74L, Exposure = 0M,     IsPreferredAccount = false, TenantId = 1L}
     };
 
     private static object[] DefaultMetadata => new object[] {
-        new AccountMetaData {Id = 1,  Name = "account-holder", Value = "E.L. Marè",        AccountId = 267, TenantId = 1},
-        new AccountMetaData {Id = 2,  Name = "card-number",    Value = "123556456",        AccountId = 267, TenantId = 1},
-        new AccountMetaData {Id = 3,  Name = "cvc",            Value = "547",              AccountId = 267, TenantId = 1},
+        new {Id = 1L,  Name = "account-holder", Value = "E.L. Marè",        AccountId = 267L, TenantId = 1L},
+        new {Id = 2L,  Name = "card-number",    Value = "123556456",        AccountId = 267L, TenantId = 1L},
+        new {Id = 3L,  Name = "cvc",            Value = "547",              AccountId = 267L, TenantId = 1L},
 
-        new AccountMetaData {Id = 4,  Name = "account-holder", Value = "Kate Summers",     AccountId = 300, TenantId = 1},
-        new AccountMetaData {Id = 5,  Name = "card-number",    Value = "556688112",        AccountId = 300, TenantId = 1},
-        new AccountMetaData {Id = 6,  Name = "cvc",            Value = "556",              AccountId = 300, TenantId = 1},
+        new {Id = 4L,  Name = "account-holder", Value = "Kate Summers",     AccountId = 300L, TenantId = 1L},
+        new {Id = 5L,  Name = "card-number",    Value = "556688112",        AccountId = 300L, TenantId = 1L},
+        new {Id = 6L,  Name = "cvc",            Value = "556",              AccountId = 300L, TenantId = 1L},
 
-        new AccountMetaData {Id = 7,  Name = "account",        Value = "ettiene@test.com", AccountId = 567, TenantId = 1},
-        new AccountMetaData {Id = 8,  Name = "sub-account",    Value = "savings",          AccountId = 567, TenantId = 1},
+        new {Id = 7L,  Name = "account",        Value = "ettiene@test.com", AccountId = 567L, TenantId = 1L},
+        new {Id = 8L,  Name = "sub-account",    Value = "savings",          AccountId = 567L, TenantId = 1L},
 
-        new AccountMetaData {Id = 9,  Name = "account-holder", Value = "Kate Moss",        AccountId = 747, TenantId = 1},
-        new AccountMetaData {Id = 10, Name = "card-number",    Value = "8675894885776",    AccountId = 747, TenantId = 1},
-        new AccountMetaData {Id = 11, Name = "cvc",            Value = "101",              AccountId = 747, TenantId = 1}
+        new {Id = 9L,  Name = "account-holder", Value = "Kate Moss",        AccountId = 747L, TenantId = 1L},
+        new {Id = 10L, Name = "card-number",    Value = "8675894885776",    AccountId = 747L, TenantId = 1L},
+        new {Id = 11L, Name = "cvc",            Value = "101",              AccountId = 747L, TenantId = 1L}
     };
 }

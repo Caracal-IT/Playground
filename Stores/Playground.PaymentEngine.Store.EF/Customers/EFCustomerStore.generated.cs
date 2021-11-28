@@ -33,16 +33,16 @@ public partial class EFCustomerStore {
     }
     
     private static object[] DefaultCustomers => new object[] {
-        new Customer {Id = 44, Balance = 3400.0M, TenantId = 1},
-        new Customer {Id = 74, Balance = 1.0M,    TenantId = 1},
+        new {Id = 44L, Balance = 3400M, TenantId = 1L},
+        new {Id = 74L, Balance = 1M,    TenantId = 1L}
     };
     
     private static object[] DefaultMetadata => new object[] {
-        new CustomerMetaData {Id = 1, Name = "firstName", Value = "Ettiene", CustomerId = 44, TenantId = 1},
-        new CustomerMetaData {Id = 2, Name = "lastName",  Value = "Mare",    CustomerId = 44, TenantId = 1},
-        new CustomerMetaData {Id = 3, Name = "hasKYC",    Value = "true",    CustomerId = 44, TenantId = 1},
+        new {Id = 1L, Name = "firstName", Value = "Ettiene", CustomerId = 44L, TenantId = 1L},
+        new {Id = 2L, Name = "lastName",  Value = "Mare",    CustomerId = 44L, TenantId = 1L},
+        new {Id = 3L, Name = "hasKYC",    Value = "true",    CustomerId = 44L, TenantId = 1L},
 
-        new CustomerMetaData {Id = 4, Name = "firstName", Value = "Kate",    CustomerId = 74, TenantId = 1},
-        new CustomerMetaData {Id = 5, Name = "lastName",  Value = "Moss",    CustomerId = 74, TenantId = 1},
+        new {Id = 4L, Name = "firstName", Value = "Kate",    CustomerId = 74L, TenantId = 1L},
+        new {Id = 5L, Name = "lastName",  Value = "Moss",    CustomerId = 74L, TenantId = 1L}
     };
 }
