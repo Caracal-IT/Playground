@@ -28,7 +28,7 @@ public class CallbackUseCase {
         if (response?.Result == null) return new CallbackResponse();
 
         if (response.TerminalResponse.Success)
-            allocations.ForEach(a => a.AllocationStatusId = 6);
+            allocations.ForEach(a => a.AllocationStatusId = 7);
 
         return new CallbackResponse { Response = response.Result };
     }

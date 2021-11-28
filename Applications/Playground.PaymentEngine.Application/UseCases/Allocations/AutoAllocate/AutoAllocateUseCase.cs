@@ -85,7 +85,7 @@ public class AutoAllocateUseCase {
              var allocation  = await _allocationStore.SaveAllocationAsync(new Data.Allocation {
                 AccountId = account.Id,
                 Amount = amount,
-                AllocationStatusId = 1,
+                AllocationStatusId = 2,
                 WithdrawalGroupId = withdrawalGroupId
              }, cancellationToken);
              

@@ -24,24 +24,64 @@ public partial class EFAllocationStore: DbContext, AllocationStore {
         await Allocations.Where(a => a.Reference == reference)
                          .ToListAsync(cancellationToken);
     
-    public Task SetAllocationStatusAsync(long id, long statusId, CancellationToken cancellationToken) {
-        throw new System.NotImplementedException();
+    public async Task SetAllocationStatusAsync(long id, long statusId, CancellationToken cancellationToken) {
+        var allocation = await Allocations.FirstOrDefaultAsync(cancellationToken);
+        
+        if(allocation == null)
+            return;
+        
+        allocation.AllocationStatusId = statusId;
+
+        Allocations.Update(allocation);
+        await SaveChangesAsync(cancellationToken);
     }
 
-    public Task SetAllocationStatusAsync(long id, long statusId, string terminal, CancellationToken cancellationToken) {
-        throw new System.NotImplementedException();
+    public async Task SetAllocationStatusAsync(long id, long statusId, string terminal, CancellationToken cancellationToken) {
+        var allocation = await Allocations.FirstOrDefaultAsync(cancellationToken);
+        
+        if(allocation == null)
+            return;
+        
+        allocation.AllocationStatusId = statusId;
+        allocation.Terminal = terminal;
+        
+        Allocations.Update(allocation);
+        await SaveChangesAsync(cancellationToken);
     }
 
-    public Task SetAllocationStatusAsync(long id, long statusId, string terminal, string? reference,
-        CancellationToken cancellationToken) {
-        throw new System.NotImplementedException();
+    public async Task SetAllocationStatusAsync(long id, long statusId, string terminal, string? reference, CancellationToken cancellationToken) {
+        var allocation = await Allocations.FirstOrDefaultAsync(cancellationToken);
+        
+        if(allocation == null)
+            return;
+        
+        allocation.AllocationStatusId = statusId;
+        allocation.Terminal = terminal;
+        allocation.Reference = reference;
+        
+        Allocations.Update(allocation);
+        await SaveChangesAsync(cancellationToken);
     }
 
-    public Task<Allocation> SaveAllocationAsync(Allocation allocation, CancellationToken cancellationToken) {
-        throw new System.NotImplementedException();
+    public async Task<Allocation> SaveAllocationAsync(Allocation allocation, CancellationToken cancellationToken) {
+        Allocation dbAllocation;
+
+        if (await Allocations.AnyAsync(a => a.Id == allocation.Id, cancellationToken)) 
+            dbAllocation = Allocations.Update(allocation).Entity;
+        else {
+            allocation.AllocationStatusId = 2;
+            dbAllocation = Allocations.Add(allocation).Entity;
+        }
+        
+        await SaveChangesAsync(cancellationToken);
+        return dbAllocation;
     }
 
-    public Task RemoveAllocationsAsync(long withdrawalGroupId, CancellationToken cancellationToken) {
-        throw new System.NotImplementedException();
+    public async Task RemoveAllocationsAsync(long withdrawalGroupId, CancellationToken cancellationToken) {
+        var allocations = await Allocations.Where(a => a.WithdrawalGroupId == withdrawalGroupId)
+                                           .ToListAsync(cancellationToken);
+        
+        Allocations.RemoveRange(allocations);
+        await SaveChangesAsync(cancellationToken);
     }
 }

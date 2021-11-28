@@ -61,12 +61,13 @@ namespace Playground.PaymentEngine.Store.EF.Migrations.EFAllocationStoreMigratio
                 columns: new[] { "Id", "Name", "TenantId" },
                 values: new object[,]
                 {
-                    { 1L, "allocated", 1L },
-                    { 2L, "refunded", 1L },
-                    { 3L, "confiscated", 1L },
-                    { 4L, "paid", 1L },
-                    { 5L, "rejected", 1L },
-                    { 6L, "callback-paid", 1L }
+                    { 1L, "none", 1L },
+                    { 2L, "allocated", 1L },
+                    { 3L, "refunded", 1L },
+                    { 4L, "confiscated", 1L },
+                    { 5L, "paid", 1L },
+                    { 6L, "rejected", 1L },
+                    { 7L, "callback-paid", 1L }
                 });
 
             migrationBuilder.InsertData(
@@ -75,13 +76,13 @@ namespace Playground.PaymentEngine.Store.EF.Migrations.EFAllocationStoreMigratio
                 columns: new[] { "Id", "AccountId", "AllocationStatusId", "Amount", "Charge", "Reference", "TenantId", "Terminal", "WithdrawalGroupId" },
                 values: new object[,]
                 {
-                    { 189L, 267L, 1L, 13m, 0m, null, 1L, null, 1L },
-                    { 190L, 567L, 1L, 27m, 0m, null, 1L, null, 1L },
-                    { 200L, 300L, 1L, 18m, 0m, null, 1L, null, 1L },
-                    { 201L, 267L, 1L, 12m, 0m, null, 1L, null, 1L },
-                    { 202L, 300L, 1L, 21m, 0m, null, 1L, null, 1L },
-                    { 203L, 300L, 1L, 29m, 0m, null, 1L, null, 1L },
-                    { 671L, 747L, 1L, 670m, 0m, "EF45_66_88", 1L, "Rebilly", 1L }
+                    { 189L, 267L, 2L, 13m, 0m, null, 1L, null, 1L },
+                    { 190L, 567L, 2L, 27m, 0m, null, 1L, null, 1L },
+                    { 200L, 300L, 2L, 18m, 0m, null, 1L, null, 1L },
+                    { 201L, 267L, 2L, 12m, 0m, null, 1L, null, 1L },
+                    { 202L, 300L, 2L, 21m, 0m, null, 1L, null, 1L },
+                    { 203L, 300L, 2L, 29m, 0m, null, 1L, null, 1L },
+                    { 671L, 747L, 5L, 670m, 0m, "EF45_66_88", 1L, "Rebilly", 1L }
                 });
 
             migrationBuilder.CreateIndex(

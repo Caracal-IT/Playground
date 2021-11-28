@@ -2,7 +2,6 @@ using Playground.PaymentEngine.Store.EF.Accounts;
 using Playground.PaymentEngine.Store.EF.Allocations;
 using Playground.PaymentEngine.Store.EF.Customers;
 using Playground.PaymentEngine.Store.EF.Deposits;
-using Playground.PaymentEngine.Store.File.Allocations;
 
 namespace Playground.PaymentEngine.Api.Setup;
 
@@ -24,7 +23,7 @@ public static class DataSetup {
     public static void Setup(WebApplicationBuilder builder) {
         builder.Services.AddSingleton<WithdrawalStore, FileWithdrawalStore>();
         builder.Services.AddTransient<AccountStore, EFAccountStore>(); //FileAccountStore
-        builder.Services.AddSingleton<AllocationStore, FileAllocationStore>(); // FileAllocationStore
+        builder.Services.AddSingleton<AllocationStore, EFAllocationStore>(); // FileAllocationStore
         builder.Services.AddSingleton<ApprovalRuleStore, FileApprovalRuleStore>();
         builder.Services.AddSingleton<CustomerStore, EFCustomerStore>(); //FileCustomerStore
         builder.Services.AddSingleton<TerminalStore, FileTerminalStore>();
