@@ -47,6 +47,23 @@ Content-Type: application/json
   ]
 }
 
+###
+
+POST https://localhost:5001/deposits
+Content-Type: application/json
+
+{
+  "accountId": 267,
+  "amount": 70.00,
+  "depositDate": "2020-01-11T00:00:00Z",
+  "metaData": [
+    {
+      "name": "Country",
+      "value": "Germany"
+    }
+  ]
+}
+
 <> /Users/ettienemare/Documents/Development/CS/Playground/Http/Payment Engine/responses/deposits_new-1.json
 
 ###
@@ -435,11 +452,6 @@ POST https://localhost:5001/allocations/auto-allocate
 Content-Type: application/json
 
 <> /Users/ettienemare/Documents/Development/CS/Playground/Http/responses/allocations_auto_allocate.json
-
-###
-
-POST https://localhost:5001/allocations/auto-allocate
-Content-Type: application/json
 
 ###
 
