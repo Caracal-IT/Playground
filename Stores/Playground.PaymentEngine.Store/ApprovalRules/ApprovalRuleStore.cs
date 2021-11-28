@@ -1,6 +1,5 @@
-namespace Playground.PaymentEngine.Store.ApprovalRules;
-
 using Playground.PaymentEngine.Store.ApprovalRules.Model;
+namespace Playground.PaymentEngine.Store.ApprovalRules;
 
 public interface ApprovalRuleStore {
     Task<IEnumerable<ApprovalRuleHistory>> GetRuleHistoriesAsync(CancellationToken cancellationToken);
