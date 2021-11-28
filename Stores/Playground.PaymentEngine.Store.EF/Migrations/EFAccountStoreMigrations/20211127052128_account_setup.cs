@@ -3,9 +3,9 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Playground.PaymentEngine.Store.EF.Migrations
+namespace Playground.PaymentEngine.Store.EF.Migrations.EFAccountStoreMigrations
 {
-    public partial class account_setup : Migration
+    public partial class AccountSetup : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
