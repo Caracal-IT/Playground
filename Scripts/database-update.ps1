@@ -8,4 +8,7 @@ Write-Host 'Update EFCustomerStore'
 dotnet ef database update --no-build --context EFCustomerStore
 
 Write-Host 'Update EFDepositStore'
-dotnet ef database update --no-build --context EFDepositStore 
+dotnet ef database update --no-build --context EFDepositStore
+
+Write-Host 'Update EFAllocationStore'
+dotnet ef database update --no-build --context EFAllocationStore 
