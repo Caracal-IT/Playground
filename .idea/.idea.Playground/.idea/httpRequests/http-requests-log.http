@@ -1,3 +1,96 @@
+POST https://localhost:5001/deposits
+Content-Type: application/json
+
+{
+  "accountId": 267,
+  "amount": 70.00,
+  "depositDate": "2020-01-11T00:00:00Z",
+  "metaData": [
+    {
+      "name": "Country",
+      "value": "Germany"
+    }
+  ]
+}
+
+###
+
+POST https://localhost:5001/deposits
+Content-Type: application/json
+
+{
+  "accountId": 267,
+  "amount": 70.00,
+  "depositDate": "2020-01-11T00:00:00Z",
+  "metaData": [
+    {
+      "name": "Country",
+      "value": "Germany"
+    }
+  ]
+}
+
+###
+
+POST https://localhost:5001/deposits
+Content-Type: application/json
+
+{
+  "accountId": 267,
+  "amount": 70.00,
+  "depositDate": "2020-01-11T00:00:00Z",
+  "metaData": [
+    {
+      "name": "Country",
+      "value": "Germany"
+    }
+  ]
+}
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/Payment Engine/responses/deposits_new-1.json
+
+###
+
+POST https://localhost:5001/deposits
+Content-Type: application/json
+
+{
+  "accountId": 267,
+  "amount": 70.00,
+  "depositDate": "2020-01-11T00:00:00",
+  "metaData": [
+    {
+      "name": "Country",
+      "value": "Germany"
+    }
+  ]
+}
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/Payment Engine/responses/deposits_new.json
+
+###
+
+GET https://localhost:5001/deposits/2
+Content-Type: application/json
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/Payment Engine/responses/deposits_2.json
+
+###
+
+GET https://localhost:5001/deposits?filter=Amount gt 50 and Id eq 3&select=Id,Amount&orderby=Amount
+Content-Type: application/json
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/Payment Engine/responses/deposits_filter.json
+
+###
+
+GET https://localhost:5001/deposits
+Content-Type: application/json
+
+<> /Users/ettienemare/Documents/Development/CS/Playground/Http/Payment Engine/responses/deposits.json
+
+###
+
 GET https://localhost:5001/allocations/190
 Content-Type: application/json
 
@@ -352,56 +445,6 @@ Content-Type: application/json
 
 POST https://localhost:5001/allocations/auto-allocate
 Content-Type: application/json
-
-###
-
-DELETE https://localhost:5001/allocations/189
-Content-Type: application/json
-
-###
-
-GET https://localhost:5001/allocations
-Content-Type: application/json
-
-<> /Users/ettienemare/Documents/Development/CS/Playground/Http/responses/allocations-2.json
-
-###
-
-DELETE https://localhost:5001/allocations/189
-Content-Type: application/json
-
-###
-
-GET https://localhost:5001/allocations
-Content-Type: application/json
-
-<> /Users/ettienemare/Documents/Development/CS/Playground/Http/responses/allocations-1.json
-
-###
-
-DELETE https://localhost:5001/allocations/190
-Content-Type: application/json
-
-###
-
-GET https://localhost:5001/allocations
-Content-Type: application/json
-
-<> /Users/ettienemare/Documents/Development/CS/Playground/Http/responses/allocations.json
-
-###
-
-POST https://localhost:5001/allocations
-Content-Type: application/json
-
-{
-  "withdrawalGroupId": 1,
-  "accountId": 267,
-  "amount": 13.00,
-  "charge": 0.00
-}
-
-<> /Users/ettienemare/Documents/Development/CS/Playground/Http/responses/allocations_new.json
 
 ###
 

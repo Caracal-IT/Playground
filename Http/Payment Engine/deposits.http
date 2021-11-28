@@ -23,7 +23,7 @@ Content-Type: application/json
 {
   "accountId": 267,
   "amount": 70.00,
-  "depositDate": "2020-01-11T00:00:00",
+  "depositDate": "2020-01-11T00:00:00Z",
   "metaData": [
     {
       "name": "Country",
@@ -35,7 +35,7 @@ Content-Type: application/json
 >> responses/deposits_new.json
 
 ### Delete deposit
-DELETE {{baseUrl}}/deposits/2
+DELETE {{baseUrl}}/deposits/7
 Content-Type: application/json
 
 >> responses/deposits_2_delete.json

@@ -8,7 +8,6 @@
     <ItemGroup>
       <Folder Include="Allocations" />
       <Folder Include="ApprovalRules" />
-      <Folder Include="Deposits" />
       <Folder Include="Terminals" />
       <Folder Include="Withdrawals" />
     </ItemGroup>
