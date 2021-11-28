@@ -48,6 +48,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{4A2DEF7A-43B7-
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.PaymentEngine.Web", "UI\Playground.PaymentEngine.Web\Playground.PaymentEngine.Web.csproj", "{E2D35B05-970C-49E6-9A90-B99F4386C1AC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{AE0FBE0D-4B30-4D1A-AE2E-468D9F230106}"
+	ProjectSection(SolutionItems) = preProject
+		Scripts\database-update.ps1 = Scripts\database-update.ps1
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
