@@ -14,4 +14,7 @@ Write-Host 'Update EFAllocationStore'
 dotnet ef database update --no-build --context EFAllocationStore
 
 Write-Host 'Update EFApprovalRuleStore'
-dotnet ef database update --no-build --context EFApprovalRuleStore 
+dotnet ef database update --no-build --context EFApprovalRuleStore
+
+Write-Host 'Update EFTerminalStore'
+dotnet ef database update --no-build --context EFTerminalStore
