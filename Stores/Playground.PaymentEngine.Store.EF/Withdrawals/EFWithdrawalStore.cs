@@ -44,27 +44,44 @@ public partial class EFWithdrawalStore: DbContext, WithdrawalStore {
             new() { CustomerId = customerId, WithdrawalIdsString = string.Join(",", Ids)};
     }
     
-    public Task<WithdrawalGroup> GetWithdrawalGroupAsync(long id, CancellationToken cancellationToken) {
-        throw new System.NotImplementedException();
+    public async Task<WithdrawalGroup> GetWithdrawalGroupAsync(long id, CancellationToken cancellationToken) => 
+        await WithdrawalGroups.FirstOrDefaultAsync(w => w.Id == id, cancellationToken)??new WithdrawalGroup();
+
+    public async Task UnGroupWithdrawalsAsync(long withdrawalGroupId, CancellationToken cancellationToken) {
+        var group = await WithdrawalGroups.FirstOrDefaultAsync(w => w.Id == withdrawalGroupId, cancellationToken);
+        
+        if(group == null)
+            return;
+        
+        WithdrawalGroups.Remove(group);
+        await SaveChangesAsync(cancellationToken);
     }
 
-    public Task UnGroupWithdrawalsAsync(long withdrawalGroupId, CancellationToken cancellationToken) {
-        throw new System.NotImplementedException();
+    public async Task<IEnumerable<WithdrawalGroup>> GetWithdrawalGroupsAsync(CancellationToken cancellationToken) => 
+        await WithdrawalGroups.ToListAsync(cancellationToken);
+
+    public async Task<IEnumerable<WithdrawalGroup>> GetWithdrawalGroupsAsync(IEnumerable<long> withdrawalGroupIds, CancellationToken cancellationToken) => 
+        await WithdrawalGroups.Where(w => withdrawalGroupIds.Contains(w.Id)).ToListAsync(cancellationToken);
+
+    public async Task<IEnumerable<Withdrawal>> GetWithdrawalGroupWithdrawalsAsync(long id, CancellationToken cancellationToken) {
+        var group = await WithdrawalGroups.FirstOrDefaultAsync(g => g.Id == id, cancellationToken) ?? new WithdrawalGroup();
+        return await GetWithdrawalsAsync(group.WithdrawalIds, cancellationToken);
     }
 
-    public Task<IEnumerable<WithdrawalGroup>> GetWithdrawalGroupsAsync(CancellationToken cancellationToken) {
-        throw new System.NotImplementedException();
-    }
+    public async Task<WithdrawalGroup?> AppendWithdrawalGroupsAsync(long Id, IEnumerable<long> withdrawalIds, CancellationToken cancellationToken) {
+        var group = await WithdrawalGroups.Where(g => g.Id == Id).FirstOrDefaultAsync(cancellationToken);
 
-    public Task<IEnumerable<WithdrawalGroup>> GetWithdrawalGroupsAsync(IEnumerable<long> withdrawalGroupIds, CancellationToken cancellationToken) {
-        throw new System.NotImplementedException();
-    }
+        if (group == null) return null;
 
-    public Task<IEnumerable<Withdrawal>> GetWithdrawalGroupWithdrawalsAsync(long id, CancellationToken cancellationToken) {
-        throw new System.NotImplementedException();
-    }
+        var groupedWithdrawals = WithdrawalGroups.SelectMany(g => g.WithdrawalIds);
+        var ids = withdrawalIds.Where(i => !groupedWithdrawals.Contains(i));
+        var wIds = group.WithdrawalIds;
+        
+        wIds.AddRange(ids);
+        group.WithdrawalIdsString = string.Join(",", wIds.Distinct());
 
-    public Task<WithdrawalGroup?> AppendWithdrawalGroupsAsync(long Id, IEnumerable<long> withdrawalIds, CancellationToken cancellationToken) {
-        throw new System.NotImplementedException();
+        await SaveChangesAsync(cancellationToken);
+
+        return group;
     }
 }

@@ -22,7 +22,7 @@ namespace Playground.PaymentEngine.Api.Setup;
 
 public static class DataSetup {
     public static void Setup(WebApplicationBuilder builder) {
-        builder.Services.AddSingleton<WithdrawalStore, FileWithdrawalStore>();
+        builder.Services.AddSingleton<WithdrawalStore, FileWithdrawalStore>(); // FileWithdrawalStore
         builder.Services.AddTransient<AccountStore, EFAccountStore>(); //FileAccountStore
         builder.Services.AddSingleton<AllocationStore, FileAllocationStore>(); // FileAllocationStore
         builder.Services.AddSingleton<ApprovalRuleStore, EFApprovalRuleStore>(); // FileApprovalRuleStore
