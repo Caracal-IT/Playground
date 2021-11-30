@@ -6,10 +6,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Withdrawals" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="AutoMapper" Version="10.1.1" />
       <PackageReference Include="AutoMapper.Collection.EntityFrameworkCore" Version="7.0.1" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0" />

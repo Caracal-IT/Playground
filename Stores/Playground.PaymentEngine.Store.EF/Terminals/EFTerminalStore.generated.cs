@@ -1,5 +1,3 @@
-using System;
-
 namespace Playground.PaymentEngine.Store.EF.Terminals; 
 
 public partial class EFTerminalStore {
@@ -36,7 +34,7 @@ public partial class EFTerminalStore {
             .Entity<TerminalResult>()
             .ToTable("TerminalResult", "terminals")
             .Property(e => e.Date)
-            .HasConversion(v => v, v => DateTime.SpecifyKind(v, DateTimeKind.Utc));;
+            .HasConversion(v => v, v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
         
         modelBuilder
             .Entity<MetaData>()

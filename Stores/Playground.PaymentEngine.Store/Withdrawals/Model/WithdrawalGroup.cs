@@ -9,6 +9,6 @@ public class WithdrawalGroup : Entity {
         get => string.Join(",", WithdrawalIds);
         set => WithdrawalIds = value.Split(',').Select(x => Convert.ToInt64(x!.Trim())).ToList();
     }
-
+    
     [XmlIgnore] public List<long> WithdrawalIds { get; set; } = new();
 }

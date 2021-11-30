@@ -18,3 +18,6 @@ dotnet ef database update --no-build --context EFApprovalRuleStore
 
 Write-Host 'Update EFTerminalStore'
 dotnet ef database update --no-build --context EFTerminalStore
+
+Write-Host 'Update EFWithdrawalStore'
+dotnet ef database update --no-build --context EFWithdrawalStore
