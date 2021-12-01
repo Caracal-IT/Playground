@@ -9,10 +9,10 @@ using Playground.PaymentEngine.Application.UseCases.Customers.GetCustomers;
 
 public static class CustomerSetup {
     public static void Setup(WebApplicationBuilder builder) {
-        builder.Services.AddSingleton<CreateCustomerUseCase>();
-        builder.Services.AddSingleton<GetCustomersUseCase>();
-        builder.Services.AddSingleton<GetCustomerUseCase>();
-        builder.Services.AddSingleton<DeleteCustomerUseCase>();
-        builder.Services.AddSingleton<EditCustomerUseCase>();
+        builder.Services.AddTransient<CreateCustomerUseCase>();
+        builder.Services.AddTransient<GetCustomersUseCase>();
+        builder.Services.AddTransient<GetCustomerUseCase>();
+        builder.Services.AddTransient<DeleteCustomerUseCase>();
+        builder.Services.AddTransient<EditCustomerUseCase>();
     }
 }

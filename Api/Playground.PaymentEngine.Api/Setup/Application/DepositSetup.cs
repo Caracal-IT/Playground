@@ -8,9 +8,9 @@ using Playground.PaymentEngine.Application.UseCases.Deposits.GetDeposits;
 
 public static class DepositSetup {
     public static void Setup(WebApplicationBuilder builder) {
-        builder.Services.AddSingleton<GetDepositsUseCase>();
-        builder.Services.AddSingleton<GetDepositUseCase>();
-        builder.Services.AddSingleton<CreateDepositUseCase>();
-        builder.Services.AddSingleton<DeleteDepositUseCase>();
+        builder.Services.AddTransient<GetDepositsUseCase>();
+        builder.Services.AddTransient<GetDepositUseCase>();
+        builder.Services.AddTransient<CreateDepositUseCase>();
+        builder.Services.AddTransient<DeleteDepositUseCase>();
     }
 }

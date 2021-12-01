@@ -9,15 +9,20 @@ public partial class EFApprovalRuleStore: DbContext, ApprovalRuleStore {
                                    .Include(a => a.Metadata)
                                    .ToListAsync(cancellationToken);
 
-    public async Task<IEnumerable<ApprovalRuleHistory>> GetLastRunApprovalRulesAsync(CancellationToken cancellationToken) =>
-        await ApprovalRuleHistories.Include(a => a.Rules)
-                                   .Include(a => a.Metadata)
-                                   .GroupBy(
-                                       r => r.WithdrawalGroupId, 
-                                       (_, h) => h.OrderByDescending(i => i.TransactionDate)
-                                                  .First())
-                                   .ToListAsync(cancellationToken);
-    
+    public async Task<IEnumerable<ApprovalRuleHistory>> GetLastRunApprovalRulesAsync(CancellationToken cancellationToken) {
+        var lastRun = await ApprovalRuleHistories.GroupBy(
+                                                    r => r.WithdrawalGroupId,
+                                                    (_, h) => h.OrderByDescending(i => i.TransactionDate)
+                                                        .First())
+                                                 .ToListAsync(cancellationToken);
+
+        return await ApprovalRuleHistories
+            .Include(a => a.Rules)
+            .Include(a => a.Metadata)
+            .Where(a => lastRun.Contains(a))
+            .ToListAsync(cancellationToken);
+    }
+
     public async Task AddRuleHistoriesAsync(IEnumerable<ApprovalRuleHistory> histories, CancellationToken cancellationToken) {
         ApprovalRuleHistories.AddRange(histories);
         await SaveChangesAsync(cancellationToken);

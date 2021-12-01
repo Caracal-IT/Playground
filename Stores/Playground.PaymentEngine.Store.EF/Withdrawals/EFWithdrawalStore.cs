@@ -31,13 +31,16 @@ public partial class EFWithdrawalStore: DbContext, WithdrawalStore {
     }
 
     public async Task<IEnumerable<WithdrawalGroup>> GroupWithdrawalsAsync(IEnumerable<long> withdrawalIds, CancellationToken cancellationToken) {
-        var groupedWithdrawals = WithdrawalGroups.SelectMany(g => g.WithdrawalIds);
+        var withdrawalGroups = await WithdrawalGroups.ToListAsync(cancellationToken);
+        var groupedWithdrawals = withdrawalGroups.SelectMany(g => g.WithdrawalIds);
         var ids = withdrawalIds.Where(i => !groupedWithdrawals.Contains(i));
         var withdrawals = await GetWithdrawalsAsync(ids, cancellationToken);
 
         var groups = withdrawals.AsEnumerable().GroupBy(w => w.CustomerId, w => w.Id, CreateWithdrawalGroup).ToList();
 
         await WithdrawalGroups.AddRangeAsync(groups, cancellationToken);
+        await SaveChangesAsync(cancellationToken);
+        
         return groups;
 
         WithdrawalGroup CreateWithdrawalGroup(long customerId, IEnumerable<long> Ids) =>

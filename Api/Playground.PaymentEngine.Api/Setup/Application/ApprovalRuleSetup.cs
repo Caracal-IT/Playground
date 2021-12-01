@@ -11,12 +11,12 @@ using Playground.Rules.CustomActions.Terminal;
 
 public static class ApprovalRuleSetup {
     public static void Setup(WebApplicationBuilder builder) {
-        builder.Services.AddSingleton<RuleStore, FileRuleStore>();
-        builder.Services.AddSingleton<TerminalAction>();
-        builder.Services.AddSingleton<Engine>();
+        builder.Services.AddTransient<RuleStore, FileRuleStore>();
+        builder.Services.AddTransient<TerminalAction>();
+        builder.Services.AddTransient<Engine>();
 
-        builder.Services.AddSingleton<RunApprovalRulesUseCase>();
-        builder.Services.AddSingleton<GetApprovalRuleHistoriesUseCase>();
-        builder.Services.AddSingleton<GetLastRunApprovalRulesUseCase>();
+        builder.Services.AddTransient<RunApprovalRulesUseCase>();
+        builder.Services.AddTransient<GetApprovalRuleHistoriesUseCase>();
+        builder.Services.AddTransient<GetLastRunApprovalRulesUseCase>();
     }
 }

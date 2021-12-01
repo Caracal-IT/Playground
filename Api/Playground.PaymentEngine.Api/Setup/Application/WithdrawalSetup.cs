@@ -9,10 +9,10 @@ using Playground.PaymentEngine.Application.UseCases.Withdrawals.GetWithdrawals;
 
 public static class WithdrawalSetup {
     public static void Setup(WebApplicationBuilder builder) {
-        builder.Services.AddSingleton<CreateWithdrawalUseCase>();
-        builder.Services.AddSingleton<GetWithdrawalsUseCase>();
-        builder.Services.AddSingleton<GetWithdrawalUseCase>();
-        builder.Services.AddSingleton<DeleteWithdrawalUseCase>();
-        builder.Services.AddSingleton<ChangeWithdrawalStatusUseCase>();
+        builder.Services.AddTransient<CreateWithdrawalUseCase>();
+        builder.Services.AddTransient<GetWithdrawalsUseCase>();
+        builder.Services.AddTransient<GetWithdrawalUseCase>();
+        builder.Services.AddTransient<DeleteWithdrawalUseCase>();
+        builder.Services.AddTransient<ChangeWithdrawalStatusUseCase>();
     }
 }

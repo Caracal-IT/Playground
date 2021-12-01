@@ -26,14 +26,14 @@ public class RunApprovalRulesUseCase {
     public async Task<RunApprovalRulesResponse> ExecuteAsync(IEnumerable<long> withdrawalGroups, CancellationToken cancellationToken) {
         var inputEnum = await _withdrawalStore.GetWithdrawalGroupsAsync(withdrawalGroups, cancellationToken);
         
-        var inputs = await inputEnum.Select(g => MapInputAsync(g, cancellationToken))
-                                    .WhenAll(MaxConcurrentRequests);
-                                         
-        var results = await inputs.Select(RunRules)
-                                  .WhenAll(MaxConcurrentRequests);
+        var results = new List<Result>();
+        foreach (var input in inputEnum) {
+            var ruleInput = await MapInputAsync(input, cancellationToken);
+            var result = await RunRules(ruleInput);
+            results.AddRange(result);
+        }
 
-        var outcomes = results.SelectMany(i => i)
-                              .Select(MapToOutcome)
+        var outcomes = results.Select(MapToOutcome)
                               .ToList();
 
         await AddRulesAsync(outcomes, cancellationToken);
@@ -80,7 +80,7 @@ public class RunApprovalRulesUseCase {
         new() {
             WithdrawalGroupId = withdrawalGroupId,
             TransactionId =  Guid.NewGuid(),
-            TransactionDate = DateTime.Now,
+            TransactionDate = DateTime.UtcNow,
             Rules = outcomes.Select(MapRule).ToList(),
             Metadata = new List<SharedData.MetaData>{new(){ Name = "withdrawal-id", Value = $"{withdrawalGroupId}"}}
         };

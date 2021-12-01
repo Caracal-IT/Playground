@@ -14,7 +14,7 @@ public class CreateWithdrawalUseCase {
     public async Task<CreateWithdrawalResponse> ExecuteAsync(CreateWithdrawalRequest request, CancellationToken cancellationToken) {
         var withdrawal = _mapper.Map<Data.Withdrawal>(request);
         withdrawal.WithdrawalStatusId = 0;
-        withdrawal.DateRequested = DateTime.Now;
+        withdrawal.DateRequested = DateTime.UtcNow;
 
         var response = await _store.CreateWithdrawalAsync(withdrawal, cancellationToken);
 

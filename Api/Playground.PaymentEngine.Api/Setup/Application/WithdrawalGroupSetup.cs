@@ -8,9 +8,9 @@ using Playground.PaymentEngine.Application.UseCases.WithdrawalGroups.UnGroupWith
 
 public static class WithdrawalGroupSetup {
     public static void Setup(WebApplicationBuilder builder) {
-        builder.Services.AddSingleton<GroupWithdrawalsUseCase>();
-        builder.Services.AddSingleton<UnGroupWithdrawalsUseCase>();
-        builder.Services.AddSingleton<GetWithdrawalGroupsUseCase>();
-        builder.Services.AddSingleton<AppendGroupWithdrawalsUseCase>();
+        builder.Services.AddTransient<GroupWithdrawalsUseCase>();
+        builder.Services.AddTransient<UnGroupWithdrawalsUseCase>();
+        builder.Services.AddTransient<GetWithdrawalGroupsUseCase>();
+        builder.Services.AddTransient<AppendGroupWithdrawalsUseCase>();
     }
 }

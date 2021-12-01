@@ -20,6 +20,7 @@ public partial class EFDepositStore: DbContext, DepositStore {
 
     public async Task DeleteDepositsAsync(IEnumerable<long> depositIds, CancellationToken cancellationToken) {
         var deposits = await Deposits
+            .Include(d=> d.MetaData)
             .Where(c => depositIds.Contains(c.Id))
             .ToListAsync(cancellationToken);
         
