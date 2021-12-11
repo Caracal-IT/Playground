@@ -28,6 +28,6 @@ public partial class EFAccountStore: DbContext, AccountStore
                 .ToListAsync(cancellationToken);
     
     public AccountStore Clone() {
-        return new EFAccountStore();
+        return new EFAccountStore(_options);
     }
 }

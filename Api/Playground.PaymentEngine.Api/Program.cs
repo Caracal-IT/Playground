@@ -25,10 +25,12 @@ builder.Services.AddMvc()
                 .AddXmlSerializerFormatters()
                 .AddXmlDataContractSerializerFormatters();
 
+/*
 builder.Services.AddDbContext<EFAccountStore>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")),
     ServiceLifetime.Singleton
 );
+*/
 
 builder.Services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "Playground PaymentEngine Api", Version = "v1" }); });
 

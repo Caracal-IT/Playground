@@ -10,11 +10,11 @@ using Playground.Router.Services;
 
 public static class RoutingSetup {
     public static void Setup(WebApplicationBuilder builder) {
-        builder.Services.AddSingleton<Engine, RouterEngine>();
-        builder.Services.AddSingleton<IRoutingService, RoutingService>();
-        builder.Services.AddSingleton<ClientFactory, DefaultClientFactory>();
-        builder.Services.AddSingleton<HttpTerminalClient>();
-        builder.Services.AddSingleton<FileTerminalClient>();
-        builder.Services.AddSingleton<XsltExtensions, CustomExtensions>();
+        builder.Services.AddTransient<Engine, RouterEngine>();
+        builder.Services.AddTransient<IRoutingService, RoutingService>();
+        builder.Services.AddTransient<ClientFactory, DefaultClientFactory>();
+        builder.Services.AddTransient<HttpTerminalClient>();
+        builder.Services.AddTransient<FileTerminalClient>();
+        builder.Services.AddTransient<XsltExtensions, CustomExtensions>();
     }
 }

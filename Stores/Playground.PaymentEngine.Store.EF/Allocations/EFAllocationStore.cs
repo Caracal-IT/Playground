@@ -86,6 +86,6 @@ public partial class EFAllocationStore: DbContext, AllocationStore {
     }
 
     public AllocationStore Clone() {
-        return new EFAllocationStore();
+        return new EFAllocationStore(_options);
     }
 }

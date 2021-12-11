@@ -2,9 +2,13 @@
 namespace Playground.PaymentEngine.Store.EF.Accounts;
 
 public partial class EFAccountStore {
+    private DbContextOptions _options;
+    
     public EFAccountStore() { }
 
-    public EFAccountStore(DbContextOptions<EFAccountStore> options) : base(options) { }
+    public EFAccountStore(DbContextOptions<EFAccountStore> options) : base(options) {
+        _options = options;
+    }
 
     protected EFAccountStore(DbContextOptions contextOptions) : base(contextOptions) { }
 

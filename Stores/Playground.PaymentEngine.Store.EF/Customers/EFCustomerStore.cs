@@ -38,6 +38,6 @@ public partial class EFCustomerStore: DbContext, CustomerStore {
     }
 
     public CustomerStore Clone() {
-        return new EFCustomerStore();
+        return new EFCustomerStore(_options);
     }
 }

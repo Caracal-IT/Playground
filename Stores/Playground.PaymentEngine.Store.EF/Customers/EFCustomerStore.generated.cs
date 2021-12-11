@@ -1,9 +1,13 @@
 namespace Playground.PaymentEngine.Store.EF.Customers; 
 
 public partial class EFCustomerStore {
+    private DbContextOptions _options;
+    
     public EFCustomerStore() { }
 
-    public EFCustomerStore(DbContextOptions<EFCustomerStore> options) : base(options) { }
+    public EFCustomerStore(DbContextOptions<EFCustomerStore> options) : base(options) {
+        _options = options;
+    }
 
     protected EFCustomerStore(DbContextOptions contextOptions) : base(contextOptions) { }
 

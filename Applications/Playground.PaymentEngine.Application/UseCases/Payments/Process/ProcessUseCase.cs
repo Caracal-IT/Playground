@@ -125,7 +125,10 @@ public class ProcessUseCase {
                 var allocationsInStore = await _allocationStore.Clone().GetAllocationsAsync(new[] {allocationId}, cancellationToken);
                 var allocation = allocationsInStore.FirstOrDefault() ?? new Allocation();
 
-                var account = accounts.First(a => a.Id == allocation.AccountId);
+                var account = accounts.FirstOrDefault(a => a.Id == allocation.AccountId);
+
+                if (account == null)
+                    return new ExportAllocation();
 
                 return new ExportAllocation {
                     AllocationId = allocation.Id,

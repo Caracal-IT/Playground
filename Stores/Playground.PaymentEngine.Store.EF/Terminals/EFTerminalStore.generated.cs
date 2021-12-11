@@ -1,9 +1,13 @@
 namespace Playground.PaymentEngine.Store.EF.Terminals; 
 
 public partial class EFTerminalStore {
+    private DbContextOptions _options;
+    
     public EFTerminalStore() { }
 
-    public EFTerminalStore(DbContextOptions<EFTerminalStore> options) : base(options) { }
+    public EFTerminalStore(DbContextOptions<EFTerminalStore> options) : base(options) {
+        _options = options;
+    }
 
     protected EFTerminalStore(DbContextOptions contextOptions) : base(contextOptions) { }
 

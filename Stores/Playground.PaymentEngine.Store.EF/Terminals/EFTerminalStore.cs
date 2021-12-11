@@ -27,6 +27,6 @@ public partial class EFTerminalStore: DbContext, TerminalStore {
     }
     
     public TerminalStore Clone() {
-        return new EFTerminalStore();
+        return new EFTerminalStore(_options);
     }
 }

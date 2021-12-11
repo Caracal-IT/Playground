@@ -1,9 +1,13 @@
 namespace Playground.PaymentEngine.Store.EF.Withdrawals; 
 
 public partial class EFWithdrawalStore {
+    private DbContextOptions _options;
+    
     public EFWithdrawalStore() { }
 
-    public EFWithdrawalStore(DbContextOptions<EFWithdrawalStore> options) : base(options) { }
+    public EFWithdrawalStore(DbContextOptions<EFWithdrawalStore> options) : base(options) {
+        _options = options;
+    }
 
     protected EFWithdrawalStore(DbContextOptions contextOptions) : base(contextOptions) { }
 
