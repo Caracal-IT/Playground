@@ -37,4 +37,8 @@ public class FileTerminalStore : FileStore, TerminalStore {
         _data.TerminalResults.AddRange(results);
         return Task.CompletedTask;
     }
+
+    public TerminalStore Clone() {
+        return this;
+    }
 }

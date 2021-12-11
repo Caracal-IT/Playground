@@ -12,4 +12,5 @@ public interface AllocationStore {
     Task SetAllocationStatusAsync(long id, long statusId, string terminal, string? reference, CancellationToken cancellationToken);
     Task<Allocation> SaveAllocationAsync(Allocation allocation, CancellationToken cancellationToken);
     Task RemoveAllocationsAsync(long withdrawalGroupId, CancellationToken cancellationToken);
+    AllocationStore Clone();
 }

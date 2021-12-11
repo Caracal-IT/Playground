@@ -74,4 +74,8 @@ public class FileAllocationStore : FileStore, AllocationStore {
 
         return Task.CompletedTask;
     }
+
+    public AllocationStore Clone() {
+        return this;
+    }
 }

@@ -41,7 +41,7 @@ public class RoutingService: IRoutingService {
         if (_terminals != null)
             return;
         
-        var terminalEnum = await _terminalStore.GetTerminalsAsync(cancellationToken);
+        var terminalEnum = await _terminalStore.Clone().GetTerminalsAsync(cancellationToken);
         var terminals = terminalEnum.Select(async t => new Terminal {
             Name = t.Name!,
             Settings = t.Settings.Select(s => new Setting(s.Name, s.Value)),

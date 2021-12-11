@@ -26,4 +26,8 @@ public partial class EFAccountStore: DbContext, AccountStore
         await AccountTypes
                 .Where(a => accountTypeIds.Contains(a.Id))
                 .ToListAsync(cancellationToken);
+    
+    public AccountStore Clone() {
+        return new EFAccountStore();
+    }
 }

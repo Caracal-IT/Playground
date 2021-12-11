@@ -31,7 +31,7 @@ public class ProcessUseCase {
         var transactionId = Guid.NewGuid();
         var allocations = await GetExportAllocationsAsync();
         var items = (request.Consolidate ? GetConsolidated() : GetExportData()).ToList();
-
+        
         await items.Select(ExportAsync)
                    .WhenAll(MaxConcurrentRequests);
 
@@ -53,7 +53,9 @@ public class ProcessUseCase {
         }
 
         async Task ExportAsync(ExportData data) {
-            var terminalEnum = await _terminalStore.GetActiveAccountTypeTerminalsAsync(data.AccountTypeId, cancellationToken);
+            var terminalEnum = await _terminalStore.Clone()
+                                                   .GetActiveAccountTypeTerminalsAsync(data.AccountTypeId, cancellationToken);
+            
             var terminals = terminalEnum.Select(t => t.Name);
 
             var req = new RoutingRequest(transactionId, nameof(ProcessUseCase), data.ToXml(), terminals!);
@@ -86,7 +88,7 @@ public class ProcessUseCase {
                           .WhenAll(MaxConcurrentRequests);
 
                 async Task SetAllocationStatusAsync(ExportAllocation ea) =>
-                    await _allocationStore.SetAllocationStatusAsync(ea.AllocationId, statusId, terminal!, data.Reference, cancellationToken);
+                    await _allocationStore.Clone().SetAllocationStatusAsync(ea.AllocationId, statusId, terminal!, data.Reference, cancellationToken);
             }
         }
 
@@ -112,7 +114,7 @@ public class ProcessUseCase {
                 });
 
         async Task<IEnumerable<ExportAllocation>> GetExportAllocationsAsync() {
-            var accounts = _accountStore.GetAccounts();
+            var accounts = _accountStore.Clone().GetAccounts().ToList();
             var exportAllocations = await request.Allocations
                                                  .Select(GetExportAllocationAsync)
                                                  .WhenAll(MaxConcurrentRequests);
@@ -120,7 +122,7 @@ public class ProcessUseCase {
             return exportAllocations.Where(a => a.AccountId > 0);
 
             async Task<ExportAllocation> GetExportAllocationAsync(long allocationId) {
-                var allocationsInStore = await _allocationStore.GetAllocationsAsync(new[] {allocationId}, cancellationToken);
+                var allocationsInStore = await _allocationStore.Clone().GetAllocationsAsync(new[] {allocationId}, cancellationToken);
                 var allocation = allocationsInStore.FirstOrDefault() ?? new Allocation();
 
                 var account = accounts.First(a => a.Id == allocation.AccountId);

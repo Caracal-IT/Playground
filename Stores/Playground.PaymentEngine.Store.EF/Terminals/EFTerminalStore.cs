@@ -25,4 +25,8 @@ public partial class EFTerminalStore: DbContext, TerminalStore {
         await TerminalResults.AddRangeAsync(results, cancellationToken);
         await SaveChangesAsync(cancellationToken);
     }
+    
+    public TerminalStore Clone() {
+        return new EFTerminalStore();
+    }
 }

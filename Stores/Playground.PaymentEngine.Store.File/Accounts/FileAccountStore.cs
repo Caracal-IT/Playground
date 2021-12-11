@@ -40,4 +40,8 @@ public class FileAccountStore : FileStore, AccountStore {
     }
 
     public void Dispose() { }
+
+    public AccountStore Clone() {
+        return this;
+    }
 }

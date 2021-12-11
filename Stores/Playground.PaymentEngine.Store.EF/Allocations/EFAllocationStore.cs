@@ -84,4 +84,8 @@ public partial class EFAllocationStore: DbContext, AllocationStore {
         Allocations.RemoveRange(allocations);
         await SaveChangesAsync(cancellationToken);
     }
+
+    public AllocationStore Clone() {
+        return new EFAllocationStore();
+    }
 }
