@@ -87,4 +87,8 @@ public partial class EFWithdrawalStore: DbContext, WithdrawalStore {
 
         return group;
     }
+
+    public WithdrawalStore Clone() {
+        return new EFWithdrawalStore();
+    }
 }

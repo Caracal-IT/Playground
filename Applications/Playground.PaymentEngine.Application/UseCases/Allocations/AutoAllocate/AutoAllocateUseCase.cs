@@ -33,23 +33,23 @@ public class AutoAllocateUseCase {
         return new AutoAllocateResponse { AllocationResults = results.SelectMany(a => a).ToList() };
 
         async Task RemoveAllocationsAsync(long withdrawalGroupId) =>
-            await _allocationStore.RemoveAllocationsAsync(withdrawalGroupId, cancellationToken);
+            await _allocationStore.Clone().RemoveAllocationsAsync(withdrawalGroupId, cancellationToken);
     }
 
     private async Task<List<AutoAllocateResult>> AllocateFundsAsync(long withdrawalGroupId, CancellationToken cancellationToken) {
         var result = new List<AutoAllocateResult>();
         
-        var withdrawalGroup = await _withdrawalStore.GetWithdrawalGroupAsync(withdrawalGroupId, cancellationToken);
-        var withdrawals = await _withdrawalStore.GetWithdrawalGroupWithdrawalsAsync(withdrawalGroupId, cancellationToken);
+        var withdrawalGroup = await _withdrawalStore.Clone().GetWithdrawalGroupAsync(withdrawalGroupId, cancellationToken);
+        var withdrawals = await _withdrawalStore.Clone().GetWithdrawalGroupWithdrawalsAsync(withdrawalGroupId, cancellationToken);
         var withdrawalAmount = withdrawals.Sum(w => w.Amount);
 
         if (withdrawalAmount <= 0M)
             return new List<AutoAllocateResult>();
 
-        var customer = await _customerStore.GetCustomersAsync(new []{ withdrawalGroup.CustomerId}, cancellationToken);
-        var accountEnum = await _accountStore.GetCustomerAccountsAsync(customer.FirstOrDefault()?.Id??0, cancellationToken);
+        var customer = await _customerStore.Clone().GetCustomersAsync(new []{ withdrawalGroup.CustomerId}, cancellationToken);
+        var accountEnum = await _accountStore.Clone().GetCustomerAccountsAsync(customer.FirstOrDefault()?.Id??0, cancellationToken);
         var accounts = accountEnum.ToList();
-        var accountTypes = await _accountStore.GetAccountTypesAsync(accounts.Select(a => a.AccountTypeId), cancellationToken);
+        var accountTypes = await _accountStore.Clone().GetAccountTypesAsync(accounts.Select(a => a.AccountTypeId), cancellationToken);
 
         var orderedAccounts = accounts
             .Join(
@@ -82,7 +82,7 @@ public class AutoAllocateUseCase {
         return result;
         
         async Task AddNewAllocationAsync(Account account, decimal amount) {
-             var allocation  = await _allocationStore.SaveAllocationAsync(new Data.Allocation {
+             var allocation  = await _allocationStore.Clone().SaveAllocationAsync(new Data.Allocation {
                 AccountId = account.Id,
                 Amount = amount,
                 AllocationStatusId = 2,

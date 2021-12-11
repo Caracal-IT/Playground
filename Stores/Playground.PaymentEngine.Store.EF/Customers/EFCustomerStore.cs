@@ -36,4 +36,8 @@ public partial class EFCustomerStore: DbContext, CustomerStore {
         Customers.Update(customer);
         await SaveChangesAsync(cancellationToken);
     }
+
+    public CustomerStore Clone() {
+        return new EFCustomerStore();
+    }
 }

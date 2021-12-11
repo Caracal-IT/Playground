@@ -40,4 +40,8 @@ public class FileCustomerStore : FileStore, CustomerStore {
         await DeleteCustomersAsync(new[] { customer.Id }, cancellationToken);
         _data.Customers.Add(customer);
     }
+    
+    public CustomerStore Clone() {
+        return this;
+    }
 }

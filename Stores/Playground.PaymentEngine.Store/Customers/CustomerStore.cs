@@ -8,4 +8,5 @@ public interface CustomerStore {
     Task<Customer> CreateCustomerAsync(Customer customer, CancellationToken cancellationToken);
     Task DeleteCustomersAsync(IEnumerable<long> customerIds, CancellationToken cancellationToken);
     Task UpdateCustomerAsync(Customer customer, CancellationToken cancellationToken);
+    CustomerStore Clone();
 }

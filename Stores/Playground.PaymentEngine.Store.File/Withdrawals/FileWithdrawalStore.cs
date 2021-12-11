@@ -118,4 +118,8 @@ public class FileWithdrawalStore : FileStore, WithdrawalStore {
 
         return group;
     }
+    
+    public WithdrawalStore Clone() {
+        return this;
+    }
 }
